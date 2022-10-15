@@ -4,7 +4,7 @@ import { CreateComponentType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
-export const includes = ['legend', 'xAxis', 'yAxis']
+export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
 export const seriesItem = {
   type: 'bar',
   barWidth: null,
@@ -27,9 +27,6 @@ export const option = {
       show: true,
       type: 'shadow'
     }
-  },
-  legend: {
-    show: true
   },
   xAxis: {
     show: true,
