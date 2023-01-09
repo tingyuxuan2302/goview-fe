@@ -1,5 +1,5 @@
 <template>
-  <n-modal v-model:show="modelShow" :mask-closable="true" @afterLeave="closeHandle">
+  <n-modal v-model:show="modelShowRef" :mask-closable="true" @afterLeave="closeHandle">
     <n-table class="model-content" :bordered="false" :single-line="false">
       <thead>
         <tr>
@@ -19,7 +19,8 @@
         <tr v-for="(item, index) in shortcutKeyOptions" :key="index">
           <td>{{ item.label }}</td>
           <td>{{ item.win }}</td>
-          <td>
+          <td v-if="item.macSource">{{ item.mac }}</td>
+          <td v-else>
             <n-gradient-text :size="22">{{ item.mac.substr(0, 1) }}</n-gradient-text>
             + {{ item.mac.substr(3) }}
           </td>
@@ -30,38 +31,36 @@
 </template>
 
 <script setup lang="ts">
+import { watch, ref } from 'vue'
 import { icon } from '@/plugins'
 import { WinKeyboard, MacKeyboard } from '@/enums/editPageEnum'
 
 const { CloseIcon } = icon.ionicons5
+const modelShowRef = ref(false)
 
 const emit = defineEmits(['update:modelShow'])
 
-defineProps({
+const props = defineProps({
   modelShow: Boolean
+})
+
+
+watch(() => props.modelShow, (newValue) => {
+  modelShowRef.value = newValue
 })
 
 // 快捷键
 const shortcutKeyOptions = [
   {
-    label: '向上移动',
-    win: `${WinKeyboard.CTRL.toUpperCase()} + ↑ `,
+    label: '拖拽画布',
+    win: `${WinKeyboard.SPACE.toUpperCase()} + 🖱️ `,
+    mac: `${MacKeyboard.SPACE.toUpperCase()} + 🖱️ `,
+    macSource: true
+  },
+  {
+    label: '向 上/右/下/左 移动',
+    win: `${WinKeyboard.CTRL.toUpperCase()} + ↑ 或 → 或 ↓ 或 ←`,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + ↑ `
-  },
-  {
-    label: '向右移动',
-    win: `${WinKeyboard.CTRL.toUpperCase()} + → `,
-    mac: `${MacKeyboard.CTRL.toUpperCase()} + → `
-  },
-  {
-    label: '向下移动',
-    win: `${WinKeyboard.CTRL.toUpperCase()} + ↓ `,
-    mac: `${MacKeyboard.CTRL.toUpperCase()} + ↓ `
-  },
-  {
-    label: '向左移动',
-    win: `${WinKeyboard.CTRL.toUpperCase()} + ← `,
-    mac: `${MacKeyboard.CTRL.toUpperCase()} + ← `
   },
   {
     label: '锁定',
@@ -129,6 +128,7 @@ const shortcutKeyOptions = [
     mac: `${MacKeyboard.CTRL_SOURCE_KEY.toUpperCase()} + ${WinKeyboard.SHIFT.toUpperCase()} + G `
   }
 ]
+
 const closeHandle = () => {
   emit('update:modelShow', false)
 }

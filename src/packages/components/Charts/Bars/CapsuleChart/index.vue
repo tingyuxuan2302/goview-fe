@@ -111,18 +111,18 @@ watch(
   }
 )
 
-const calcData = (data: any) => {
-  mergeConfig(props.chartConfig.option)
-  calcCapsuleLengthAndLabelData()
-}
-
-const mergeConfig = (data: any) => {
-  state.mergedConfig = cloneDeep(data || {})
+const calcData = (data: any, type?: string) => {
+  let cloneConfig = cloneDeep(props.chartConfig.option || {})
+  state.mergedConfig = cloneConfig
+  if (type == 'preview') {
+    cloneConfig.dataset = data
+  }
+  calcCapsuleLengthAndLabelData(state.mergedConfig.dataset)
 }
 
 // 数据解析
-const calcCapsuleLengthAndLabelData = () => {
-  const { source } = state.mergedConfig.dataset
+const calcCapsuleLengthAndLabelData = (dataset: any) => {
+  const { source } = dataset
   if (!source.length) return
 
   state.capsuleItemHeight = numberSizeHandle(state.mergedConfig.itemHeight)
@@ -151,7 +151,7 @@ onMounted(() => {
 
 // 预览
 useChartDataFetch(props.chartConfig, useChartEditStore, (newData: any) => {
-  calcData(newData)
+  calcData(newData, 'preview')
 })
 </script>
 
