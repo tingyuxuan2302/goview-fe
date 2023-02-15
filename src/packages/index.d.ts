@@ -114,6 +114,10 @@ export interface PublicConfigType {
     // 动画
     animations: string[]
   }
+  preview?: {
+    // 预览超出隐藏
+    overFlowHidden?: boolean
+  }
   filter?: string
   status: StatusType
   events: {
