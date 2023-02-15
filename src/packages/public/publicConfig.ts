@@ -78,6 +78,10 @@ export class PublicConfigClass implements PublicConfigType {
     // 动画
     animations: []
   }
+  // 预览
+  public preview = {
+    overFlowHidden: false
+  }
   // 状态
   public status = {
     lock: false,
