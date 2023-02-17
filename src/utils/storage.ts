@@ -44,7 +44,7 @@ export const clearLocalStorage = (name: string) => {
  */
 export const setSessionStorage = <T>(k: string, v: T) => {
   try {
-    window.sessionStorage.setItem(k, JSON.stringify(v))
+    window.sessionStorage.setItem(k, JSONStringify(v))
   } catch (error) {
     return false
   }
