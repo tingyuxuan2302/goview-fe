@@ -17,12 +17,9 @@
           v-for="colorItem in fetchShowColors(value.color)"
           :key="colorItem"
           :style="{ backgroundColor: colorItem }"
-       ></span>
+        ></span>
       </div>
-      <div
-        class="theme-bottom"
-        :style="{ backgroundImage: chartColorsshow[key] }"
-      ></div>
+      <div class="theme-bottom" :style="{ backgroundImage: chartColorsshow[key] }"></div>
     </n-card>
   </div>
 </template>
@@ -31,12 +28,7 @@
 import { computed } from 'vue'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
-import {
-  chartColors,
-  chartColorsName,
-  chartColorsshow,
-  ChartColorsNameType
-} from '@/settings/chartThemes/index'
+import { chartColors, chartColorsName, chartColorsshow, ChartColorsNameType } from '@/settings/chartThemes/index'
 import { useDesignStore } from '@/store/modules/designStore/designStore'
 import cloneDeep from 'lodash/cloneDeep'
 import { icon } from '@/plugins'
@@ -69,6 +61,8 @@ const selectTheme = (theme: ChartColorsNameType) => {
 </script>
 
 <style lang="scss" scoped>
+$radius: 10px;
+
 @include go(chart-theme-color) {
   padding-top: 20px;
   .card-box {
@@ -76,14 +70,8 @@ const selectTheme = (theme: ChartColorsNameType) => {
     margin-top: 15px;
     padding: 0;
     @include fetch-bg-color('background-color4-shallow');
-    border-radius: 23px;
+    border-radius: $radius;
     overflow: hidden;
-    @include deep() {
-      .n-card__content {
-        padding-top: 5px;
-        padding-bottom: 10px;
-      }
-    }
     &.selected {
       border: 1px solid v-bind('themeColor');
       border-bottom: 1px solid rgba(0, 0, 0, 0);
@@ -93,12 +81,13 @@ const selectTheme = (theme: ChartColorsNameType) => {
     }
     .go-flex-items-center {
       justify-content: space-between;
+      margin-top: -4px;
     }
     .theme-color-item {
       display: inline-block;
       width: 20px;
       height: 20px;
-      border-radius: 50%;
+      border-radius: $radius;
     }
     .theme-bottom {
       position: absolute;
