@@ -4,7 +4,7 @@ export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
 
 const seriesHandle = (color: string[]) => {
   const numHandle = (numsi: number, i: number) => parseInt(`${numsi * Math.random()}`, 10) * 2
-  const nums = [60, 51, 200, 334, 366, 456, 223]
+  const nums = [260, 251, 200, 334, 366, 256, 253]
 
   return color.map((item, index) => ({
     name: `data${index + 1}`,
