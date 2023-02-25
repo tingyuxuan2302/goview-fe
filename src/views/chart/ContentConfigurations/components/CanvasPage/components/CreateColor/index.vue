@@ -211,9 +211,23 @@ const saveHandle = () => {
 
 // 取消
 const closeHandle = () => {
-  colorList.splice(0, colorList.length)
-  selectColor.selectInfo = undefined
-  emit('update:modelShow', false)
+  const positiveHandle = () => {
+    updateColor.value = undefined
+    colorList.splice(0, colorList.length)
+    selectColor.selectInfo = undefined
+    emit('update:modelShow', false)
+  }
+
+  if (updateColor.value !== undefined) {
+    goDialog({
+      message: '当前有变动未保存，是否直接放弃修改？',
+      onPositiveCallback: () => {
+        positiveHandle()
+      }
+    })
+  } else {
+    positiveHandle()
+  }
 }
 
 // 底色
