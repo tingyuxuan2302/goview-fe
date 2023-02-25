@@ -200,7 +200,8 @@ const saveHandle = () => {
   if (!updateColor.value) return
   const index = colorList.findIndex(item => item.id === updateColor.value?.id)
   if (index !== -1) {
-    colorList.splice(index, 1, cloneDeep(updateColor.value))
+    const updateColorPrefix = cloneDeep({ ...updateColor.value, name: updateColor.value.name || '未定义' })
+    colorList.splice(index, 1, updateColorPrefix)
     window.$message.success('颜色应用成功！')
     updateColor.value = undefined
   } else {

@@ -91,6 +91,11 @@ export function darken(color: string, concentration: number) {
  * @param hsl
  * @returns
  */
+export function hslToHexa(hslString: string): string {
+  const color = Color(hslString);
+  return color.hexa()
+}
+
 export function hslToHex(hslString: string): string {
   const color = Color(hslString);
   return color.hex()

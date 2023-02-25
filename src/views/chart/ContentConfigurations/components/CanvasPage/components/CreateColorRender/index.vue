@@ -5,7 +5,14 @@
         <!-- 名称 -->
         <n-input-group>
           <n-input-group-label>名称:</n-input-group-label>
-          <n-input class="create-color-name" v-model:value="editColor.name" @change="titleChangeHandle"/>
+          <n-input
+            class="create-color-name"
+            v-model:value.trim="editColor.name"
+            maxlength="8"
+            show-count
+            clearable
+            @change="titleChangeHandle"
+          />
         </n-input-group>
         <n-tag type="warning">底部图表仅展示 7 条数据</n-tag>
       </n-space>
@@ -48,21 +55,38 @@
     </n-card>
 
     <!-- 扩展色 -->
-    <n-card class="go-mt-3" :bordered="false" role="dialog" size="small" aria-modal="true">
-      <n-text>扩展色：</n-text>
-      <n-divider style="margin: 10px 0"></n-divider>
-      <n-space :size="[4, 0]" justify="center">
-        <div
-          class="color-computed-item"
-          v-for="(item, index) in expandColorList"
-          :key="index"
-          @click="selectExpandColor(item)"
-        >
-          <div class="n-color-picker-checkboard"></div>
-          <div :style="getRenderBackgroundColor(item)"></div>
-        </div>
-      </n-space>
-    </n-card>
+    <div class="expend-color-box">
+      <n-card class="go-mt-3 expend-color" :bordered="false" role="dialog" size="small" aria-modal="true">
+        <n-text>默认扩展色：</n-text>
+        <n-divider style="margin: 10px 0"></n-divider>
+        <n-space :size="[4, 0]" justify="center">
+          <div
+            class="color-computed-item"
+            v-for="(item, index) in expandColorList.default"
+            :key="index"
+            @click="selectExpandColor(item, false)"
+          >
+            <div class="n-color-picker-checkboard"></div>
+            <div :style="getRenderBackgroundColor(item)"></div>
+          </div>
+        </n-space>
+      </n-card>
+      <n-card class="go-mt-3 expend-color" :bordered="false" role="dialog" size="small" aria-modal="true">
+        <n-text>透明扩展色：</n-text>
+        <n-divider style="margin: 10px 0"></n-divider>
+        <n-space :size="[4, 0]" justify="center">
+          <div
+            class="color-computed-item"
+            v-for="(item, index) in expandColorList.fade"
+            :key="index"
+            @click="selectExpandColor(item, true)"
+          >
+            <div class="n-color-picker-checkboard"></div>
+            <div :style="getRenderBackgroundColor(item)"></div>
+          </div>
+        </n-space>
+      </n-card>
+    </div>
 
     <!-- 展示图表 -->
     <create-color-render-chart :color="cloneDeep(editColor.color).splice(0, 7)"></create-color-render-chart>
@@ -72,7 +96,7 @@
 <script setup lang="ts">
 import { PropType, ref, watch, computed, reactive, nextTick } from 'vue'
 import cloneDeep from 'lodash/cloneDeep'
-import { darken, lighten, fade, hslToHex, loadAsyncComponent } from '@/utils'
+import { darken, lighten, fade, hslToHex, hslToHexa, loadAsyncComponent } from '@/utils'
 import { icon } from '@/plugins'
 
 type ColorType = {
@@ -123,23 +147,30 @@ const expandColorList = computed(() => {
 
 // 计算背景色
 const computedColorList = (color?: string) => {
-  if (!color) return []
-  const num: number = 20
+  if (!color)
+    return {
+      default: [],
+      fade: []
+    }
+  const num: number = 36
   const comDarkenArr: string[] = []
   const comLightenArr: string[] = []
   const comDarkenFadeArr: string[] = []
 
   for (let i = 0; i < num; i++) {
-    comLightenArr.unshift(lighten(color, (2 / 100) * i))
-    comDarkenArr.push(darken(color, (3.5 / 100) * i))
+    comLightenArr.unshift(lighten(color, (1 / 100) * (i + 1)))
+    comDarkenArr.push(darken(color, (3.5 / 100) * (i + 1)))
   }
 
   // 透明
   comDarkenArr.forEach((item, i) => {
-    comDarkenFadeArr.unshift(fade(item, (2.4 / 100) * i))
+    comDarkenFadeArr.unshift(fade(item, (1 / 100) * (i + 1)))
   })
 
-  return [...comDarkenFadeArr, ...comLightenArr, ...comDarkenArr]
+  return {
+    default: [...comLightenArr.splice(0, parseInt(`${num / 2}`)), ...comDarkenArr.splice(0, parseInt(`${num / 2}`))],
+    fade: comDarkenFadeArr
+  }
 }
 
 // 渲染背景色
@@ -159,8 +190,8 @@ const completeHandle = (color?: string, index?: number) => {
 }
 
 // 选择扩展色
-const selectExpandColor = (color: string) => {
-  const hexColor = hslToHex(color)
+const selectExpandColor = (color: string, isHexa: boolean) => {
+  const hexColor = isHexa ? hslToHexa(color) : hslToHex(color)
   editColor.value && (editColor.value.color[targetColor.index] = hexColor)
   nextTick(() => {
     emit('updateColor', editColor.value)
@@ -187,7 +218,6 @@ const titleChangeHandle = () => {
     emit('updateColor', editColor.value)
   })
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -214,20 +244,28 @@ const titleChangeHandle = () => {
       }
     }
   }
-  .color-computed-item {
-    & div {
-      position: absolute;
-      display: inline-block;
-      height: 22px;
-      width: 22px;
+  .expend-color-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .expend-color {
+      width: calc(50% - 5px);
+      .color-computed-item {
+        position: relative;
+        display: inline-block;
+        height: 22px;
+        width: 22px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 4px;
+        & div {
+          position: absolute;
+          display: inline-block;
+          height: 22px;
+          width: 22px;
+        }
+      }
     }
-    position: relative;
-    display: inline-block;
-    height: 22px;
-    width: 22px;
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 4px;
   }
 }
 </style>
