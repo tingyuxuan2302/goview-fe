@@ -1,4 +1,5 @@
 import {
+  Add as AddIcon,
   Close as CloseIcon,
   Remove as RemoveIcon,
   Resize as ResizeIcon,
@@ -52,6 +53,7 @@ import {
   ColorWand as ColorWandIcon,
   ArrowBack as ArrowBackIcon,
   ArrowForward as ArrowForwardIcon,
+  ArrowDown as ArrowDownIcon,
   Planet as PawIcon,
   Search as SearchIcon,
   ChevronUpOutline as ChevronUpOutlineIcon,
@@ -101,6 +103,8 @@ import {
 } from '@vicons/carbon'
 
 const ionicons5 = {
+  // 新增
+  AddIcon,
   // 帮助（问号）
   HelpOutlineIcon,
   // 添加
@@ -206,6 +210,8 @@ const ionicons5 = {
   ArrowBackIcon,
   // 前进
   ArrowForwardIcon,
+  // 向下
+  ArrowDownIcon,
   // 狗爪
   PawIcon,
   // 搜索（放大镜）

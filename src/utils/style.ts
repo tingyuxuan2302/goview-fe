@@ -87,6 +87,16 @@ export function darken(color: string, concentration: number) {
 }
 
 /**
+ * hsl 转成16进制
+ * @param hsl
+ * @returns
+ */
+export function hslToHex(hslString: string): string {
+  const color = Color(hslString);
+  return color.hex()
+}
+
+/**
  * * 修改主题色
  * @param themeName 主题名称
  * @returns

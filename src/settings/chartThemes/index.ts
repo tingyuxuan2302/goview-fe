@@ -31,6 +31,9 @@ export const chartColors = {
 // 默认主题
 export const defaultTheme = 'dark'
 
+// 默认展示的选择器颜色列表
+export const swatchesColors = ['#232324', '#2a2a2b', '#313132', '#373739', '#757575', '#e0e0e0', '#eeeeee', '#fafafa']
+
 // 主题色列表
 export type ChartColorsNameType = keyof typeof chartColorsName
 export const chartColorsName = {
@@ -48,21 +51,6 @@ export const chartColorsName = {
   roma: '罗马红'
 }
 
-// 主题色列表
-export const chartColorsshow = {
-  dark: 'linear-gradient(to right, #4992ff 0%, #7cffb2 100%)',
-  customed: 'linear-gradient(to right, #5470c6 0%, #91cc75 100%)',
-  macarons: 'linear-gradient(to right, #2ec7c9 0%, #b6a2de 100%)',
-  walden: 'linear-gradient(to right, #3fb1e3 0%, #6be6c1 100%)',
-  purplePassion: 'linear-gradient(to right, #9b8bba 0%, #e098c7 100%)',
-  vintage: 'linear-gradient(to right, #d87c7c 0%, #919e8b 100%)',
-  chalk: 'linear-gradient(to right, #fc97af 0%, #87f7cf 100%)',
-  westeros: 'linear-gradient(to right, #516b91 0%, #edafda 100%)',
-  wonderland: 'linear-gradient(to right, #4ea397 0%, #22c3aa 100%)',
-  essos: 'linear-gradient(to right, #893448 0%, #d95850 100%)',
-  shine: 'linear-gradient(to right, #c12e34 0%, #0098d9 100%)',
-  roma: 'linear-gradient(to right, #e01f54 0%, #5e4ea5 100%)'
-}
 // 渐变主题色列表（主色1、主色2、阴影、渐变1、渐变2）
 export const chartColorsSearch = {
   dark: ['#4992ff', '#7cffb2', 'rgba(68, 181, 226, 0.3)', 'rgba(73, 146, 255, 0.5)', 'rgba(124, 255, 178, 0.5)'],

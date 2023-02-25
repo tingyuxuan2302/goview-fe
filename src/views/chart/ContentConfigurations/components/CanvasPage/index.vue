@@ -128,6 +128,7 @@
 <script setup lang="ts">
 import { ref, nextTick, watch } from 'vue'
 import { backgroundImageSize } from '@/settings/designSetting'
+import { swatchesColors } from '@/settings/chartThemes/index'
 import { FileTypeEnum } from '@/enums/fileTypeEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
@@ -161,9 +162,6 @@ const selectColorOptions = [
     value: 1
   }
 ]
-
-// 默认展示颜色列表
-const swatchesColors = ['#232324', '#2a2a2b', '#313132', '#373739', '#757575', '#e0e0e0', '#eeeeee', '#fafafa']
 
 const globalTabList = [
   {
