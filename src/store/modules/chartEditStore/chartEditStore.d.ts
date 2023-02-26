@@ -11,7 +11,7 @@ import {
   RequestParamsObjType
 } from '@/enums/httpEnum'
 import { PreviewScaleEnum } from '@/enums/styleEnum'
-import type { ChartColorsNameType, GlobalThemeJsonType } from '@/settings/chartThemes/index'
+import type { ChartColorsNameType, CustomColorsType, GlobalThemeJsonType } from '@/settings/chartThemes/index'
 
 // 项目数据枚举
 export enum ProjectInfoEnum {
@@ -79,6 +79,7 @@ export enum EditCanvasConfigEnum {
   WIDTH = 'width',
   HEIGHT = 'height',
   CHART_THEME_COLOR = 'chartThemeColor',
+  CHART_CUSTOM_THEME_COLOR_INFO = 'chartCustomThemeColorInfo',
   CHART_THEME_SETTING = 'chartThemeSetting',
   BACKGROUND = 'background',
   BACKGROUND_IMAGE = 'backgroundImage',
@@ -121,9 +122,12 @@ export type EditCanvasConfigType = {
   [EditCanvasConfigEnum.HEIGHT]: number
   // 背景色
   [EditCanvasConfigEnum.BACKGROUND]?: string
+  // 背景图片
   [EditCanvasConfigEnum.BACKGROUND_IMAGE]?: string | null
   // 图表主题颜色
   [EditCanvasConfigEnum.CHART_THEME_COLOR]: ChartColorsNameType
+  // 自定义图表主题颜色
+  [EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO]?: CustomColorsType[] 
   // 图表全局配置
   [EditCanvasConfigEnum.CHART_THEME_SETTING]: GlobalThemeJsonType
   // 图表主题颜色

@@ -43,12 +43,14 @@ import { ChartEditStorageType } from '../../index.d'
 import { PreviewRenderGroup } from '../PreviewRenderGroup/index'
 import { CreateComponentGroupType } from '@/packages/index.d'
 import { chartColors } from '@/settings/chartThemes/index'
-import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle } from '@/utils'
+import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle, colorCustomMerge } from '@/utils'
 import { getSizeStyle, getComponentAttrStyle, getStatusStyle, getPreviewConfigStyle } from '../../utils'
 import { useLifeHandler } from '@/hooks'
 
 // 初始化数据池
 const { initDataPond, clearMittDataPondMap } = useChartDataPondFetch()
+const chartEditStore = useChartEditStore()
 
 const props = defineProps({
   localStorageInfo: {
@@ -63,10 +65,11 @@ const themeSetting = computed(() => {
   return chartThemeSetting
 })
 
+
 // 配置项
 const themeColor = computed(() => {
-  const chartThemeColor = props.localStorageInfo.editCanvasConfig.chartThemeColor
-  return chartColors[chartThemeColor]
+  const colorCustomMergeData = colorCustomMerge(props.localStorageInfo.editCanvasConfig.chartCustomThemeColorInfo)
+  return colorCustomMergeData[props.localStorageInfo.editCanvasConfig.chartThemeColor]
 })
 
 // 组件渲染结束初始化数据池
