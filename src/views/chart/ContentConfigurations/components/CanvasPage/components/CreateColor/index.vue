@@ -199,21 +199,34 @@ const createColor = () => {
 
 // 删除
 const deleteHandle = (index: number) => {
-  goDialog({
-    message: `是否删除此颜色？`,
-    onPositiveCallback: () => {
-      colorList.splice(index, 1)
-      chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO, cloneDeep(colorList))
-      nextTick(() => {
-        if (index) {
-          selectHandle(colorList[index - 1])
-        } else {
-          // 已清空
-          selectColor.selectInfo = undefined
-        }
-      })
-    }
-  })
+  const positiveHandle = () => {
+    colorList.splice(index, 1)
+    chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO, cloneDeep(colorList))
+    nextTick(() => {
+      if (index) {
+        selectHandle(colorList[index - 1])
+      } else {
+        // 已清空
+        selectColor.selectInfo = undefined
+      }
+    })
+  }
+  if (updateColor.value !== undefined) {
+    goDialog({
+      message: '当前有变动未保存，是否直接放弃修改？',
+      onPositiveCallback: () => {
+        updateColor.value = undefined
+        positiveHandle()
+      }
+    })
+  } else {
+    goDialog({
+      message: `是否删除此颜色？`,
+      onPositiveCallback: () => {
+        positiveHandle()
+      }
+    })
+  }
 }
 
 // 存储更新数据的值
@@ -226,13 +239,17 @@ const saveHandle = () => {
   if (!updateColor.value) return
   const index = colorList.findIndex(item => item.id === updateColor.value?.id)
   if (index !== -1) {
+    window.$message.success('颜色应用成功！')
     const updateColorPrefix = cloneDeep({ ...updateColor.value, name: updateColor.value.name || '未定义' })
     colorList.splice(index, 1, updateColorPrefix)
-    window.$message.success('颜色应用成功！')
     updateColor.value = undefined
+    const selectTheme = chartEditStore.getEditCanvasConfig.chartThemeColor
+    // 变换主题强制渐变色更新
+    chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_THEME_COLOR, 'dark')
     // 存储到全局数据中
     nextTick(() => {
       chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO, cloneDeep(colorList))
+      chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_THEME_COLOR, selectTheme)
     })
   } else {
     window.$message.error('颜色应用失败！')

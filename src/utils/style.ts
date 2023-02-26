@@ -2,7 +2,7 @@ import Color from 'color'
 import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { PickCreateComponentType } from '@/packages/index.d'
 import { EditCanvasConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
-import { chartColors, CustomColorsType } from '@/settings/chartThemes/index'
+import { chartColors, chartColorsSearch, CustomColorsType } from '@/settings/chartThemes/index'
 
 type AttrType = PickCreateComponentType<'attr'>
 type StylesType = PickCreateComponentType<'styles'>
@@ -93,12 +93,12 @@ export function darken(color: string, concentration: number) {
  * @returns
  */
 export function hslToHexa(hslString: string): string {
-  const color = Color(hslString);
+  const color = Color(hslString)
   return color.hexa()
 }
 
 export function hslToHex(hslString: string): string {
-  const color = Color(hslString);
+  const color = Color(hslString)
   return color.hex()
 }
 
@@ -119,9 +119,9 @@ export const setHtmlTheme = (themeName?: string) => {
 
 /**
  * * 合并基础颜色和自定义颜色
- * @param chartDefaultColors 
- * @param customColor 
- * @returns 
+ * @param chartDefaultColors
+ * @param customColor
+ * @returns
  */
 export const colorCustomMerge = (customColor?: CustomColorsType[]) => {
   type FormateCustomColorType = {
@@ -138,4 +138,26 @@ export const colorCustomMerge = (customColor?: CustomColorsType[]) => {
     }
   })
   return { ...formateCustomColor, ...chartColors }
+}
+
+/**
+ * * 合并基础渐变颜色和自定义渐变颜色
+ * @param customColor
+ */
+export const colorGradientCustomMerge = (customColor?: CustomColorsType[]) => {
+  type FormateGradientCustomColorType = {
+    [T: string]: string[]
+  }
+  const formateGradientCustomColor: FormateGradientCustomColorType = {}
+  customColor?.forEach(item => {
+    formateGradientCustomColor[item.id] = [
+      item.color[0],
+      item.color[1],
+      fade(item.color[0], 0.3),
+      fade(item.color[0], 0.5),
+      fade(item.color[1], 0.5)
+    ]
+  })
+
+  return { ...formateGradientCustomColor, ...chartColorsSearch }
 }
