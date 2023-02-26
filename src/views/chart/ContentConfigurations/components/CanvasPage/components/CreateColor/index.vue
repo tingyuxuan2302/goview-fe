@@ -183,6 +183,7 @@ const createColor = () => {
     colorList.push(newData)
     selectHandle(newData)
     updateColor.value = newData
+    saveHandle(false)
   }
   if (updateColor.value !== undefined) {
     goDialog({
@@ -235,11 +236,11 @@ const updateColorHandle = (newColor: ColorType) => {
 }
 
 // 保存数据
-const saveHandle = () => {
+const saveHandle = (onMessage = true) => {
   if (!updateColor.value) return
   const index = colorList.findIndex(item => item.id === updateColor.value?.id)
   if (index !== -1) {
-    window.$message.success('颜色应用成功！')
+    onMessage && window.$message.success('数据应用成功！')
     const updateColorPrefix = cloneDeep({ ...updateColor.value, name: updateColor.value.name || '未定义' })
     colorList.splice(index, 1, updateColorPrefix)
     updateColor.value = undefined
@@ -252,7 +253,7 @@ const saveHandle = () => {
       chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_THEME_COLOR, selectTheme)
     })
   } else {
-    window.$message.error('颜色应用失败！')
+    window.$message.error('数据应用失败！')
   }
 }
 
