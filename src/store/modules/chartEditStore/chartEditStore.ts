@@ -108,6 +108,8 @@ export const useChartEditStore = defineStore({
       selectColor: true,
       // chart 主题色
       chartThemeColor: defaultTheme || 'dark',
+      // 自定义颜色列表
+      chartCustomThemeColorInfo: undefined,
       // 全局配置
       chartThemeSetting: globalThemeJson,
       // 适配方式

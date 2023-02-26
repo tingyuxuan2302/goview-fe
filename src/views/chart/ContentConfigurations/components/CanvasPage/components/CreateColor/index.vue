@@ -78,7 +78,7 @@
               </n-card>
               <n-tooltip trigger="hover">
                 <template #trigger>
-                  <n-button text :disabled="item.id === selectColorId" @click="deleteHandle(index)">
+                  <n-button text :disabled="item.id === selectThemeColor" @click="deleteHandle(index)">
                     <n-icon class="go-ml-1 go-cursor-pointer" size="16" :depth="3">
                       <trash-icon></trash-icon>
                     </n-icon>
@@ -101,13 +101,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, reactive } from 'vue'
+import { ref, watch, computed, reactive, nextTick, onMounted } from 'vue'
 import cloneDeep from 'lodash/cloneDeep'
-import { CreateColorRender } from '../CreateColorRender/index'
 import noData from '@/assets/images/canvas/noData.png'
 import { getUUID, goDialog } from '@/utils'
 import { icon } from '@/plugins'
 import { UvIndex } from '@vicons/carbon'
+import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+import { EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
+import { CreateColorRender } from '../CreateColorRender/index'
 
 const props = defineProps({
   modelShow: Boolean
@@ -127,9 +129,10 @@ const defaultColor: ColorType = {
   name: '未命名',
   color: ['#6ae5bb', '#69e3de', '#5ac4ee', '#5ac4ee', '#4498ec', '#3c7ddf']
 }
+const chartEditStore = useChartEditStore()
 const modelShowRef = ref(false)
 // 颜色列表
-let colorList = reactive<Array<ColorType>>([])
+let colorList = reactive<Array<ColorType>>(chartEditStore.getEditCanvasConfig.chartCustomThemeColorInfo || [])
 // 子组件更新过的数据
 const updateColor = ref<ColorType | undefined>(undefined)
 // 所选颜色
@@ -143,10 +146,18 @@ watch(
   () => props.modelShow,
   newValue => {
     modelShowRef.value = newValue
+    if (newValue) {
+      // 默认选中
+      if (colorList.length) selectColor.selectInfo = colorList[0]
+    }
   }
 )
 
+// 当前选中的 ID
 const selectColorId = computed(() => selectColor?.selectInfo?.id)
+
+// 全局选择的主题
+const selectThemeColor = computed(() => chartEditStore.getEditCanvasConfig.chartThemeColor)
 
 // 选择
 const selectHandle = (item: ColorType) => {
@@ -171,6 +182,7 @@ const createColor = () => {
     selectColor.selectInfo = newData
     colorList.push(newData)
     selectHandle(newData)
+    updateColor.value = newData
   }
   if (updateColor.value !== undefined) {
     goDialog({
@@ -187,7 +199,21 @@ const createColor = () => {
 
 // 删除
 const deleteHandle = (index: number) => {
-  colorList.splice(index, 1)
+  goDialog({
+    message: `是否删除此颜色？`,
+    onPositiveCallback: () => {
+      colorList.splice(index, 1)
+      chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO, cloneDeep(colorList))
+      nextTick(() => {
+        if (index) {
+          selectHandle(colorList[index - 1])
+        } else {
+          // 已清空
+          selectColor.selectInfo = undefined
+        }
+      })
+    }
+  })
 }
 
 // 存储更新数据的值
@@ -204,16 +230,19 @@ const saveHandle = () => {
     colorList.splice(index, 1, updateColorPrefix)
     window.$message.success('颜色应用成功！')
     updateColor.value = undefined
+    // 存储到全局数据中
+    nextTick(() => {
+      chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO, cloneDeep(colorList))
+    })
   } else {
     window.$message.error('颜色应用失败！')
   }
 }
 
-// 取消
+// 关闭
 const closeHandle = () => {
   const positiveHandle = () => {
     updateColor.value = undefined
-    colorList.splice(0, colorList.length)
     selectColor.selectInfo = undefined
     emit('update:modelShow', false)
   }

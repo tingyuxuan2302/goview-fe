@@ -10,7 +10,7 @@
     </n-card>
 
     <n-card
-      v-for="(value, key) in chartColors"
+      v-for="(value, key) in comChartColors"
       :key="key"
       class="card-box"
       :class="{ selected: key === selectName }"
@@ -20,7 +20,7 @@
       @click="selectTheme(key)"
     >
       <div class="go-flex-items-center">
-        <n-text>{{ chartColorsName[key] }}</n-text>
+        <n-ellipsis style="text-align: left; width: 60px">{{ value.name }} </n-ellipsis>
         <span
           class="theme-color-item"
           v-for="colorItem in fetchShowColors(value.color)"
@@ -40,10 +40,17 @@ import { ref, computed } from 'vue'
 import cloneDeep from 'lodash/cloneDeep'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
-import { chartColors, chartColorsName, ChartColorsNameType } from '@/settings/chartThemes/index'
+import { chartColors, ChartColorsNameType } from '@/settings/chartThemes/index'
 import { useDesignStore } from '@/store/modules/designStore/designStore'
-import { loadAsyncComponent } from '@/utils'
+import { loadAsyncComponent, colorCustomMerge } from '@/utils'
 import { icon } from '@/plugins'
+
+type FormateCustomColorType = {
+  [T: string]: {
+    color: string[]
+    name: string
+  }
+}
 
 const CreateColor = loadAsyncComponent(() => import('../CreateColor/index.vue'))
 
@@ -54,10 +61,10 @@ const chartEditStore = useChartEditStore()
 const designStore = useDesignStore()
 const createColorModelShow = ref(false)
 
-// 创建颜色
-const createColorHandle = () => {
-  createColorModelShow.value = true
-}
+// 合并默认颜色和自定义颜色
+const comChartColors = computed(() => {
+  return colorCustomMerge(chartEditStore.getEditCanvasConfig.chartCustomThemeColorInfo)
+})
 
 // 颜色
 const themeColor = computed(() => {
@@ -68,6 +75,11 @@ const themeColor = computed(() => {
 const selectName = computed(() => {
   return chartEditStore.getEditCanvasConfig.chartThemeColor
 })
+
+// 创建颜色
+const createColorHandle = () => {
+  createColorModelShow.value = true
+}
 
 // 底色
 const colorBackgroundImage = (item: { color: string[] }) => {

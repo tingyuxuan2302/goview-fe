@@ -34,22 +34,16 @@ export const defaultTheme = 'dark'
 // 默认展示的选择器颜色列表
 export const swatchesColors = ['#232324', '#2a2a2b', '#313132', '#373739', '#757575', '#e0e0e0', '#eeeeee', '#fafafa']
 
-// 主题色列表
-export type ChartColorsNameType = keyof typeof chartColorsName
-export const chartColorsName = {
-  dark: '明亮',
-  customed: '暗淡',
-  macarons: '马卡龙',
-  walden: '蓝绿',
-  purplePassion: '深紫',
-  vintage: '复古',
-  chalk: '粉青',
-  westeros: '灰粉',
-  wonderland: '青草',
-  essos: '橘红',
-  shine: '深色',
-  roma: '罗马红'
+// 自定义颜色
+export type CustomColorsType = {
+  id: string,
+  name: string,
+  color: string[]
 }
+
+// 主题色列表, 自定义的颜色使用的是 UUID 作为标识，因为两者数据结构不一致
+export type ChartColorsNameType = keyof typeof chartColors
+
 
 // 渐变主题色列表（主色1、主色2、阴影、渐变1、渐变2）
 export const chartColorsSearch = {

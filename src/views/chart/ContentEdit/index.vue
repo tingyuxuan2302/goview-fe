@@ -87,7 +87,7 @@ import { onMounted, computed } from 'vue'
 import { chartColors } from '@/settings/chartThemes/index'
 import { MenuEnum } from '@/enums/editPageEnum'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
-import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle } from '@/utils'
+import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle, colorCustomMerge } from '@/utils'
 import { useContextMenu } from '@/views/chart/hooks/useContextMenu.hook'
 import { MenuOptionsItemType } from '@/views/chart/hooks/useContextMenu.hook.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
@@ -146,8 +146,8 @@ const themeSetting = computed(() => {
 
 // 配置项
 const themeColor = computed(() => {
-  const chartThemeColor = chartEditStore.getEditCanvasConfig.chartThemeColor
-  return chartColors[chartThemeColor]
+  const colorCustomMergeData = colorCustomMerge(chartEditStore.getEditCanvasConfig.chartCustomThemeColorInfo)
+  return colorCustomMergeData[chartEditStore.getEditCanvasConfig.chartThemeColor]
 })
 
 // 是否展示渲染

@@ -2,6 +2,7 @@ import Color from 'color'
 import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { PickCreateComponentType } from '@/packages/index.d'
 import { EditCanvasConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
+import { chartColors, CustomColorsType } from '@/settings/chartThemes/index'
 
 type AttrType = PickCreateComponentType<'attr'>
 type StylesType = PickCreateComponentType<'styles'>
@@ -87,7 +88,7 @@ export function darken(color: string, concentration: number) {
 }
 
 /**
- * hsl 转成16进制
+ * * hsl 转成16进制
  * @param hsl
  * @returns
  */
@@ -114,4 +115,27 @@ export const setHtmlTheme = (themeName?: string) => {
   }
   const designStore = useDesignStore()
   e.setAttribute('data-theme', designStore.themeName)
+}
+
+/**
+ * * 合并基础颜色和自定义颜色
+ * @param chartDefaultColors 
+ * @param customColor 
+ * @returns 
+ */
+export const colorCustomMerge = (customColor?: CustomColorsType[]) => {
+  type FormateCustomColorType = {
+    [T: string]: {
+      color: string[]
+      name: string
+    }
+  }
+  const formateCustomColor: FormateCustomColorType = {}
+  customColor?.forEach(item => {
+    formateCustomColor[item.id] = {
+      color: item.color,
+      name: item.name
+    }
+  })
+  return { ...formateCustomColor, ...chartColors }
 }
