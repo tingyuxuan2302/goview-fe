@@ -168,8 +168,8 @@ const computedColorList = (color?: string) => {
   })
 
   return {
-    default: [...comLightenArr.splice(0, parseInt(`${num / 2}`)), ...comDarkenArr.splice(0, parseInt(`${num / 2}`))],
-    fade: comDarkenFadeArr
+    default: [...comLightenArr.reverse().splice(0, parseInt(`${num / 2}`) - 9), ...comDarkenArr.splice(0, parseInt(`${num / 2}`))],
+    fade: comDarkenFadeArr.reverse().splice(0, 27)
   }
 }
 
