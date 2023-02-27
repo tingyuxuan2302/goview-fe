@@ -56,7 +56,7 @@
               <n-a @click="createColor">立即创建</n-a>
             </n-text>
             <!-- 列表 -->
-            <div class="color-card-box" v-for="(item, index) in colorList" :key="item.id">
+            <div class="color-card-box" v-for="(item, index) in colorList" :key="index">
               <n-card
                 class="color-card"
                 :class="{ selected: item.id === selectColorId }"
@@ -69,8 +69,8 @@
                   <n-ellipsis style="text-align: left; width: 70px">{{ item.name }} </n-ellipsis>
                   <span
                     class="theme-color-item"
-                    v-for="colorItem in item.color"
-                    :key="colorItem"
+                    v-for="(colorItem, index) in item.color"
+                    :key="index"
                     :style="{ backgroundColor: colorItem }"
                   ></span>
                 </div>
@@ -127,7 +127,7 @@ type ColorType = {
 const defaultColor: ColorType = {
   id: getUUID(),
   name: '未命名',
-  color: ['#6ae5bb', '#69e3de', '#5ac4ee', '#5ac4ee', '#4498ec', '#3c7ddf']
+  color: ['#6ae5bb', '#69e3de', '#5ac5ee', '#5ac4ee', '#4498ec', '#3c7ddf']
 }
 const chartEditStore = useChartEditStore()
 const modelShowRef = ref(false)

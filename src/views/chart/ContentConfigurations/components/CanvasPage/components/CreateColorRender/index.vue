@@ -27,6 +27,7 @@
                 :show-preview="true"
                 :modes="['hex']"
                 @complete="completeHandle($event, index)"
+                @update:show="selectHandle(item, index)"
               />
               <div v-show="index > 5">
                 <n-tooltip trigger="hover">
@@ -183,7 +184,13 @@ const getRenderBackgroundColor = (color?: string) => {
   }
 }
 
-// 顶部选择颜色
+// 点击颜色
+const selectHandle = (color: string, index: number) => {
+  targetColor.color = color
+  targetColor.index = index
+}
+
+// 顶部改变颜色
 const completeHandle = (color?: string, index?: number) => {
   color && (targetColor.color = color)
   index && (targetColor.index = index)
@@ -205,6 +212,9 @@ const selectExpandColor = (color: string, isHexa: boolean) => {
 const addColor = () => {
   const lastData = editColor.value?.color[editColor.value?.color.length - 1] || '#2c2c31'
   editColor.value?.color.push(lastData)
+  nextTick(() => {
+    emit('updateColor', editColor.value)
+  })
 }
 
 // 删除颜色
