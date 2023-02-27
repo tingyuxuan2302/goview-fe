@@ -5,8 +5,10 @@
     </n-icon>
     <n-text @click="handleFocus">
       工作空间 -
-      <n-button v-show="!focus" secondary round size="tiny">
-        <span class="title">{{ comTitle }}</span>
+      <n-button v-show="!focus" secondary size="tiny">
+        <span class="title">
+          {{ comTitle }}
+        </span>
       </n-button>
     </n-text>
 
@@ -17,7 +19,6 @@
       type="text"
       maxlength="16"
       show-count
-      round
       placeholder="请输入项目名称"
       v-model:value.trim="title"
       @keyup.enter="handleBlur"
@@ -81,6 +82,8 @@ const handleBlur = async () => {
 </script>
 <style lang="scss" scoped>
 .title {
+  padding-left: 5px;
+  padding-right: 5px;
   font-size: 15px;
 }
 </style>

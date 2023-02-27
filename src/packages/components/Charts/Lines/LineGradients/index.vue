@@ -14,7 +14,7 @@ import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore
 import { chartColorsSearch, defaultTheme } from '@/settings/chartThemes/index'
 import { DatasetComponent, GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
 import { useChartDataFetch } from '@/hooks'
-import { isPreview } from '@/utils'
+import { isPreview, colorGradientCustomMerge} from '@/utils'
 
 const props = defineProps({
   themeSetting: {
@@ -44,7 +44,9 @@ watch(
   (newColor: keyof typeof chartColorsSearch) => {
     try {
       if (!isPreview()) {
-        const themeColor = chartColorsSearch[newColor] || chartColorsSearch[defaultTheme]
+        const themeColor =
+          colorGradientCustomMerge(chartEditStore.getEditCanvasConfig.chartCustomThemeColorInfo)[newColor] ||
+          colorGradientCustomMerge(chartEditStore.getEditCanvasConfig.chartCustomThemeColorInfo)[defaultTheme]
         props.chartConfig.option.series.forEach((value: any, index: number) => {
           value.areaStyle.color = new graphic.LinearGradient(0, 0, 0, 1, [
             {
