@@ -204,8 +204,8 @@ const deleteHandle = (index: number) => {
     colorList.splice(index, 1)
     chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO, cloneDeep(colorList))
     nextTick(() => {
-      if (index) {
-        selectHandle(colorList[index - 1])
+      if (colorList.length) {
+        selectHandle(colorList[index - 1 > -1 ? index - 1 : index])
       } else {
         // 已清空
         selectColor.selectInfo = undefined
