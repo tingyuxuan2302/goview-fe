@@ -54,7 +54,9 @@ export const useChartEditStore = defineStore({
       // 拖拽中
       isDrag: false,
       // 框选中
-      isSelect: false
+      isSelect: false,
+      // 代码编辑中
+      isCodeEdit: false
     },
     // 右键菜单
     rightMenuShow: false,

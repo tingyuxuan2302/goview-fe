@@ -22,7 +22,8 @@ export enum EditCanvasTypeEnum {
   LOCK_SCALE = 'lockScale',
   IS_CREATE = 'isCreate',
   IS_DRAG = 'isDrag',
-  IS_SELECT = 'isSelect'
+  IS_SELECT = 'isSelect',
+  IS_CODE_EDIT="isCodeEdit"
 }
 
 // 编辑区域
@@ -44,6 +45,8 @@ export type EditCanvasType = {
   [EditCanvasTypeEnum.IS_DRAG]: boolean
   // 框选中
   [EditCanvasTypeEnum.IS_SELECT]: boolean
+  // 代码编辑中
+  [EditCanvasTypeEnum.IS_CODE_EDIT]: boolean
 }
 
 // 滤镜/背景色/宽高主题等

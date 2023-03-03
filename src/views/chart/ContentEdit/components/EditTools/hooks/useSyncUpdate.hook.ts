@@ -1,42 +1,68 @@
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
+import throttle from 'lodash/throttle'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { useSync } from '@/views/chart/hooks/useSync.hook'
 import { ChartEnum } from '@/enums/pageEnum'
 import { SavePageEnum } from '@/enums/editPageEnum'
 import { editToJsonInterval } from '@/settings/designSetting'
+import { goDialog } from '@/utils'
 
 const { updateComponent } = useSync()
 const chartEditStore = useChartEditStore()
+
+export const syncData = () => {
+  goDialog({
+    message: '是否覆盖源视图内容，此操作不可撤回?',
+    isMaskClosable: true,
+    transformOrigin: 'center',
+    onPositiveCallback: () => {
+      window['$message'].success('正在同步编辑器...')
+      dispatchEvent(new CustomEvent(SavePageEnum.CHART, { detail: chartEditStore.getStorageInfo }))
+    }
+  })
+}
 
 // 侦听器更新
 const useSyncUpdateHandle = () => {
   // 定义侦听器变量
   let timer: any
-  const updateFn = (e: any) => updateComponent(e!.detail, true, false)
-  const syncData = async () => {
-    dispatchEvent(new CustomEvent(SavePageEnum.CHART, { detail: chartEditStore.getStorageInfo }))
+
+  // 更新处理
+  const updateFn = (e: any) => {
+    window['$message'].success('正在进行更新...')
+    updateComponent(e!.detail, true)
+  }
+
+  // 页面关闭处理
+  const closeFn = () => {
+    chartEditStore.setEditCanvas(EditCanvasTypeEnum.IS_CODE_EDIT, false)
   }
 
   // 开启侦听
   const use = () => {
-    // // 1、定时同步数据
+    // 定时同步数据（暂不开启）
     // timer = setInterval(() => {
     //   // 窗口激活并且处于工作台
     //   document.hasFocus() && syncData()
     // }, editToJsonInterval)
-    // 2、失焦同步数据
-    addEventListener('blur', syncData)
 
-    // 【监听JSON代码 刷新工作台图表】
+    // 失焦同步数据（暂不开启）
+    // addEventListener('blur', syncData)
+
+    // 监听编辑器保存事件 刷新工作台图表
     addEventListener(SavePageEnum.JSON, updateFn)
+
+    // 监听编辑页关闭
+    addEventListener(SavePageEnum.CLOSE, throttle(closeFn, 1000))
   }
 
   // 关闭侦听
   const unUse = () => {
     // clearInterval(timer)
+    // removeEventListener('blur', syncData)
     removeEventListener(SavePageEnum.JSON, updateFn)
-    removeEventListener('blur', syncData)
   }
 
   // 路由变更时处理
@@ -48,7 +74,7 @@ const useSyncUpdateHandle = () => {
       use()
     }
   }
-  
+
   return watchHandler
 }
 

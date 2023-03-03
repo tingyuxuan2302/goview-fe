@@ -66,7 +66,14 @@ import { ref, computed } from 'vue'
 import { useSettingStore } from '@/store/modules/settingStore/settingStore'
 import { ToolsStatusEnum } from '@/store/modules/settingStore/settingStore.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
-import { fetchRouteParamsLocation, fetchPathByName, routerTurnByPath, setSessionStorage, getLocalStorage } from '@/utils'
+import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
+import {
+  fetchRouteParamsLocation,
+  fetchPathByName,
+  routerTurnByPath,
+  setSessionStorage,
+  getLocalStorage
+} from '@/utils'
 import { EditEnum } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { useRoute } from 'vue-router'
@@ -137,8 +144,8 @@ const toolsMouseoutHandle = () => {
 
 // 编辑处理
 const editHandle = () => {
-  window['$message'].warning('将开启失焦更新！')
-//   window['$message'].warning('将开启失焦更新与 5 秒同步更新！')
+  window['$message'].warning('请通过顶部【同步内容】按钮同步最新数据！')
+  chartEditStore.setEditCanvas(EditCanvasTypeEnum.IS_CODE_EDIT, true)
   setTimeout(() => {
     // 获取id路径
     const path = fetchPathByName(EditEnum.CHART_EDIT_NAME, 'href')
@@ -146,7 +153,7 @@ const editHandle = () => {
     const id = fetchRouteParamsLocation()
     updateToSession(id)
     routerTurnByPath(path, [id], undefined, true)
-  }, 1000)
+  }, 2000)
 }
 
 // 把内存中的数据同步到SessionStorage 便于传递给新窗口初始化数据
@@ -168,7 +175,6 @@ const updateToSession = (id: string) => {
     setSessionStorage(StorageEnum.GO_CHART_STORAGE_LIST, [{ ...storageInfo, id }])
   }
 }
-
 
 // 配置列表
 const btnList: BtnListType[] = [

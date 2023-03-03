@@ -12,7 +12,8 @@ export enum DragKeyEnum {
 // 不同页面保存操作
 export enum SavePageEnum {
   CHART = 'SaveChart',
-  JSON = 'SaveJSON'
+  JSON = 'SaveJSON',
+  CLOSE = 'close'
 }
 
 // 操作枚举
