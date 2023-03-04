@@ -1,20 +1,16 @@
 <template>
-  <collapse-item name="属性" :expanded="true">
-    <setting-item-box name="路径" :alone="true">
-      <setting-item v-for="item, index in optionData.dataset" :key="index">
+  <collapse-item name="路径" :expanded="true">
+      <setting-item v-for="(item, index) in optionData.dataset" :key="index">
         <n-input-group>
           <n-input v-model:value="optionData.dataset[index]" size="small" placeholder="请输入图片地址"></n-input>
-          <n-button ghost @click="optionData.dataset.splice(index, 1)">
-            -
-          </n-button>
+          <n-button ghost @click="optionData.dataset.splice(index, 1)"> - </n-button>
         </n-input-group>
       </setting-item>
       <setting-item>
-        <n-button size="small" @click="optionData.dataset.push('')">
-          +
-        </n-button>
+        <n-button size="small" @click="optionData.dataset.push('')"> + 新增</n-button>
       </setting-item>
-    </setting-item-box>
+  </collapse-item>
+  <collapse-item name="轮播属性" :expanded="true">
     <setting-item-box name="播放器">
       <setting-item>
         <n-space>
@@ -24,7 +20,9 @@
       </setting-item>
       <!-- 开启自动播放时，设置间隔时间 -->
       <setting-item name="间隔时间">
-        <n-input-number v-model:value="optionData.interval" size="small" placeholder=""></n-input-number>
+        <n-input-number v-model:value="optionData.interval" size="small" placeholder="">
+          <template #suffix> 毫秒 </template>
+        </n-input-number>
       </setting-item>
       <setting-item name="轮播方向">
         <n-select v-model:value="optionData.direction" :options="directions" placeholder="选择方向" />
@@ -45,7 +43,6 @@
         <n-select v-model:value="optionData.fit" :options="fitList" placeholder="样式" />
       </setting-item>
     </setting-item-box>
-
     <setting-item-box name="指示器">
       <setting-item name="样式">
         <n-select v-model:value="optionData.dotType" :options="dotTypes" placeholder="选择样式" />
@@ -72,18 +69,13 @@
         </n-space>
       </setting-item>
     </setting-item-box>
-
   </collapse-item>
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue'
 import { option } from './config'
-import {
-  CollapseItem,
-  SettingItemBox,
-  SettingItem
-} from '@/components/Pages/ChartItemSetting'
+import { CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
 
 const props = defineProps({
   optionData: {
@@ -95,58 +87,58 @@ const props = defineProps({
 // 字典
 const dotTypes = [
   {
-    label: "点",
-    value: "dot"
+    label: '点',
+    value: 'dot'
   },
   {
-    label: "线",
-    value: "line"
+    label: '线',
+    value: 'line'
   }
 ]
 const directions = [
   {
-    label: "水平方向",
-    value: "horizontal"
+    label: '水平方向',
+    value: 'horizontal'
   },
   {
-    label: "垂直方向",
-    value: "vertical"
+    label: '垂直方向',
+    value: 'vertical'
   }
 ]
 const effects = [
   {
-    label: "slide",
-    value: "slide"
+    label: 'slide',
+    value: 'slide'
   },
   {
-    label: "fade",
-    value: "fade"
+    label: 'fade',
+    value: 'fade'
   },
   {
-    label: "card",
-    value: "card"
+    label: 'card',
+    value: 'card'
   },
   {
-    label: "custom",
-    value: "custom"
+    label: 'custom',
+    value: 'custom'
   }
 ]
 const dotPlacements = [
   {
-    label: "上边",
-    value: "top"
+    label: '上边',
+    value: 'top'
   },
   {
-    label: "下边",
-    value: "bottom"
+    label: '下边',
+    value: 'bottom'
   },
   {
-    label: "左边",
-    value: "left"
+    label: '左边',
+    value: 'left'
   },
   {
-    label: "右边",
-    value: "right"
+    label: '右边',
+    value: 'right'
   }
 ]
 
@@ -171,6 +163,6 @@ const fitList = [
   {
     value: 'none',
     label: 'none'
-  },
+  }
 ]
 </script>

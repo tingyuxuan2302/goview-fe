@@ -1,10 +1,28 @@
 <template>
   <div>
-    <n-carousel :autoplay="autoplay" :interval="interval" :centered-slides="centeredSlides" :direction="direction"
-      :dot-placement="dotPlacement" :dot-type="dotType" :draggable="draggable" :effect="effect"
-      :slides-per-view="slidesPerview" :show-arrow="showArrow" :show-dots="showDots">
-      <n-image v-for="url in option.dataset" :object-fit="fit" preview-disabled :src="url"
-        :fallback-src="requireErrorImg()" :width="w" :height="h"></n-image>
+    <n-carousel
+      :autoplay="autoplay"
+      :interval="interval"
+      :centered-slides="centeredSlides"
+      :direction="direction"
+      :dot-placement="dotPlacement"
+      :dot-type="dotType"
+      :draggable="draggable"
+      :effect="effect"
+      :slides-per-view="slidesPerview"
+      :show-arrow="showArrow"
+      :show-dots="showDots"
+    >
+      <n-image
+        v-for="(url, index) in option.dataset"
+        preview-disabled
+        :key="index"
+        :object-fit="fit"
+        :src="url"
+        :fallback-src="requireErrorImg()"
+        :width="w"
+        :height="h"
+      ></n-image>
     </n-carousel>
   </div>
 </template>
@@ -28,7 +46,20 @@ const option = shallowReactive({
 })
 
 const { w, h } = toRefs(props.chartConfig.attr)
-const { autoplay, interval, slidesPerview, direction, draggable, centeredSlides, effect, dotType, dotPlacement, showArrow, showDots, fit } = toRefs(props.chartConfig.option)
+const {
+  autoplay,
+  interval,
+  slidesPerview,
+  direction,
+  draggable,
+  centeredSlides,
+  effect,
+  dotType,
+  dotPlacement,
+  showArrow,
+  showDots,
+  fit
+} = toRefs(props.chartConfig.option)
 
 watch(
   () => props.chartConfig.option.dataset,

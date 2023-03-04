@@ -1,22 +1,19 @@
 import { PublicConfigClass } from '@/packages/public'
 import { CreateComponentType } from '@/packages/index.d'
-import { CarouselConfig } from './index'
+import { ImageCarouselConfig } from './index'
 import cloneDeep from 'lodash/cloneDeep'
 import logo from '@/assets/logo.png'
 
-// 示例图片资源
-const modules = import.meta.globEager("./images/*");
-const dataset = [logo]
-for (var item in modules) {
-  dataset.push(modules[item].default)
-}
-
 export const option = {
   // 图片资源列表
-  dataset: dataset,
+  dataset: [
+    'https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg',
+    'https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg',
+    'https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg',
+  ],
   // 自动播放
   autoplay: true,
-  // 自动播放的间隔（ms）
+  // 自动播放的间隔（豪秒）
   interval: 5000,
   // 每页显示的图片数量
   slidesPerview: 1,
@@ -41,7 +38,7 @@ export const option = {
 }
 
 export default class Config extends PublicConfigClass implements CreateComponentType {
-  public key = CarouselConfig.key
-  public chartConfig = cloneDeep(CarouselConfig)
+  public key = ImageCarouselConfig.key
+  public chartConfig = cloneDeep(ImageCarouselConfig)
   public option = cloneDeep(option)
 }
