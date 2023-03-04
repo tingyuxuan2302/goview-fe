@@ -321,6 +321,10 @@ export const JSONStringify = <T>(data: T) => {
 export const JSONParse = (data: string) => {
   return JSON.parse(data, (k, v) => {
     if (excludeParseEventKeyList.includes(k)) return v
+    if(typeof v === 'string' && v.indexOf('javascript:') > -1){
+      //动态请求json中'javascript:'内容会影响模板content解析，直接返回
+      return v
+    }
     if (typeof v === 'string' && v.indexOf && (v.indexOf('function') > -1 || v.indexOf('=>') > -1)) {
       return eval(`(function(){return ${v}})()`)
     } else if (typeof v === 'string' && v.indexOf && (v.indexOf('return ') > -1)) {
