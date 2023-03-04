@@ -47,7 +47,8 @@ export enum EditCanvasTypeEnum {
   SAVE_STATUS = 'saveStatus',
   IS_CREATE = 'isCreate',
   IS_DRAG = 'isDrag',
-  IS_SELECT = 'isSelect'
+  IS_SELECT = 'isSelect',
+  IS_CODE_EDIT="isCodeEdit"
 }
 
 // 编辑区域（临时）
@@ -71,6 +72,8 @@ export type EditCanvasType = {
   [EditCanvasTypeEnum.SAVE_STATUS]: SyncEnum
   // 框选中
   [EditCanvasTypeEnum.IS_SELECT]: boolean
+  // 代码编辑中
+  [EditCanvasTypeEnum.IS_CODE_EDIT]: boolean
 }
 
 // 画布数据/滤镜/背景色/宽高主题等
