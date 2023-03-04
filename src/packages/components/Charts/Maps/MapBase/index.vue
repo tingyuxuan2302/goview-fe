@@ -59,13 +59,14 @@ const getGeojson = (regionId: string) => {
 }
 
 //异步时先注册空的 保证初始化不报错
-registerMap(props.chartConfig.option.mapRegion.adcode, { geoJSON: {} as any, specialAreas: {} })
+registerMap(`${props.chartConfig.option.mapRegion.adcode}`, { geoJSON: {} as any, specialAreas: {} })
 
 // 进行更换初始化地图 如果为china 单独处理
 const registerMapInitAsync = async () => {
   await nextTick()
-  if (props.chartConfig.option.mapRegion.adcode != 'china') {
-    await getGeojson(props.chartConfig.option.mapRegion.adcode)
+  const adCode = `${props.chartConfig.option.mapRegion.adcode}`;
+  if (adCode !== 'china') {
+    await getGeojson(adCode)
   } else {
     await hainanLandsHandle(props.chartConfig.option.mapRegion.showHainanIsLands)
   }
@@ -127,7 +128,7 @@ watch(
 
 //监听地图展示区域发生变化
 watch(
-  () => props.chartConfig.option.mapRegion.adcode,
+  () => `${props.chartConfig.option.mapRegion.adcode}`,
   async newData => {
     try {
       await getGeojson(newData)
