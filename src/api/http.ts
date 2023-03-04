@@ -172,7 +172,9 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
 
     case RequestBodyEnum.JSON:
       headers['Content-Type'] = ContentTypeEnum.JSON
-      data = translateStr(JSON.parse(targetRequestParams.Body['json']))
+      //json对象也能使用'javasctipt:'来动态拼接参数
+      data = translateStr(targetRequestParams.Body['json'])
+      if(typeof data === 'string')  data = JSON.parse(data)
       // json 赋值给 data
       break
 
