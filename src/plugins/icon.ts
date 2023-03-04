@@ -67,7 +67,8 @@ import {
   List as ListIcon,
   EyeOutline as EyeOutlineIcon,
   EyeOffOutline as EyeOffOutlineIcon,
-  Albums as AlbumsIcon
+  Albums as AlbumsIcon,
+  Analytics as AnalyticsIcon
 } from '@vicons/ionicons5'
 
 import {
@@ -242,7 +243,9 @@ const ionicons5 = {
   EyeOutlineIcon,
   EyeOffOutlineIcon,
   // 图表列表 
-  AlbumsIcon
+  AlbumsIcon,
+  // 分析
+  AnalyticsIcon
 }
 
 const carbon = {

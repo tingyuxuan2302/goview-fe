@@ -29,7 +29,7 @@ import { ThemeColorSelect } from '@/components/Pages/ThemeColorSelect'
 </script>
 
 <style lang="scss" scoped>
-$min-width: 400px;
+$min-width: 520px;
 @include go(header) {
   &-box {
     display: grid;

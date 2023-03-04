@@ -72,7 +72,9 @@ export const useChartEditStore = defineStore({
       // 框选中
       isSelect: false,
       // 同步中
-      saveStatus: SyncEnum.PENDING
+      saveStatus: SyncEnum.PENDING,
+      // 代码编辑中
+      isCodeEdit: false
     },
     // 右键菜单
     rightMenuShow: false,
