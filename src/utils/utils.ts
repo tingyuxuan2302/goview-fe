@@ -10,7 +10,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { WinKeyboard } from '@/enums/editPageEnum'
 import { RequestHttpIntervalEnum, RequestParamsObjType } from '@/enums/httpEnum'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
-import { excludeParseEventKeyList } from '@/enums/eventEnum'
+import { excludeParseEventKeyList, excludeParseEventValueList } from '@/enums/eventEnum'
 
 /**
  * * 判断是否是开发环境
@@ -320,14 +320,17 @@ export const JSONStringify = <T>(data: T) => {
  */
 export const JSONParse = (data: string) => {
   return JSON.parse(data, (k, v) => {
+    // 过滤函数字符串
     if (excludeParseEventKeyList.includes(k)) return v
-    if(typeof v === 'string' && v.indexOf('javascript:') > -1){
-      //动态请求json中'javascript:'内容会影响模板content解析，直接返回
-      return v
+    // 过滤函数值表达式
+    if (typeof v === 'string') {
+      const someValue = excludeParseEventValueList.some(excludeValue => v.indexOf(excludeValue) > -1)
+      if (someValue) return v
     }
+    // 还原函数值
     if (typeof v === 'string' && v.indexOf && (v.indexOf('function') > -1 || v.indexOf('=>') > -1)) {
       return eval(`(function(){return ${v}})()`)
-    } else if (typeof v === 'string' && v.indexOf && (v.indexOf('return ') > -1)) {
+    } else if (typeof v === 'string' && v.indexOf && v.indexOf('return ') > -1) {
       const baseLeftIndex = v.indexOf('(')
       if (baseLeftIndex > -1) {
         const newFn = `function ${v.substring(baseLeftIndex)}`
