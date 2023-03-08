@@ -126,7 +126,12 @@ export interface PublicConfigType {
     },
     advancedEvents: {
       [K in EventLife]?: string
-    }
+    },
+    eventsFn: {
+      on: 'change' | 'click' | undefined
+      components: string | undefined
+      fn: { [name: string]: string }
+    }[],
   }
 }
 
