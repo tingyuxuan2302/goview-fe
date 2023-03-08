@@ -24,7 +24,7 @@
               <help-outline-icon></help-outline-icon>
             </n-icon>
           </template>
-          <n-text>动态日期以默人值计算</n-text>
+          <n-text>动态日期以默认值进行计算</n-text>
         </n-tooltip>
       </template>
 
