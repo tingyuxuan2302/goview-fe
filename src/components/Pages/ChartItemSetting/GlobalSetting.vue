@@ -1,4 +1,34 @@
 <template>
+  <collapse-item name="渲染器">
+    <setting-item-box :alone="true">
+      <template #name>
+        <n-text>全局</n-text>
+        <n-tooltip trigger="hover">
+          <template #trigger>
+            <n-icon size="21" :depth="3">
+              <help-outline-icon></help-outline-icon>
+            </n-icon>
+          </template>
+          <n-text>所有echarts图表组件默认都将采用所选的渲染器进行渲染</n-text>
+        </n-tooltip>
+      </template>
+      <EchartsRendererSetting v-model="themeSetting.renderer" />
+    </setting-item-box>
+    <setting-item-box :alone="true">
+      <template #name>
+        <n-text>当前</n-text>
+        <n-tooltip trigger="hover">
+          <template #trigger>
+            <n-icon size="21" :depth="3">
+              <help-outline-icon></help-outline-icon>
+            </n-icon>
+          </template>
+          <n-text>仅当前组件采用指定渲染器渲染</n-text>
+        </n-tooltip>
+      </template>
+      <EchartsRendererSetting v-model="optionData.renderer" includeInherit />
+    </setting-item-box>
+  </collapse-item>
   <collapse-item v-if="title" name="标题">
     <template #header>
       <n-switch v-model:value="title.show" size="small"></n-switch>
@@ -283,6 +313,11 @@ import { PropType, computed } from 'vue'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import { axisConfig } from '@/packages/chartConfiguration/echarts/index'
 import { CollapseItem, SettingItemBox, SettingItem, GlobalSettingPosition } from '@/components/Pages/ChartItemSetting'
+import { icon } from '@/plugins'
+import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+import EchartsRendererSetting from './EchartsRendererSetting.vue'
+
+const { HelpOutlineIcon } = icon.ionicons5
 
 const props = defineProps({
   optionData: {
@@ -294,6 +329,12 @@ const props = defineProps({
     required: false,
     default: false
   }
+})
+
+const chartEditStore = useChartEditStore()
+const themeSetting = computed(() => {
+  const chartThemeSetting = chartEditStore.getEditCanvasConfig.chartThemeSetting
+  return chartThemeSetting
 })
 
 const title = computed(() => {

@@ -1,6 +1,7 @@
 <template>
   <v-chart
     ref="vChartRef"
+    :init-options="initOptions"
     :theme="themeColor"
     :option="option"
     :manual-update="isPreview()"
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 import { ref, nextTick, computed, watch, PropType } from 'vue'
 import VChart from 'vue-echarts'
+import { useCanvasInitOptions } from '@/hooks/useCanvasInitOptions.hook'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { BarChart } from 'echarts/charts'
@@ -40,6 +42,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const initOptions = useCanvasInitOptions(props.chartConfig.option, props.themeSetting)
 
 use([DatasetComponent, CanvasRenderer, BarChart, GridComponent, TooltipComponent, LegendComponent])
 
