@@ -37,7 +37,16 @@
     <CollapseItem name="请求数据绑定" :expanded="false">
       <SettingItemBox name="Params">
         <SettingItem
-          v-for="(ovlValue, ovlKey, index) in fnGetRequest(item.components)"
+          v-for="(ovlValue, ovlKey, index) in fnGetRequest(item.components, 'Params')"
+          :key="ovlKey"
+          :name="`${ovlKey}`"
+        >
+          <n-select size="small" v-model:value="item.fn[ovlKey]" :options="fnDimensionsAndSource(item.on)"></n-select>
+        </SettingItem>
+      </SettingItemBox>
+      <SettingItemBox name="Header">
+        <SettingItem
+          v-for="(ovlValue, ovlKey, index) in fnGetRequest(item.components, 'Header')"
           :key="ovlKey"
           :name="`${ovlKey}`"
         >
@@ -70,9 +79,9 @@ const option = computed(() => {
   return chartEditStore.componentList[chartEditStore.fetchTargetIndex()].option
 })
 // 绑定组件数据request
-const fnGetRequest = (id: string | undefined) => {
+const fnGetRequest = (id: string | undefined, key: 'Params' | 'Header') => {
   if (!id) return {}
-  return chartEditStore.componentList[chartEditStore.fetchTargetIndex(id)]?.request.requestParams.Params
+  return chartEditStore.componentList[chartEditStore.fetchTargetIndex(id)]?.request.requestParams[key]
 }
 
 const fnDimensionsAndSource = (on: any) => {

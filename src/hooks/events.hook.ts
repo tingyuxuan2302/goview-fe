@@ -15,9 +15,14 @@ export const eventsCreate = (chartConfig: CreateComponentType, useChartEditStore
   if (fnOnEvevnt.length === 0) return
   fnOnEvevnt.forEach((item) => {
     const index = chartEditStore.fetchTargetIndex(item.components)
-    const { Params } = toRefs(chartEditStore.componentList[index].request.requestParams)
+    const { Params, Header } = toRefs(chartEditStore.componentList[index].request.requestParams)
     Object.keys(item.fn).forEach((key) => {
-      Params.value[key] = param[item.fn[key]]
+      if (Params.value[key]) {
+        Params.value[key] = param[item.fn[key]]
+      }
+      if (Header.value[key]) {
+        Header.value[key] = param[item.fn[key]]
+      }
     })
   })
 }
