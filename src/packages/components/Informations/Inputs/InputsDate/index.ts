@@ -8,7 +8,7 @@ export const InputsDateConfig: ConfigType = {
   title: '时间选择器',
   category: ChatCategoryEnum.INPUTS,
   categoryName: ChatCategoryEnumName.INPUTS,
-  package: PackagesCategoryEnum.DECORATES,
+  package: PackagesCategoryEnum.INFORMATIONS,
   chartFrame: ChartFrameEnum.COMMON,
   image: 'inputs_date.png'
 }
