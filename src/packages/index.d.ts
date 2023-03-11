@@ -130,7 +130,7 @@ export interface PublicConfigType {
     }
     interactEvents: {
       [InteractEvents.INTERACT_ON]: InteractEventOn.CHANGE | InteractEventOn.CLICK | undefined
-      [InteractEvents.INTERACT_COMPONENTS]: string | undefined
+      [InteractEvents.INTERACT_COMPONENT_ID]: string | undefined
       [InteractEvents.INTERACT_FN]: { [name: string]: string }
     }[]
   }

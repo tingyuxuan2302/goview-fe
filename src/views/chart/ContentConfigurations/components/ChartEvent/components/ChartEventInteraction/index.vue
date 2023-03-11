@@ -25,7 +25,7 @@
     >
       <n-space justify="space-between">
         <n-text>关联组件 - {{ cardIndex + 1 }}</n-text>
-        <n-button type="error" text  size="small" @click="evDeleteEventsFn(cardIndex)">
+        <n-button type="error" text size="small" @click="evDeleteEventsFn(cardIndex)">
           <template #icon>
             <n-icon>
               <close-icon />
@@ -49,36 +49,47 @@
         </n-input-group>
       </setting-item-box>
 
-      <setting-item-box name="绑定组件" :alone="true">
-        <n-input-group>
-          <n-select
-            class="select-type-options"
-            value-field="id"
-            label-field="key"
-            size="tiny"
-            filterable
-            v-model:value="item.interactComponents"
-            :render-label="renderLabel"
-            :options="fnEventsOptions()"
-          />
-        </n-input-group>
+      <setting-item-box :alone="true">
+        <template #name>
+          <n-text>绑定</n-text>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-icon size="21" :depth="3">
+                <help-outline-icon></help-outline-icon>
+              </n-icon>
+            </template>
+            <n-text>不支持「静态组件」和「分组」</n-text>
+          </n-tooltip>
+        </template>
+        <n-select
+          class="select-type-options"
+          value-field="id"
+          label-field="title"
+          size="tiny"
+          filterable
+          placeholder="仅展示符合条件的组件"
+          v-model:value="item.interactComponentId"
+          :options="fnEventsOptions()"
+        />
       </setting-item-box>
 
-      <n-table v-if="fnDimensionsAndSource(item.interactOn).length" size="small" striped>
-        <thead>
-          <tr>
-            <th v-for="item in ['参数', '说明']" :key="item">{{ item }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(cItem, index) in fnDimensionsAndSource(item.interactOn)" :key="index">
-            <td>{{ cItem.value }}</td>
-            <td>{{ cItem.label }}</td>
-          </tr>
-        </tbody>
-      </n-table>
+      <setting-item-box v-if="fnDimensionsAndSource(item.interactOn).length" name="查询结果" :alone="true">
+        <n-table size="small" striped>
+          <thead>
+            <tr>
+              <th v-for="item in ['参数', '说明']" :key="item">{{ item }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(cItem, index) in fnDimensionsAndSource(item.interactOn)" :key="index">
+              <td>{{ cItem.value }}</td>
+              <td>{{ cItem.label }}</td>
+            </tr>
+          </tbody>
+        </n-table>
+      </setting-item-box>
 
-      <n-tag class="go-mt-3" :bordered="false" type="primary"> 关联目标组件请求参数 </n-tag>
+      <n-tag :bordered="false" type="primary"> 关联目标组件请求参数 </n-tag>
 
       <setting-item-box
         :name="requestParamsItem"
@@ -86,7 +97,7 @@
         :key="requestParamsItem"
       >
         <setting-item
-          v-for="(ovlValue, ovlKey, index) in fnGetRequest(item.interactComponents, requestParamsItem)"
+          v-for="(ovlValue, ovlKey, index) in fnGetRequest(item.interactComponentId, requestParamsItem)"
           :key="index"
           :name="`${ovlKey}`"
         >
@@ -97,7 +108,7 @@
           ></n-select>
         </setting-item>
         <n-text
-          v-show="JSON.stringify(fnGetRequest(item.interactComponents, requestParamsItem)) === '{}'"
+          v-show="JSON.stringify(fnGetRequest(item.interactComponentId, requestParamsItem)) === '{}'"
           class="go-pt-1"
           depth="3"
         >
@@ -112,8 +123,7 @@
 import { VNodeChild, computed } from 'vue'
 import { SelectOption, SelectGroupOption } from 'naive-ui'
 import { SettingItemBox, SettingItem, CollapseItem } from '@/components/Pages/ChartItemSetting'
-import { useDesignStore } from '@/store/modules/designStore/designStore'
-import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
+import { CreateComponentType, CreateComponentGroupType, ChartFrameEnum } from '@/packages/index.d'
 import { RequestParamsTypeEnum } from '@/enums/httpEnum'
 import { InteractEventOn } from '@/enums/eventEnum'
 import { icon } from '@/plugins'
@@ -121,11 +131,8 @@ import noData from '@/assets/images/canvas/noData.png'
 import { goDialog } from '@/utils'
 import { useTargetData } from '../../../hooks/useTargetData.hook'
 
-const { CloseIcon, AddIcon } = icon.ionicons5
-
-const designStore = useDesignStore()
+const { CloseIcon, AddIcon, HelpOutlineIcon } = icon.ionicons5
 const { targetData, chartEditStore } = useTargetData()
-
 const requestParamsTypeList = [RequestParamsTypeEnum.PARAMS, RequestParamsTypeEnum.HEADER]
 
 // 获取组件交互事件列表
@@ -143,12 +150,13 @@ const option = computed(() => {
   return targetData.value.option
 })
 
-// 绑定组件数据request
+// 绑定组件数据 request
 const fnGetRequest = (id: string | undefined, key: RequestParamsTypeEnum) => {
   if (!id) return {}
   return chartEditStore.componentList[chartEditStore.fetchTargetIndex(id)]?.request.requestParams[key]
 }
 
+// 查询结果
 const fnDimensionsAndSource = (interactOn: InteractEventOn | undefined) => {
   if (!interactOn || !targetData.value.interactActions) return []
   const tableData = targetData.value.interactActions.find(item => {
@@ -158,24 +166,46 @@ const fnDimensionsAndSource = (interactOn: InteractEventOn | undefined) => {
   return tableData?.componentEmitEvents[option.value.dataset.type] || []
 }
 
-const renderLabel = (option: CreateComponentType | CreateComponentGroupType): VNodeChild => {
-  return option.chartConfig.title
-}
-
+// 绑定组件列表
 const fnEventsOptions = (): Array<SelectOption | SelectGroupOption> => {
-  return chartEditStore.componentList.filter(item => {
-    return item.id !== targetData.value.id
+  const filterOptionList = chartEditStore.componentList.filter(item => {
+    // 排除自己
+    const isNotSelf = item.id !== targetData.value.id
+    // 排除静态组件
+    const isNotStatic = item.chartConfig.chartFrame !== ChartFrameEnum.STATIC
+    // 排除分组
+    const isNotGroup = !item.isGroup
+
+    return isNotSelf && isNotStatic && isNotGroup
   })
+
+  const mapOptionList = filterOptionList.map(item => ({
+    id: item.id,
+    title: item.chartConfig.title,
+    disabled: false
+  }))
+
+  targetData.value.events.interactEvents?.forEach(iaItem => {
+    mapOptionList.forEach(optionItem => {
+      if (optionItem.id === iaItem.interactComponentId) {
+        optionItem.disabled = true
+      }
+    })
+  })
+
+  return mapOptionList
 }
 
+// 新增模块
 const evAddEventsFn = () => {
   targetData.value.events.interactEvents.push({
     interactOn: undefined,
-    interactComponents: undefined,
+    interactComponentId: undefined,
     interactFn: {}
   })
 }
 
+// 删除模块
 const evDeleteEventsFn = (index: number) => {
   goDialog({
     message: '是否删除此关联交互模块?',
@@ -184,11 +214,6 @@ const evDeleteEventsFn = (index: number) => {
     }
   })
 }
-
-// 颜色
-const themeColor = computed(() => {
-  return designStore.getAppTheme
-})
 </script>
 
 <style lang="scss" scoped>

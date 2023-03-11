@@ -13,7 +13,7 @@ export enum BaseEvent {
 // 组件交互回调事件
 export enum InteractEvents {
   INTERACT_ON = 'interactOn',
-  INTERACT_COMPONENTS = 'interactComponents',
+  INTERACT_COMPONENT_ID = 'interactComponentId',
   INTERACT_FN = 'interactFn'
 }
 
