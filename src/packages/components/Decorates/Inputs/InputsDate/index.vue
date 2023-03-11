@@ -1,18 +1,18 @@
 <template>
   <div class="mill-date-box">
-    <div :style="`width:${w}px;height:${h}px;`">
+    <div :style="`width:${w}px; height:${h}px;`">
       <n-date-picker v-model:value="rangeDate" :type="option.dataset.type" @update:value="onChange" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PropType, toRefs, ref, shallowReactive, watch, computed } from 'vue'
+import { PropType, toRefs, ref, shallowReactive, watch } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartDataFetch } from '@/hooks'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { option as configOption } from './config'
-import { eventsCreate } from '@/hooks'
+import { useChartInteract } from '@/hooks'
 import dayjs from 'dayjs'
 
 const props = defineProps({
@@ -28,14 +28,15 @@ const rangeDate = ref()
 const option = shallowReactive({
   dataset: configOption.dataset
 })
+
 const onChange = (v: number | number[]) => {
   if (v instanceof Array) {
     const data1 = dayjs(v[0]).format('YYYY-MM-DD')
     const data2 = dayjs(v[1]).format('YYYY-MM-DD')
-    eventsCreate(props.chartConfig, useChartEditStore, { data1, data2 }, 'change')
+    useChartInteract(props.chartConfig, useChartEditStore, { data1, data2 }, 'change')
   } else {
     const data1 = dayjs(v).format('YYYY-MM-DD')
-    eventsCreate(props.chartConfig, useChartEditStore, { data1 }, 'change')
+    useChartInteract(props.chartConfig, useChartEditStore, { data1 }, 'change')
   }
 }
 
@@ -63,7 +64,7 @@ watch(
   }
 )
 
-// // 预览更新
+// 预览更新
 useChartDataFetch(props.chartConfig, useChartEditStore)
 </script>
 

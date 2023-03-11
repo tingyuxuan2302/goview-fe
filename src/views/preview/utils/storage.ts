@@ -4,6 +4,7 @@ import { ChartEditStorage } from '@/store/modules/chartEditStore/chartEditStore.
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 
 const chartEditStore = useChartEditStore()
+
 export interface ChartEditStorageType extends ChartEditStorage {
   id: string
 }
@@ -25,6 +26,7 @@ export const getSessionStorageInfo = () => {
         chartEditStore.editCanvasConfig = editCanvasConfig
         chartEditStore.requestGlobalConfig = requestGlobalConfig
         chartEditStore.componentList = componentList
+        return storageList[i]
       }
     }
   }

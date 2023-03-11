@@ -41,9 +41,9 @@
 
 <script lang="ts" setup>
 import { PropType } from 'vue'
-import { option } from './config'
 import { icon } from '@/plugins'
 import { CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
+import { option } from './config'
 
 const { HelpOutlineIcon } = icon.ionicons5
 

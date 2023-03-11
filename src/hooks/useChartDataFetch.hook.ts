@@ -90,12 +90,17 @@ export const useChartDataFetch = (
         // 立即调用
         fetchFn()
 
+        // 组件交互处理监听
+        watch(
+          () => targetComponent.request,
+          () => {
+            fetchFn()
+          },
+          {
+            deep: true
+          }
+        )
 
-        watch(() => targetComponent.request, () => {
-          fetchFn()
-        }, {
-          deep: true
-        })
         // 定时时间
         const time = targetInterval && targetInterval.value ? targetInterval.value : globalRequestInterval.value
         // 单位

@@ -1,7 +1,7 @@
 import Borders from './Borders'
 import Decorates from './Decorates'
 import Three from './Three'
-import Pickers from './Pickers'
+import Inputs from './Inputs'
 import Mores from './Mores'
 
-export const DecorateList = [...Borders, ...Decorates, ...Three, ...Pickers, ...Mores]
+export const DecorateList = [...Borders, ...Decorates, ...Three, ...Inputs, ...Mores]

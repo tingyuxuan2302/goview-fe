@@ -10,6 +10,26 @@ export enum BaseEvent {
   ON_MOUSE_LEAVE = 'mouseleave'
 }
 
+// 组件交互回调事件
+export enum InteractEvents {
+  INTERACT_ON = 'interactOn',
+  INTERACT_COMPONENTS = 'interactComponents',
+  INTERACT_FN = 'interactFn'
+}
+
+// 组件交互回调事件触发的类型
+export enum InteractEventOn {
+  CLICK = 'click',
+  CHANGE = 'change'
+}
+
+// 交互式组件的触发配置
+export type InteractActionType = {
+  interactType: InteractEventOn
+  interactName: string
+  componentEmitEvents: { [T: string]: any[] }
+}
+
 // vue3 生命周期事件
 export enum EventLife {
   // 渲染之后
