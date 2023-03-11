@@ -31,12 +31,12 @@ const option = shallowReactive({
 
 const onChange = (v: number | number[]) => {
   if (v instanceof Array) {
-    const data1 = dayjs(v[0]).format('YYYY-MM-DD')
-    const data2 = dayjs(v[1]).format('YYYY-MM-DD')
-    useChartInteract(props.chartConfig, useChartEditStore, { data1, data2 }, 'change')
+    const dateStart = dayjs(v[0]).format('YYYY-MM-DD')
+    const dateEnd = dayjs(v[1]).format('YYYY-MM-DD')
+    useChartInteract(props.chartConfig, useChartEditStore, { dateStart, dateEnd }, 'change')
   } else {
-    const data1 = dayjs(v).format('YYYY-MM-DD')
-    useChartInteract(props.chartConfig, useChartEditStore, { data1 }, 'change')
+    const date = dayjs(v).format('YYYY-MM-DD')
+    useChartInteract(props.chartConfig, useChartEditStore, { date }, 'change')
   }
 }
 

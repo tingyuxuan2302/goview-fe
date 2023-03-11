@@ -19,9 +19,9 @@ export const useChartInteract = (
     return item.interactOn === onEvent
   })
 
+  if (fnOnEvent.length === 0) return
   fnOnEvent.forEach(item => {
     const index = chartEditStore.fetchTargetIndex(item.interactComponents)
-    if (index !== -1) return
     const { Params, Header } = toRefs(chartEditStore.componentList[index].request.requestParams)
     Object.keys(item.interactFn).forEach(key => {
       if (Params.value[key]) {
