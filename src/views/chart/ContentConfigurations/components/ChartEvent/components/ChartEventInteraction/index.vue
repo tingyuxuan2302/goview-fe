@@ -25,7 +25,7 @@
     >
       <n-space justify="space-between">
         <n-text>关联组件 - {{ cardIndex + 1 }}</n-text>
-        <n-button type="error" secondary size="small" @click="evDeleteEventsFn(cardIndex)">
+        <n-button type="error" text  size="small" @click="evDeleteEventsFn(cardIndex)">
           <template #icon>
             <n-icon>
               <close-icon />
@@ -36,7 +36,7 @@
 
       <n-divider style="margin: 10px 0" />
 
-      <n-tag :bordered="false" type="success"> 选择目标组件 </n-tag>
+      <n-tag :bordered="false" type="primary"> 选择目标组件 </n-tag>
 
       <setting-item-box name="触发事件" :alone="true">
         <n-input-group v-if="interactActions">
@@ -78,7 +78,7 @@
         </tbody>
       </n-table>
 
-      <n-tag class="go-mt-3" :bordered="false" type="info"> 关联目标组件请求参数 </n-tag>
+      <n-tag class="go-mt-3" :bordered="false" type="primary"> 关联目标组件请求参数 </n-tag>
 
       <setting-item-box
         :name="requestParamsItem"
@@ -117,8 +117,9 @@ import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.
 import { RequestParamsTypeEnum } from '@/enums/httpEnum'
 import { InteractEventOn } from '@/enums/eventEnum'
 import { icon } from '@/plugins'
-import { useTargetData } from '../../../hooks/useTargetData.hook'
 import noData from '@/assets/images/canvas/noData.png'
+import { goDialog } from '@/utils'
+import { useTargetData } from '../../../hooks/useTargetData.hook'
 
 const { CloseIcon, AddIcon } = icon.ionicons5
 
@@ -176,7 +177,12 @@ const evAddEventsFn = () => {
 }
 
 const evDeleteEventsFn = (index: number) => {
-  targetData.value.events.interactEvents.splice(index, 1)
+  goDialog({
+    message: '是否删除此关联交互模块?',
+    onPositiveCallback: () => {
+      targetData.value.events.interactEvents.splice(index, 1)
+    }
+  })
 }
 
 // 颜色
