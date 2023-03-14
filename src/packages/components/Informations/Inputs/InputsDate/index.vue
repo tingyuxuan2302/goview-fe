@@ -1,71 +1,81 @@
 <template>
   <div class="mill-date-box">
     <div :style="`width:${w}px; height:${h}px;`">
-      <n-date-picker v-model:value="rangeDate" :type="option.dataset.type" @update:value="onChange" />
+      <n-date-picker
+        v-model:value="option.dataset"
+        :type="chartConfig.option.componentInteractEventKey"
+        @update:value="onChange"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { PropType, toRefs, ref, shallowReactive, watch } from 'vue'
+import dayjs from 'dayjs'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartDataFetch } from '@/hooks'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
-import { option as configOption } from './config'
 import { useChartInteract } from '@/hooks'
-import dayjs from 'dayjs'
+import { InteractEventOn } from '@/enums/eventEnum'
+import { ComponentInteractParamsEnum } from './interact'
 
 const props = defineProps({
   chartConfig: {
-    type: Object as PropType<CreateComponentType & typeof option>,
+    type: Object as PropType<CreateComponentType>,
     required: true
   }
 })
 
 const { w, h } = toRefs(props.chartConfig.attr)
-const rangeDate = ref()
+const rangeDate = ref<number | number[]>()
 
 const option = shallowReactive({
-  dataset: configOption.dataset
+  dataset: props.chartConfig.option.dataset
 })
 
+// 监听事件改变
 const onChange = (v: number | number[]) => {
   if (v instanceof Array) {
-    const dateStart = dayjs(v[0]).format('YYYY-MM-DD')
-    const dateEnd = dayjs(v[1]).format('YYYY-MM-DD')
-    useChartInteract(props.chartConfig, useChartEditStore, { dateStart, dateEnd }, 'change')
+    // 存储到联动数据
+    useChartInteract(
+      props.chartConfig,
+      useChartEditStore,
+      {
+        [ComponentInteractParamsEnum.DATE_START]: v[0] | dayjs().valueOf(),
+        [ComponentInteractParamsEnum.DATE_END]: v[1] | dayjs().valueOf(),
+        [ComponentInteractParamsEnum.DATE_RANGE]: `${v[0]}-${v[1]}`
+      },
+      InteractEventOn.CHANGE
+    )
   } else {
-    const date = dayjs(v).format('YYYY-MM-DD')
-    useChartInteract(props.chartConfig, useChartEditStore, { date }, 'change')
+    // 存储到联动数据
+    useChartInteract(
+      props.chartConfig,
+      useChartEditStore,
+      { [ComponentInteractParamsEnum.DATE]: v },
+      InteractEventOn.CHANGE
+    )
   }
 }
 
 // 手动更新
 watch(
   () => props.chartConfig.option.dataset,
-  (newData: any) => {
+  (newData: number | number[]) => {
     option.dataset = newData
-    const { range, count } = newData
-    if (!range) return
-    if (newData.range instanceof Array) {
-      const countDate: number[] = [
-        dayjs(range[0]).add(count, 'day').valueOf(),
-        dayjs(range[1]).add(count, 'day').valueOf()
-      ]
-      rangeDate.value = countDate
-    } else {
-      const countDate: number = dayjs(range).add(count, 'day').valueOf()
-      rangeDate.value = countDate
-    }
+    // 关联目标组件首次请求带上默认内容
+    onChange(newData)
   },
   {
-    immediate: true,
-    deep: true
+    immediate: true
   }
 )
 
 // 预览更新
-useChartDataFetch(props.chartConfig, useChartEditStore)
+useChartDataFetch(props.chartConfig, useChartEditStore, (newData: number | number[]) => {
+  option.dataset = newData
+})
 </script>
 
 <style lang="scss" scoped>

@@ -87,16 +87,14 @@ export const useChartDataFetch = (
           }
         }
 
-        // 立即调用
-        fetchFn()
-
-        // 组件交互处理监听
+        // 普通初始化与组件交互处理监听
         watch(
           () => targetComponent.request,
           () => {
             fetchFn()
           },
           {
+            immediate: true,
             deep: true
           }
         )

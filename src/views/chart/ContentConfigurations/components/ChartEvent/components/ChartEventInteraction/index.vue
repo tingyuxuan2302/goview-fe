@@ -125,7 +125,7 @@ import { SelectOption, SelectGroupOption } from 'naive-ui'
 import { SettingItemBox, SettingItem, CollapseItem } from '@/components/Pages/ChartItemSetting'
 import { CreateComponentType, CreateComponentGroupType, ChartFrameEnum } from '@/packages/index.d'
 import { RequestParamsTypeEnum } from '@/enums/httpEnum'
-import { InteractEventOn } from '@/enums/eventEnum'
+import { InteractEventOn, COMPONENT_INTERACT_EVENT_KET } from '@/enums/eventEnum'
 import { icon } from '@/plugins'
 import noData from '@/assets/images/canvas/noData.png'
 import { goDialog } from '@/utils'
@@ -163,7 +163,7 @@ const fnDimensionsAndSource = (interactOn: InteractEventOn | undefined) => {
     return item.interactType === interactOn
   })
 
-  return tableData?.componentEmitEvents[option.value.dataset.type] || []
+  return tableData?.componentEmitEvents[option.value[COMPONENT_INTERACT_EVENT_KET]] || []
 }
 
 // 绑定组件列表

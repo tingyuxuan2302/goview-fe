@@ -1,42 +1,23 @@
 <template>
-  <CollapseItem name="通用的Props" :expanded="true">
-    <SettingItemBox name="基础">
+  <collapse-item name="时间配置" :expanded="true">
+    <setting-item-box name="基础">
       <setting-item name="类型">
-        <n-select v-model:value="props.optionData.dataset.type" size="small" :options="datePickerTypeOptions" />
+        <n-select
+          v-model:value="props.optionData.componentInteractEventKey"
+          size="small"
+          :options="datePickerTypeOptions"
+        />
       </setting-item>
-    </SettingItemBox>
+    </setting-item-box>
 
-    <SettingItemBox name="默认值">
+    <setting-item-box name="默认值" :alone="true">
       <n-date-picker
         size="small"
-        :style="{ width: ['date'].includes(props.optionData.dataset.type) ? 'auto' : '250px' }"
-        v-model:value="props.optionData.dataset.range"
-        :type="props.optionData.dataset.type"
-        clearable
+        v-model:value="props.optionData.dataset"
+        :type="props.optionData.componentInteractEventKey"
       />
-    </SettingItemBox>
-    <SettingItemBox>
-      <template #name>
-        <n-text>动态</n-text>
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <n-icon size="21" :depth="3">
-              <help-outline-icon></help-outline-icon>
-            </n-icon>
-          </template>
-          <n-text>动态日期以默认值进行计算</n-text>
-        </n-tooltip>
-      </template>
-
-      <setting-item name="计算值">
-        <n-input-number v-model:value="props.optionData.dataset.count" size="small" placeholder="0">
-          <template #prefix>
-            <n-text depth="3">天</n-text>
-          </template>
-        </n-input-number>
-      </setting-item>
-    </SettingItemBox>
-  </CollapseItem>
+    </setting-item-box>
+  </collapse-item>
 </template>
 
 <script lang="ts" setup>
@@ -56,7 +37,7 @@ const props = defineProps({
 
 const datePickerTypeOptions = [
   {
-    label: '日期',
+    label: '具体日期',
     value: 'date'
   },
   {

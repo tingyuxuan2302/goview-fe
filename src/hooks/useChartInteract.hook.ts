@@ -9,14 +9,13 @@ type ChartEditStoreType = typeof useChartEditStore
 export const useChartInteract = (
   chartConfig: CreateComponentType,
   useChartEditStore: ChartEditStoreType,
-  param: { [name: string]: string },
-  onEvent: string
+  param: { [T: string]: any },
+  interactEventOn: string
 ) => {
   const chartEditStore = useChartEditStore()
   const { interactEvents } = chartConfig.events
-
   const fnOnEvent = interactEvents.filter(item => {
-    return item.interactOn === onEvent
+    return item.interactOn === interactEventOn
   })
 
   if (fnOnEvent.length === 0) return
@@ -33,4 +32,9 @@ export const useChartInteract = (
       }
     })
   })
+}
+
+// 联动事件触发的 type 变更时，清除当前绑定内容
+export const clearInteractEvent = (chartConfig: CreateComponentType) => {
+
 }

@@ -17,17 +17,20 @@ export enum InteractEvents {
   INTERACT_FN = 'interactFn'
 }
 
-// 组件交互回调事件触发的类型
+// 全局组件交互回调事件触发的类型（当然可以自定义名称）
 export enum InteractEventOn {
   CLICK = 'click',
   CHANGE = 'change'
 }
 
+// 确定交互组件触发类型 key名称
+export const COMPONENT_INTERACT_EVENT_KET = 'componentInteractEventKey'
+
 // 交互式组件的触发配置
-export type InteractActionType = {
+export type InteractActionsType = {
   interactType: InteractEventOn
   interactName: string
-  componentEmitEvents: { [T: string]: any[] }
+  componentEmitEvents: { [T: string]: { value: any; label: string }[] }
 }
 
 // vue3 生命周期事件
