@@ -10,5 +10,5 @@ export const Decorates03Config: ConfigType = {
   categoryName: ChatCategoryEnumName.DECORATE,
   package: PackagesCategoryEnum.DECORATES,
   chartFrame: ChartFrameEnum.STATIC,
-  image: 'decorates01.png'
+  image: 'decorates03.png'
 }
