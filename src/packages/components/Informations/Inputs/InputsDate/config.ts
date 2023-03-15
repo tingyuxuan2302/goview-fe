@@ -10,6 +10,8 @@ import { InputsDateConfig } from './index'
 export const option = {
   // 时间组件展示类型，必须和 interactActions 中定义的数据一致
   [COMPONENT_INTERACT_EVENT_KET]: ComponentInteractEventEnum.DATE,
+  // 下拉展示
+  isPanel: 0,
   dataset: dayjs().valueOf()
 }
 

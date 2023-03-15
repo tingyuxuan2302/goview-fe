@@ -3,6 +3,7 @@
     <div :style="`width:${w}px; height:${h}px;`">
       <n-date-picker
         v-model:value="option.dataset"
+        :panel="!!chartConfig.option.isPanel"
         :type="chartConfig.option.componentInteractEventKey"
         @update:value="onChange"
       />

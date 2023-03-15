@@ -105,6 +105,7 @@
             size="tiny"
             v-model:value="item.interactFn[ovlKey]"
             :options="fnDimensionsAndSource(item.interactOn)"
+            clearable
           ></n-select>
         </setting-item>
         <n-text
