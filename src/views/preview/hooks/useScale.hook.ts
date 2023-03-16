@@ -15,7 +15,9 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
   provide(SCALE_KEY, scaleRef);
 
   const updateScaleRef = (scale: { width: number; height: number }) => {
-    scaleRef.value = scale
+    // 这里需要解构，保证赋值给scaleRef的为一个新对象
+    // 因为scale始终为同一引用
+    scaleRef.value = { ...scale }
   }
 
   // 屏幕适配
