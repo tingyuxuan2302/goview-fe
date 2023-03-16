@@ -60,7 +60,8 @@ const componentVersionUpdatePolyfill = (newObject: any, sources: any) => {
           advancedEvents: {
             [EventLife.VNODE_MOUNTED]: undefined,
             [EventLife.VNODE_BEFORE_MOUNT]: undefined
-          }
+          },
+          interactEvents: []
         }
       }
       return newObject

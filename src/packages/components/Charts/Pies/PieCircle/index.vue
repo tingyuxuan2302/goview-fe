@@ -1,10 +1,11 @@
 <template>
-  <v-chart :theme="themeColor" :option="option.value" autoresize> </v-chart>
+  <v-chart :theme="themeColor" :init-options="initOptions" :option="option.value" autoresize> </v-chart>
 </template>
 
 <script setup lang="ts">
 import { PropType, reactive, watch } from 'vue'
 import VChart from 'vue-echarts'
+import { useCanvasInitOptions } from '@/hooks/useCanvasInitOptions.hook'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { PieChart } from 'echarts/charts'
@@ -28,6 +29,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const initOptions = useCanvasInitOptions(props.chartConfig.option, props.themeSetting)
 
 use([DatasetComponent, CanvasRenderer, PieChart, GridComponent, TooltipComponent, LegendComponent, TitleComponent])
 

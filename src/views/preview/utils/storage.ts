@@ -3,6 +3,9 @@ import { ResultEnum } from '@/enums/httpEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { ChartEditStorage } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { fetchProjectApi } from '@/api/path'
+import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+
+const chartEditStore = useChartEditStore()
 
 export interface ChartEditStorageType extends ChartEditStorage {
   id: string
@@ -23,7 +26,12 @@ export const getSessionStorageInfo = async () => {
         // 跳转未发布页
         return { isRelease: false }
       }
-      return { ...JSONParse(content), id }
+      const parseData = { ...JSONParse(content), id }
+      const { editCanvasConfig, requestGlobalConfig, componentList } = parseData
+      chartEditStore.editCanvasConfig = editCanvasConfig
+      chartEditStore.requestGlobalConfig = requestGlobalConfig
+      chartEditStore.componentList = componentList
+      return parseData
     } else {
       httpErrorHandle()
     }
@@ -31,6 +39,10 @@ export const getSessionStorageInfo = async () => {
     // 本地读取
     for (let i = 0; i < storageList.length; i++) {
       if (id.toString() === storageList[i]['id']) {
+        const { editCanvasConfig, requestGlobalConfig, componentList } = storageList[i]
+        chartEditStore.editCanvasConfig = editCanvasConfig
+        chartEditStore.requestGlobalConfig = requestGlobalConfig
+        chartEditStore.componentList = componentList
         return storageList[i]
       }
     }

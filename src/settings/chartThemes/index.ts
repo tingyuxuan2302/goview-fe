@@ -64,10 +64,13 @@ export const chartColorsSearch = {
   roma: ['#e01f54', '#5e4ea5', 'rgba(137, 52, 72, 0.3)', 'rgba(224, 31, 84, 0.5)', 'rgba(94, 78, 165, 0.5)'],
 }
 
+export type EchartsRenderer = 'svg' | 'canvas';
+
 // 默认主题详细配置
 type ThemeJsonType = typeof themeJson
 export interface GlobalThemeJsonType extends Partial<ThemeJsonType> {
   dataset?: any,
+  renderer?: EchartsRenderer,
   [T:string]: any
 }
-export const globalThemeJson = {...themeJson, dataset: null,}
+export const globalThemeJson = {...themeJson, dataset: null, renderer: 'svg' as const }

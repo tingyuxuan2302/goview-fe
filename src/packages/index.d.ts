@@ -1,4 +1,4 @@
-import { BaseEvent, EventLife } from '@/enums/eventEnum'
+import { BaseEvent, EventLife, InteractEvents, InteractEventOn, InteractActionsType } from '@/enums/eventEnum'
 import type { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import type { RequestConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
 
@@ -120,20 +120,26 @@ export interface PublicConfigType {
   }
   filter?: string
   status: StatusType
+  interactActions?: InteractActionsType[],
   events: {
     baseEvent: {
       [K in BaseEvent]?: string
-    },
+    }
     advancedEvents: {
       [K in EventLife]?: string
     }
+    interactEvents: {
+      [InteractEvents.INTERACT_ON]: InteractEventOn | undefined
+      [InteractEvents.INTERACT_COMPONENT_ID]: string | undefined
+      [InteractEvents.INTERACT_FN]: { [name: string]: string }
+    }[]
   }
 }
 
 export interface CreateComponentType extends PublicConfigType, requestConfig {
   key: string
   chartConfig: ConfigType
-  option: GlobalThemeJsonType,
+  option: GlobalThemeJsonType
 }
 
 // 组件成组实例类

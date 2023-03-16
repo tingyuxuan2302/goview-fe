@@ -1,5 +1,5 @@
 <template>
-  <v-chart ref="vChartRef" :theme="themeColor" :option="option.value" :manual-update="isPreview()" autoresize>
+  <v-chart ref="vChartRef" :init-options="initOptions" :theme="themeColor" :option="option.value" :manual-update="isPreview()" autoresize>
   </v-chart>
 </template>
 
@@ -7,6 +7,7 @@
 import { PropType, reactive, watch, ref, nextTick } from 'vue'
 import config, { includes } from './config'
 import VChart from 'vue-echarts'
+import { useCanvasInitOptions } from '@/hooks/useCanvasInitOptions.hook'
 import { use, registerMap } from 'echarts/core'
 import { EffectScatterChart, MapChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -31,6 +32,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const initOptions = useCanvasInitOptions(props.chartConfig.option, props.themeSetting)
 
 use([
   MapChart,
