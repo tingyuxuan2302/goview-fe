@@ -15,10 +15,11 @@
 
       <!-- 缩放比例 -->
       <n-select
-        :disabled="lockScale"
+        ref="selectInstRef"
         class="scale-btn"
         v-model:value="filterValue"
         size="mini"
+        :disabled="lockScale"
         :options="filterOptions"
         @update:value="selectHandle"
       ></n-select>
@@ -54,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { SelectInst } from 'naive-ui'
 import { reactive, ref, toRefs, watchEffect } from 'vue'
 import { icon } from '@/plugins'
 import { EditHistory } from '../EditHistory/index'
@@ -62,15 +64,18 @@ import { EditDataSync } from '../EditDataSync/index'
 import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
+import { useChartLayoutStore } from '@/store/modules/chartLayoutStore/chartLayoutStore'
+import { ChartLayoutStoreEnum } from '@/store/modules/chartLayoutStore/chartLayoutStore.d'
 
 const { LockClosedOutlineIcon, LockOpenOutlineIcon } = icon.ionicons5
 
 // 全局颜色
 const designStore = useDesignStore()
 const themeColor = ref(designStore.getAppTheme)
-
+const chartLayoutStore = useChartLayoutStore()
 const chartEditStore = useChartEditStore()
 const { lockScale, scale } = toRefs(chartEditStore.getEditCanvas)
+const selectInstRef = ref<SelectInst | null>(null)
 
 // 缩放选项
 let filterOptions = [
@@ -101,7 +106,9 @@ const filterValue = ref('')
 
 // 用户自选择
 const selectHandle = (v: number) => {
+  selectInstRef.value?.blur()
   if (v === 0) {
+    chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.RE_POSITION_CANVAS, true)
     chartEditStore.computedScale()
     return
   }

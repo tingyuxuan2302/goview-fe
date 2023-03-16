@@ -1,7 +1,7 @@
 <template>
   <div
     class="chart-item"
-    v-for="(item, index) in localStorageInfo.componentList"
+    v-for="(item, index) in chartEditStore.componentList"
     :class="animationsClass(item.styles.animations)"
     :key="item.id"
     :style="{
@@ -52,30 +52,29 @@ import { useLifeHandler } from '@/hooks'
 const { initDataPond, clearMittDataPondMap } = useChartDataPondFetch()
 const chartEditStore = useChartEditStore()
 
-const props = defineProps({
-  localStorageInfo: {
-    type: Object as PropType<ChartEditStorageType>,
-    required: true
-  }
-})
+// const props = defineProps({
+//   localStorageInfo: {
+//     type: Object as PropType<ChartEditStorageType>,
+//     required: true
+//   }
+// })
 
 // 主题色
 const themeSetting = computed(() => {
-  const chartThemeSetting = props.localStorageInfo.editCanvasConfig.chartThemeSetting
+  const chartThemeSetting = chartEditStore.editCanvasConfig.chartThemeSetting
   return chartThemeSetting
 })
 
-
 // 配置项
 const themeColor = computed(() => {
-  const colorCustomMergeData = colorCustomMerge(props.localStorageInfo.editCanvasConfig.chartCustomThemeColorInfo)
-  return colorCustomMergeData[props.localStorageInfo.editCanvasConfig.chartThemeColor]
+  const colorCustomMergeData = colorCustomMerge(chartEditStore.editCanvasConfig.chartCustomThemeColorInfo)
+  return colorCustomMergeData[chartEditStore.editCanvasConfig.chartThemeColor]
 })
 
 // 组件渲染结束初始化数据池
 clearMittDataPondMap()
 onMounted(() => {
-  initDataPond(props.localStorageInfo.requestGlobalConfig)
+  initDataPond(chartEditStore.requestGlobalConfig)
 })
 </script>
 
