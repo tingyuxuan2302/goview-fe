@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import cloneDeep from 'lodash/cloneDeep'
 import { PublicConfigClass } from '@/packages/public'
 import { CreateComponentType } from '@/packages/index.d'
