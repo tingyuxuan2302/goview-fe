@@ -72,11 +72,6 @@ watch(
     immediate: true
   }
 )
-
-// 预览更新
-useChartDataFetch(props.chartConfig, useChartEditStore, (newData: number | number[]) => {
-  option.dataset = newData
-})
 </script>
 
 <style lang="scss" scoped>

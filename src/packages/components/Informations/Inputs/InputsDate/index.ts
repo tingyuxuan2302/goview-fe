@@ -9,6 +9,6 @@ export const InputsDateConfig: ConfigType = {
   category: ChatCategoryEnum.INPUTS,
   categoryName: ChatCategoryEnumName.INPUTS,
   package: PackagesCategoryEnum.INFORMATIONS,
-  chartFrame: ChartFrameEnum.COMMON,
+  chartFrame: ChartFrameEnum.STATIC,
   image: 'inputs_date.png'
 }
