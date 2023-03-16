@@ -1,14 +1,12 @@
 <template>
-  <n-select
-    v-model:value="option.value.selectValue"
-    :options="option.value.dataset"
-    :style="`width:${w}px;`"
-    @update:value="onChange"
-  />
+  <n-tabs :type="option.value.tabType" @update:value="onChange">
+    <n-tab v-for="(item, index) in option.value.dataset" :name="item.label" :key="index"> {{ item.label }} </n-tab>
+  </n-tabs>
 </template>
 
 <script setup lang="ts">
-import { PropType, toRefs, ref, shallowReactive, watch } from 'vue'
+import { PropType, toRefs, shallowReactive, watch } from 'vue'
+import cloneDeep from 'lodash/cloneDeep'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartInteract } from '@/hooks'
@@ -24,19 +22,18 @@ const props = defineProps({
 
 const { w, h } = toRefs(props.chartConfig.attr)
 const option = shallowReactive({
-  value: {
-    selectValue: props.chartConfig.option.selectValue,
-    dataset: props.chartConfig.option.dataset
-  }
+  value: cloneDeep(props.chartConfig.option)
 })
 
 // 监听事件改变
 const onChange = (v: string) => {
+  if (v === undefined) return
+  const selectItem = option.value.dataset.find((item: { label: string; value: any }) => item.label === v)
   // 存储到联动数据
   useChartInteract(
     props.chartConfig,
     useChartEditStore,
-    { [ComponentInteractParamsEnum.DATA]: v },
+    { [ComponentInteractParamsEnum.DATA]: selectItem.value },
     InteractEventOn.CHANGE
   )
 }
@@ -46,7 +43,7 @@ watch(
   () => props.chartConfig.option,
   (newData: any) => {
     option.value = newData
-    onChange(newData.selectValue)
+    onChange(newData.tabValue)
   },
   {
     immediate: true,
@@ -57,10 +54,5 @@ watch(
 
 <style lang="scss" scoped>
 @include deep() {
-  .n-base-selection-label {
-    height: v-bind('h + "px"');
-    display: flex;
-    align-items: center;
-  }
 }
 </style>
