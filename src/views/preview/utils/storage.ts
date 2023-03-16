@@ -26,7 +26,12 @@ export const getSessionStorageInfo = async () => {
         // 跳转未发布页
         return { isRelease: false }
       }
-      return { ...JSONParse(content), id }
+      const parseData = { ...JSONParse(content), id }
+      const { editCanvasConfig, requestGlobalConfig, componentList } = parseData
+      chartEditStore.editCanvasConfig = editCanvasConfig
+      chartEditStore.requestGlobalConfig = requestGlobalConfig
+      chartEditStore.componentList = componentList
+      return parseData
     } else {
       httpErrorHandle()
     }
