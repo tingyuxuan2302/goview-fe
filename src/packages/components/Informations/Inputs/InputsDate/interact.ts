@@ -48,7 +48,7 @@ const timeRange = [
 export const interactActions: InteractActionsType[] = [
   {
     interactType: InteractEventOn.CHANGE,
-    interactName: '完成后的回调',
+    interactName: '选择完成',
     componentEmitEvents: {
       [ComponentInteractEventEnum.DATE]: time,
       [ComponentInteractEventEnum.DATE_TIME]: time,

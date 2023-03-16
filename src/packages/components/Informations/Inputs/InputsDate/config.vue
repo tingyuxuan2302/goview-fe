@@ -2,7 +2,7 @@
   <collapse-item name="展示方式" :expanded="true">
     <setting-item-box name="选择方式">
       <n-select
-        v-model:value="props.optionData.isPanel"
+        v-model:value="optionData.isPanel"
         size="small"
         :options="panelOptions"
       />
@@ -13,7 +13,7 @@
     <setting-item-box name="基础">
       <setting-item name="类型">
         <n-select
-          v-model:value="props.optionData.componentInteractEventKey"
+          v-model:value="optionData.componentInteractEventKey"
           size="small"
           :options="datePickerTypeOptions"
         />
@@ -23,8 +23,8 @@
     <setting-item-box name="默认值" :alone="true">
       <n-date-picker
         size="small"
-        v-model:value="props.optionData.dataset"
-        :type="props.optionData.componentInteractEventKey"
+        v-model:value="optionData.dataset"
+        :type="optionData.componentInteractEventKey"
       />
     </setting-item-box>
   </collapse-item>
