@@ -51,8 +51,3 @@ watch(
   }
 )
 </script>
-
-<style lang="scss" scoped>
-@include deep() {
-}
-</style>
