@@ -46,4 +46,11 @@ const projectRoutes: RouteRecordRaw = {
   ]
 }
 
+projectRoutes.children?.forEach(child => {
+  child.meta = {
+    ...child.meta,
+    key: 'reuse-project'
+  }
+})
+
 export default projectRoutes
