@@ -11,7 +11,7 @@
       <!-- 模块展示按钮 -->
       <n-tooltip v-for="item in btnList" :key="item.key" placement="bottom" trigger="hover">
         <template #trigger>
-          <n-button size="small" ghost :type="styleHandle(item)" @click="clickHandle(item)">
+          <n-button size="small" ghost :type="styleHandle(item)" @click="clickHandle(item, $event)">
             <component :is="item.icon"></component>
           </n-button>
         </template>
@@ -111,8 +111,9 @@ const styleHandle = (item: ItemType<ChartLayoutStoreEnum>) => {
 }
 
 // 布局处理
-const clickHandle = (item: ItemType<ChartLayoutStoreEnum>) => {
+const clickHandle = (item: ItemType<ChartLayoutStoreEnum>, e: any) => {
   setItem(item.key, !item.select)
+  e.currentTarget.blur()
 }
 
 // 历史记录处理
