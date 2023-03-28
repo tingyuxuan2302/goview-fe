@@ -11,7 +11,7 @@
       <!-- 模块展示按钮 -->
       <n-tooltip v-for="item in btnList" :key="item.key" placement="bottom" trigger="hover">
         <template #trigger>
-          <n-button size="small" ghost :type="styleHandle(item)" :focusable="false" @click="clickHandle(item, $event)">
+          <n-button size="small" ghost :type="styleHandle(item)" :focusable="false" @click="clickHandle(item)">
             <component :is="item.icon"></component>
           </n-button>
         </template>
