@@ -2,6 +2,7 @@ import heatmapJson from './heatMapData.json'
 import scatterJson from './scatter.json'
 import mapJson from './map.json'
 import tTreemapJson from './treemap.json'
+import sankeyJson from './sankey.json'
 
 export default {
   // 单图表
@@ -219,5 +220,12 @@ export default {
         'endArray|10': [{ name: '@name', N: '@integer(10, 100)', E: '@integer(10, 100)' }]
       }
     ]
-  }
+  },
+  // 桑基图
+  fetchSankey: {
+    code: 0,
+    status: 200,
+    msg: '请求成功',
+    data: sankeyJson
+  },
 }
