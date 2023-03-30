@@ -4,5 +4,6 @@ import { FunnelConfig } from './Funnel/index'
 import { HeatmapConfig } from './Heatmap/index'
 import { WaterPoloConfig } from './WaterPolo/index'
 import { TreeMapConfig } from './TreeMap/index'
+import { GraphConfig } from './Graph/index'
 
-export default [ProcessConfig, RadarConfig, FunnelConfig, HeatmapConfig, WaterPoloConfig, TreeMapConfig]
+export default [ProcessConfig, RadarConfig, FunnelConfig, HeatmapConfig, WaterPoloConfig, TreeMapConfig, GraphConfig]
