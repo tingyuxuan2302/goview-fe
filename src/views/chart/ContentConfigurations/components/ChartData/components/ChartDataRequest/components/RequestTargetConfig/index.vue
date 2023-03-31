@@ -65,6 +65,7 @@ import { RequestHeader } from '../RequestHeader'
 import { isDev } from '@/utils'
 import { icon } from '@/plugins'
 import {
+  graphUrl,
   chartDataUrl,
   chartSingleDataUrl,
   rankListUrl,
@@ -142,6 +143,9 @@ const apiList = [
   },
   {
     value: `【三维地球】${threeEarth01Url}`
+  },
+  {
+    value: `【关系图】${graphUrl}`
   }
 ]
 </script>

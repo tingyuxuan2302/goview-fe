@@ -19,6 +19,7 @@ export const capsuleUrl = '/mock/capsule'
 export const wordCloudUrl = '/mock/wordCloud'
 export const treemapUrl = '/mock/treemap'
 export const threeEarth01Url = '/mock/threeEarth01Data'
+export const graphUrl = '/mock/graphData'
 
 const mockObject: MockMethod[] = [
   {
@@ -102,6 +103,11 @@ const mockObject: MockMethod[] = [
     url: threeEarth01Url,
     method: RequestHttpEnum.GET,
     response: () => test.threeEarth01Data
+  },
+  {
+    url: graphUrl,
+    method: RequestHttpEnum.GET,
+    response: () => test.graphData
   },
 ]
 
