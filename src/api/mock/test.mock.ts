@@ -3,6 +3,7 @@ import scatterJson from './scatter.json'
 import mapJson from './map.json'
 import tTreemapJson from './treemap.json'
 import sankeyJson from './sankey.json'
+import graphDataJson from './graph.json'
 
 export default {
   // 单图表
@@ -227,5 +228,12 @@ export default {
     status: 200,
     msg: '请求成功',
     data: sankeyJson
+  },
+  // 关系图
+  graphData: {
+    code: 0,
+    status: 200,
+    msg: '请求成功',
+    data: graphDataJson
   },
 }

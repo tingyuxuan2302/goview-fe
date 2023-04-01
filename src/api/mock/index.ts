@@ -20,6 +20,7 @@ export const wordCloudUrl = '/mock/wordCloud'
 export const treemapUrl = '/mock/treemap'
 export const threeEarth01Url = '/mock/threeEarth01Data'
 export const sankeyUrl = '/mock/sankey'
+export const graphUrl = '/mock/graphData'
 
 const mockObject: MockMethod[] = [
   {
@@ -104,11 +105,15 @@ const mockObject: MockMethod[] = [
     method: RequestHttpEnum.GET,
     response: () => test.threeEarth01Data
   },
-  
   {
     url: sankeyUrl,
     method: RequestHttpEnum.GET,
     response: () => test.fetchSankey
+  },
+  {
+    url: graphUrl,
+    method: RequestHttpEnum.GET,
+    response: () => test.graphData
   },
 ]
 

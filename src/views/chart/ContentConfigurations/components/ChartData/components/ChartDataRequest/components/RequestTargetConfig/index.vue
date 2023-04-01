@@ -65,6 +65,7 @@ import { RequestHeader } from '../RequestHeader'
 import { isDev } from '@/utils'
 import { icon } from '@/plugins'
 import {
+  graphUrl,
   chartDataUrl,
   chartSingleDataUrl,
   rankListUrl,
@@ -146,6 +147,9 @@ const apiList = [
   },
   {
     value: `【桑基图】${sankeyUrl}`
+  },
+  {
+    value: `【关系图】${graphUrl}`
   }
 ]
 </script>
