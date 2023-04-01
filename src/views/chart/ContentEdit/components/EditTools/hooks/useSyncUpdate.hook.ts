@@ -24,6 +24,11 @@ export const syncData = () => {
   })
 }
 
+// 同步数据到预览页
+export const syncDataToPreview = () => {
+  dispatchEvent(new CustomEvent(SavePageEnum.CHART_TO_PREVIEW, { detail: chartEditStore.getStorageInfo }))
+}
+
 // 侦听器更新
 const useSyncUpdateHandle = () => {
   // 定义侦听器变量
@@ -48,8 +53,8 @@ const useSyncUpdateHandle = () => {
     //   document.hasFocus() && syncData()
     // }, editToJsonInterval)
 
-    // 失焦同步数据（暂不开启）
-    // addEventListener('blur', syncData)
+    // 失焦同步数据
+    addEventListener('blur', syncDataToPreview)
 
     // 监听编辑器保存事件 刷新工作台图表
     addEventListener(SavePageEnum.JSON, updateFn)
@@ -61,7 +66,7 @@ const useSyncUpdateHandle = () => {
   // 关闭侦听
   const unUse = () => {
     // clearInterval(timer)
-    // removeEventListener('blur', syncData)
+    removeEventListener('blur', syncDataToPreview)
     removeEventListener(SavePageEnum.JSON, updateFn)
   }
 

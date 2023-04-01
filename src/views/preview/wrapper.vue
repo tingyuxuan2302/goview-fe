@@ -14,7 +14,7 @@ import Preview from './index.vue'
 let key = ref(Date.now())
 
 // 数据变更 -> 组件销毁重建
-;[SavePageEnum.JSON, SavePageEnum.CHART].forEach((saveEvent: string) => {
+;[SavePageEnum.JSON, SavePageEnum.CHART_TO_PREVIEW].forEach((saveEvent: string) => {
   if (!window.opener) return
   window.opener.addEventListener(saveEvent, async (e: any) => {
     const localStorageInfo: ChartEditStorageType = await getSessionStorageInfo() as unknown as ChartEditStorageType

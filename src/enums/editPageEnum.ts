@@ -12,6 +12,7 @@ export enum DragKeyEnum {
 // 不同页面保存操作
 export enum SavePageEnum {
   CHART = 'SaveChart',
+  CHART_TO_PREVIEW = 'ChartToPreview',
   JSON = 'SaveJSON',
   CLOSE = 'close'
 }
