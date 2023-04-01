@@ -1,15 +1,8 @@
 <template>
-  <v-chart
-    ref="vChartRef"
-    :init-options="initOptions"
-    :theme="themeColor"
-    :option="option"
-    :manual-update="isPreview()"
+  <v-chart ref="vChartRef" :init-options="initOptions" :theme="themeColor" :option="option" :manual-update="isPreview()"
     :update-options="{
       replaceMerge: replaceMergeArr
-    }"
-    autoresize
-  ></v-chart>
+    }" autoresize></v-chart>
 </template>
 
 <script setup lang="ts">
@@ -62,11 +55,19 @@ watch(
       if (!isObject(newData) || !('dimensions' in newData)) return
       if (Array.isArray(newData?.dimensions)) {
         const seriesArr = []
-        for (let i = 0; i < newData.dimensions.length - 1; i++) {
-          seriesArr.push(cloneDeep(seriesItem))
+        // 此处计算的是dimensions的Y轴维度，若是dimensions.length为0或1，则默认为1，排除X轴维度干扰
+        const oldDimensions = Array.isArray(oldData?.dimensions)&&oldData.dimensions.length >= 1 ? oldData.dimensions.length : 1; 
+        const newDimensions = newData.dimensions.length >= 1 ? newData.dimensions.length : 1;
+        const dimensionsGap = newDimensions - oldDimensions;
+        if (dimensionsGap < 0) {
+          props.chartConfig.option.series.splice(newDimensions - 1)
+        } else if (dimensionsGap > 0) {
+          for (let i = 0; i < dimensionsGap; i++) {
+            seriesArr.push(cloneDeep(seriesItem))
+          }
+          props.chartConfig.option.series.push(...seriesArr)
         }
         replaceMergeArr.value = ['series']
-        props.chartConfig.option.series = seriesArr
         nextTick(() => {
           replaceMergeArr.value = []
         })
