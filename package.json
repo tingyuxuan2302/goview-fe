@@ -1,6 +1,6 @@
 {
   "name": "go-view",
-  "version": "2.1.9",
+  "version": "2.2.1",
   "engines": {
     "node": ">=12.0"
   },
