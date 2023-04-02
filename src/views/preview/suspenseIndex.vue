@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="`go-preview ${chartEditStore.editCanvasConfig.previewScaleType}`"
-  >
+  <div :class="`go-preview ${chartEditStore.editCanvasConfig.previewScaleType}`">
     <template v-if="showEntity">
       <!-- 实体区域 -->
       <div ref="entityRef" class="go-preview-entity">
@@ -31,38 +29,32 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PreviewRenderList } from './components/PreviewRenderList'
-import { getFilterStyle, routerTurnByName, setTitle } from '@/utils'
+import { getFilterStyle, setTitle } from '@/utils'
 import { getEditCanvasConfigStyle, getSessionStorageInfo } from './utils'
-import { PageEnum } from '@/enums/pageEnum'
+import { useComInstall } from './hooks/useComInstall.hook'
 import { useScale } from './hooks/useScale.hook'
 import { useStore } from './hooks/useStore.hook'
 import { PreviewScaleEnum } from '@/enums/styleEnum'
-import { useComInstall } from './hooks/useComInstall.hook'
 import type { ChartEditStorageType } from './index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+
+// const localStorageInfo: ChartEditStorageType = getSessionStorageInfo() as ChartEditStorageType
 
 await getSessionStorageInfo()
 const chartEditStore = useChartEditStore() as unknown as ChartEditStorageType
 
 setTitle(`预览-${chartEditStore.editCanvasConfig.projectName}`)
 
-// @ts-ignore
-if(chartEditStore.isRelease === false) {
-  routerTurnByName(PageEnum.REDIRECT_UN_PUBLISH_NAME, true, false)
-}
-
 const previewRefStyle = computed(() => {
   return {
     ...getEditCanvasConfigStyle(chartEditStore.editCanvasConfig),
-    ...getFilterStyle(chartEditStore.editCanvasConfig.filterShow ? chartEditStore.editCanvasConfig : undefined),
+    ...getFilterStyle(chartEditStore.editCanvasConfig)
   }
 })
 
 const showEntity = computed(() => {
   const type = chartEditStore.editCanvasConfig.previewScaleType
-  return (
-    type === PreviewScaleEnum.SCROLL_Y || type === PreviewScaleEnum.SCROLL_X
-  )
+  return type === PreviewScaleEnum.SCROLL_Y || type === PreviewScaleEnum.SCROLL_X
 })
 
 useStore(chartEditStore)
