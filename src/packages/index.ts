@@ -4,9 +4,15 @@ import { InformationList } from '@/packages/components/Informations/index'
 import { TableList } from '@/packages/components/Tables/index'
 import { PackagesCategoryEnum, PackagesType, ConfigType, FetchComFlagType } from '@/packages/index.d'
 
-const configModules = import.meta.globEager('./components/**/config.vue')
-const indexModules = import.meta.globEager('./components/**/index.vue')
-const imagesModules = import.meta.globEager('../assets/images/chart/**')
+const configModules: Record<string, { default: string }> = import.meta.glob('./components/**/config.vue', {
+  eager: true
+})
+const indexModules: Record<string, { default: string }> = import.meta.glob('./components/**/index.vue', {
+  eager: true
+})
+const imagesModules: Record<string, { default: string }> = import.meta.glob('../assets/images/chart/**', {
+  eager: true
+})
 
 // * 所有图表
 export let packagesList: PackagesType = {

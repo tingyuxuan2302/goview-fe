@@ -322,6 +322,15 @@ $asideBottom: 70px;
           border-radius: 25px;
         }
       }
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        bottom: -10px;
+        cursor: pointer;
+      }
     }
     /* 最小化 */
     &.isMini {
@@ -348,6 +357,7 @@ $asideBottom: 70px;
         50% {
           opacity: 0;
           bottom: calc(#{$dockMiniBottom} - 10px);
+          pointer-events: none;
         }
         100% {
           opacity: 1;
@@ -361,15 +371,6 @@ $asideBottom: 70px;
         bottom: -50px;
         display: none;
       }
-    }
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 20px;
-      bottom: -20px;
-      cursor: pointer;
     }
   }
 }
