@@ -66,7 +66,7 @@ watch(
           for (let i = 0; i < dimensionsGap; i++) {
             seriesArr.push(cloneDeep(seriesItem))
           }
-          props.chartConfig.option.series.push(...seriesArr)
+          props.chartConfig.option.series = [...seriesArr]
         }
         replaceMergeArr.value = ['series']
         nextTick(() => {
