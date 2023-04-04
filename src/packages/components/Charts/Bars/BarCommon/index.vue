@@ -63,6 +63,9 @@ watch(
         if (dimensionsGap < 0) {
           props.chartConfig.option.series.splice(newDimensions - 1)
         } else if (dimensionsGap > 0) {
+          if(!oldData || !oldData?.dimensions || !Array.isArray(oldData?.dimensions)) {
+              props.chartConfig.option.series=[]
+          }
           for (let i = 0; i < dimensionsGap; i++) {
             seriesArr.push(cloneDeep(seriesItem))
           }
