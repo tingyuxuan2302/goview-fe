@@ -64,7 +64,7 @@ watch(
         if (dimensionsGap < 0) {
           props.chartConfig.option.series.splice(newDimensions - 1)
         } else if (dimensionsGap > 0) {
-          if(!oldData || !oldData?.dimensions || !Array.isArray(oldData?.dimensions)) {
+          if(!oldData || !oldData?.dimensions || !Array.isArray(oldData?.dimensions) || !oldData?.dimensions.length ) {
               props.chartConfig.option.series=[]
           }
           for (let i = 0; i < dimensionsGap; i++) {
