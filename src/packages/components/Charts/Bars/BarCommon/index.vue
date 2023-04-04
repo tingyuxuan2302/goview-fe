@@ -52,7 +52,6 @@ watch(
   () => props.chartConfig.option.dataset,
   (newData: { dimensions: any }, oldData) => {
     try {
-      debugger
       if (!isObject(newData) || !('dimensions' in newData)) return
       if (Array.isArray(newData?.dimensions)) {
         const seriesArr = []
