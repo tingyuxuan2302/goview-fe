@@ -59,6 +59,8 @@
                 <n-form-item path="username">
                   <n-input
                     v-model:value="formInline.username"
+                    type="text"
+                    maxlength="16"
                     :placeholder="$t('global.form_account')"
                   >
                     <template #prefix>
@@ -72,6 +74,7 @@
                   <n-input
                     v-model:value="formInline.password"
                     type="password"
+                    maxlength="16"
                     show-password-on="click"
                     :placeholder="$t('global.form_password')"
                   >
