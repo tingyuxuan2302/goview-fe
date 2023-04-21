@@ -24,11 +24,7 @@
     </layout-header>
     <div class="go-login">
       <div class="go-login-carousel">
-        <n-carousel
-          autoplay
-          dot-type="line"
-          :interval="Number(carouselInterval)"
-        >
+        <n-carousel autoplay dot-type="line" :interval="Number(carouselInterval)">
           <img
             v-for="(item, i) in carouselImgList"
             :key="i"
@@ -43,24 +39,11 @@
           <n-collapse-transition :appear="true" :show="show">
             <n-card class="login-account-card" :title="$t('login.desc')">
               <div class="login-account-top">
-                <img
-                  class="login-account-top-logo"
-                  src="~@/assets/images/login/input.png"
-                  alt="展示图片"
-                />
+                <img class="login-account-top-logo" src="~@/assets/images/login/input.png" alt="展示图片" />
               </div>
-              <n-form
-                ref="formRef"
-                label-placement="left"
-                size="large"
-                :model="formInline"
-                :rules="rules"
-              >
+              <n-form ref="formRef" label-placement="left" size="large" :model="formInline" :rules="rules">
                 <n-form-item path="username">
-                  <n-input
-                    v-model:value="formInline.username"
-                    :placeholder="$t('global.form_account')"
-                  >
+                  <n-input v-model:value="formInline.username" :placeholder="$t('global.form_account')">
                     <template #prefix>
                       <n-icon size="18">
                         <PersonOutlineIcon></PersonOutlineIcon>
@@ -85,21 +68,14 @@
                 <n-form-item>
                   <div class="flex justify-between">
                     <div class="flex-initial">
-                      <n-checkbox v-model:checked="autoLogin">{{
-                        $t('login.form_auto')
-                      }}</n-checkbox>
+                      <n-checkbox v-model:checked="autoLogin">{{ $t('login.form_auto') }}</n-checkbox>
                     </div>
                   </div>
                 </n-form-item>
                 <n-form-item>
-                  <n-button
-                    type="primary"
-                    @click="handleSubmit"
-                    size="large"
-                    :loading="loading"
-                    block
-                    >{{ $t('login.form_button') }}</n-button
-                  >
+                  <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>{{
+                    $t('login.form_button')
+                  }}</n-button>
                 </n-form-item>
               </n-form>
             </n-card>
@@ -149,20 +125,20 @@ const t = window['$t']
 
 const formInline = reactive({
   username: 'admin',
-  password: 'admin',
+  password: 'admin'
 })
 
 const rules = {
   username: {
     required: true,
     message: t('global.form_account'),
-    trigger: 'blur',
+    trigger: 'blur'
   },
   password: {
     required: true,
     message: t('global.form_password'),
-    trigger: 'blur',
-  },
+    trigger: 'blur'
+  }
 }
 
 // 定时器
@@ -172,17 +148,7 @@ const shuffleTimiing = ref()
 const carouselImgList = ['one', 'two', 'three']
 
 // 背景图
-const bgList = ref([
-  'bar_y',
-  'bar_x',
-  'line_gradient',
-  'line',
-  'funnel',
-  'heatmap',
-  'map',
-  'pie',
-  'radar',
-])
+const bgList = ref(['bar_y', 'bar_x', 'line_gradient', 'line', 'funnel', 'heatmap', 'map', 'pie', 'radar'])
 
 // 处理url获取
 const getImageUrl = (name: string, folder: string) => {
@@ -208,11 +174,11 @@ const handleSubmit = async (e: Event) => {
         username,
         password
       })
-      if(res && res.data) {
+      if (res && res.data) {
         const { tokenValue, tokenName } = res.data.token
         const { nickname, username, id } = res.data.userinfo
 
-        // 存储到 pinia 
+        // 存储到 pinia
         systemStore.setItem(SystemStoreEnum.USER_INFO, {
           [SystemStoreUserInfoEnum.USER_TOKEN]: tokenValue,
           [SystemStoreUserInfoEnum.TOKEN_NAME]: tokenName,
@@ -221,9 +187,11 @@ const handleSubmit = async (e: Event) => {
           [SystemStoreUserInfoEnum.NICK_NAME]: nickname,
           t
         })
-        
+
         window['$message'].success(t('login.login_success'))
         routerTurnByName(PageEnum.BASE_HOME_NAME, true)
+      } else {
+        window['$message'].error(t(res?.message))
       }
       loading.value = false
     } else {

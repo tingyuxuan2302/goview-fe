@@ -296,26 +296,31 @@ export const JSONStringify = <T>(data: T) => {
  * @param data
  */
 export const JSONParse = (data: string) => {
-  return JSON.parse(data, (k, v) => {
-    // 过滤函数字符串
-    if (excludeParseEventKeyList.includes(k)) return v
-    // 过滤函数值表达式
-    if (typeof v === 'string') {
-      const someValue = excludeParseEventValueList.some(excludeValue => v.indexOf(excludeValue) > -1)
-      if (someValue) return v
-    }
-    // 还原函数值
-    if (typeof v === 'string' && v.indexOf && (v.indexOf('function') > -1 || v.indexOf('=>') > -1)) {
-      return eval(`(function(){return ${v}})()`)
-    } else if (typeof v === 'string' && v.indexOf && v.indexOf('return ') > -1) {
-      const baseLeftIndex = v.indexOf('(')
-      if (baseLeftIndex > -1) {
-        const newFn = `function ${v.substring(baseLeftIndex)}`
-        return eval(`(function(){return ${newFn}})()`)
+  try {
+    return JSON.parse(data, (k, v) => {
+      // 过滤函数字符串
+      if (excludeParseEventKeyList.includes(k)) return v
+      // 过滤函数值表达式
+      if (typeof v === 'string') {
+        const someValue = excludeParseEventValueList.some(excludeValue => v.indexOf(excludeValue) > -1)
+        if (someValue) return v
       }
-    }
-    return v
-  })
+      // 还原函数值
+      if (typeof v === 'string' && v.indexOf && (v.indexOf('function') > -1 || v.indexOf('=>') > -1)) {
+        return eval(`(function(){return ${v}})()`)
+      } else if (typeof v === 'string' && v.indexOf && v.indexOf('return ') > -1) {
+        const baseLeftIndex = v.indexOf('(')
+        if (baseLeftIndex > -1) {
+          const newFn = `function ${v.substring(baseLeftIndex)}`
+          return eval(`(function(){return ${newFn}})()`)
+        }
+      }
+      return v
+    })
+  } catch(err) {
+    window['$message'].error(JSON.stringify(err))
+  }
+  
 }
 
 /**

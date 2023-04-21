@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-04-10 14:13:12
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-04-20 16:23:55
+ */
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
@@ -52,7 +59,11 @@ export default ({ mode }) => defineConfig({
         changeOrigin: true,
         ws: true,
         secure: true,
-      }
+      },
+      // "/api/test/": {
+      //   target: "http://localhost:4444",
+      //   changeOrigin: true,
+      // }
     }
   },
   plugins: [

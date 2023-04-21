@@ -1,23 +1,27 @@
+<!--
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-04-10 14:13:11
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-04-18 15:02:49
+-->
 <template>
   <div class="go-border-box">
     <svg :width="w" :height="h">
-      <polygon :fill="backgroundColor" :points="`10, 27 10, ${h - 27} 13, ${h - 24} 13, ${h - 21} 24, ${h - 11}
+      <polygon
+        :fill="backgroundColor"
+        :points="`10, 27 10, ${h - 27} 13, ${h - 24} 13, ${h - 21} 24, ${h - 11}
       38, ${h - 11} 41, ${h - 8} 73, ${h - 8} 75, ${h - 10} 81, ${h - 10}
       85, ${h - 6} ${w - 85}, ${h - 6} ${w - 81}, ${h - 10} ${w - 75}, ${h - 10}
       ${w - 73}, ${h - 8} ${w - 41}, ${h - 8} ${w - 38}, ${h - 11}
       ${w - 24}, ${h - 11} ${w - 13}, ${h - 21} ${w - 13}, ${h - 24}
       ${w - 10}, ${h - 27} ${w - 10}, 27 ${w - 13}, 25 ${w - 13}, 21
       ${w - 24}, 11 ${w - 38}, 11 ${w - 41}, 8 ${w - 73}, 8 ${w - 75}, 10
-      ${w - 81}, 10 ${w - 85}, 6 85, 6 81, 10 75, 10 73, 8 41, 8 38, 11 24, 11 13, 21 13, 24`"/>
+      ${w - 81}, 10 ${w - 85}, 6 85, 6 81, 10 75, 10 73, 8 41, 8 38, 11 24, 11 13, 21 13, 24`"
+      />
     </svg>
 
-    <svg
-      :width="w" 
-      :height="h"
-      :key="item"
-      v-for="item in borders"
-      :class="`border-item ${item}`"
-    >
+    <svg :width="w" :height="h" :key="item" v-for="item in borders" :class="`border-item ${item}`">
       <polygon
         :fill="colors[0]"
         points="6,66 6,18 12,12 18,12 24,6 27,6 30,9 36,9 39,6 84,6 81,9 75,9 73.2,7 40.8,7 37.8,10.2 24,10.2 12,21 12,24 9,27 9,51 7.8,54 7.8,63"
@@ -30,10 +34,7 @@
           repeatCount="indefinite"
         />
       </polygon>
-      <polygon
-        :fill="colors[1]"
-        points="27.599999999999998,4.8 38.4,4.8 35.4,7.8 30.599999999999998,7.8"
-      >
+      <polygon :fill="colors[1]" points="27.599999999999998,4.8 38.4,4.8 35.4,7.8 30.599999999999998,7.8">
         <animate
           attributeName="fill"
           :values="`${colors[1]};${colors[0]};${colors[1]}`"
