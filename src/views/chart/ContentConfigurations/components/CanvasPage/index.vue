@@ -22,7 +22,7 @@
       </n-form-item>
     </n-form>
 
-    <n-card class="upload-box">
+    <div class="upload-box">
       <n-upload
         v-model:file-list="uploadFileListRef"
         :show-file-list="false"
@@ -39,7 +39,7 @@
           </div>
         </n-upload-dragger>
       </n-upload>
-    </n-card>
+    </div>
     <n-space vertical :size="12">
       <n-space>
         <n-text>背景颜色</n-text>
@@ -128,6 +128,7 @@
 <script setup lang="ts">
 import { ref, nextTick, watch } from 'vue'
 import { backgroundImageSize } from '@/settings/designSetting'
+import { swatchesColors } from '@/settings/chartThemes/index'
 import { FileTypeEnum } from '@/enums/fileTypeEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
@@ -161,9 +162,6 @@ const selectColorOptions = [
     value: 1
   }
 ]
-
-// 默认展示颜色列表
-const swatchesColors = ['#232324', '#2a2a2b', '#313132', '#373739', '#757575', '#e0e0e0', '#eeeeee', '#fafafa']
 
 const globalTabList = [
   {
@@ -294,13 +292,10 @@ $uploadHeight: 193px;
     cursor: pointer;
     margin-bottom: 20px;
     @include deep() {
-      .n-card__content {
-        padding: 0;
-        overflow: hidden;
-      }
       .n-upload-dragger {
         padding: 5px;
         width: $uploadWidth;
+        background-color: rgba(0, 0, 0, 0);
       }
     }
     .upload-show {
@@ -331,8 +326,8 @@ $uploadHeight: 193px;
     padding-right: 2.25em;
   }
   .select-preview-icon {
-    padding-right: .68em;
-    padding-left: .68em;
+    padding-right: 0.68em;
+    padding-left: 0.68em;
   }
   .tabs-box {
     margin-top: 20px;

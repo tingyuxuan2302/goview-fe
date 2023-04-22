@@ -1,4 +1,4 @@
-import { ref, toRefs, toRaw } from 'vue'
+import { ref, toRefs, toRaw, watch } from 'vue'
 import type VChart from 'vue-echarts'
 import { customizeHttp } from '@/api/http'
 import { useChartDataPondFetch } from '@/hooks/'
@@ -6,6 +6,7 @@ import { CreateComponentType, ChartFrameEnum } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { RequestDataTypeEnum } from '@/enums/httpEnum'
 import { isPreview, newFunctionHandle, intervalUnitHandle } from '@/utils'
+import { setOption } from '@/packages/public/chart'
 
 // 获取类型
 type ChartEditStoreType = typeof useChartEditStore
@@ -34,7 +35,7 @@ export const useChartDataFetch = (
   const echartsUpdateHandle = (dataset: any) => {
     if (chartFrame === ChartFrameEnum.ECHARTS) {
       if (vChartRef.value) {
-        vChartRef.value.setOption({ dataset: dataset })
+        setOption(vChartRef.value, { dataset: dataset })
       }
     }
   }
@@ -86,8 +87,18 @@ export const useChartDataFetch = (
           }
         }
 
-        // 立即调用
-        fetchFn()
+        // 普通初始化与组件交互处理监听
+        watch(
+          () => targetComponent.request,
+          () => {
+            fetchFn()
+          },
+          {
+            immediate: true,
+            deep: true
+          }
+        )
+
         // 定时时间
         const time = targetInterval && targetInterval.value ? targetInterval.value : globalRequestInterval.value
         // 单位

@@ -4,9 +4,15 @@ import { InformationList } from '@/packages/components/Informations/index'
 import { TableList } from '@/packages/components/Tables/index'
 import { PackagesCategoryEnum, PackagesType, ConfigType, FetchComFlagType } from '@/packages/index.d'
 
-const configModules = import.meta.globEager('./components/**/config.vue')
-const indexModules = import.meta.globEager('./components/**/index.vue')
-const imagesModules = import.meta.globEager('../assets/images/chart/**')
+const configModules: Record<string, { default: string }> = import.meta.glob('./components/**/config.vue', {
+  eager: true
+})
+const indexModules: Record<string, { default: string }> = import.meta.glob('./components/**/index.vue', {
+  eager: true
+})
+const imagesModules: Record<string, { default: string }> = import.meta.glob('../assets/images/chart/**', {
+  eager: true
+})
 
 // * 所有图表
 export let packagesList: PackagesType = {
@@ -63,7 +69,8 @@ export const fetchConfigComponent = (dropData: ConfigType) => {
  * * 获取图片内容
  * @param {ConfigType} targetData 配置项
  */
-export const fetchImages = async (targetData: ConfigType) => {
+export const fetchImages = async (targetData?: ConfigType) => {
+  if (!targetData) return ''
   // 新数据动态处理
   const { image, package: targetDataPackage } = targetData
   // 兼容旧数据

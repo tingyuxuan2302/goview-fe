@@ -1,5 +1,5 @@
 <template>
-  <n-collapse-item title="基础事件配置" name="1">
+  <n-collapse-item title="基础事件配置" name="2">
     <template #header-extra>
       <n-button type="primary" tertiary size="small" @click.stop="showModal = true">
         <template #icon>
@@ -127,7 +127,7 @@
 import { ref, computed, watch, toRefs, toRaw } from 'vue'
 import { MonacoEditor } from '@/components/Pages/MonacoEditor'
 import { useTargetData } from '../../../hooks/useTargetData.hook'
-import { CreateComponentType, BaseEvent } from '@/packages/index.d'
+import { BaseEvent } from '@/enums/eventEnum'
 import { icon } from '@/plugins'
 
 const { targetData, chartEditStore } = useTargetData()

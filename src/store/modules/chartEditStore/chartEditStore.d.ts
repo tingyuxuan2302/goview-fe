@@ -10,7 +10,7 @@ import {
   RequestParamsObjType
 } from '@/enums/httpEnum'
 import { PreviewScaleEnum } from '@/enums/styleEnum'
-import type { ChartColorsNameType, GlobalThemeJsonType } from '@/settings/chartThemes/index'
+import type { ChartColorsNameType, CustomColorsType, GlobalThemeJsonType } from '@/settings/chartThemes/index'
 
 // 编辑画布属性
 export enum EditCanvasTypeEnum {
@@ -22,7 +22,8 @@ export enum EditCanvasTypeEnum {
   LOCK_SCALE = 'lockScale',
   IS_CREATE = 'isCreate',
   IS_DRAG = 'isDrag',
-  IS_SELECT = 'isSelect'
+  IS_SELECT = 'isSelect',
+  IS_CODE_EDIT="isCodeEdit"
 }
 
 // 编辑区域
@@ -44,6 +45,8 @@ export type EditCanvasType = {
   [EditCanvasTypeEnum.IS_DRAG]: boolean
   // 框选中
   [EditCanvasTypeEnum.IS_SELECT]: boolean
+  // 代码编辑中
+  [EditCanvasTypeEnum.IS_CODE_EDIT]: boolean
 }
 
 // 滤镜/背景色/宽高主题等
@@ -52,6 +55,7 @@ export enum EditCanvasConfigEnum {
   WIDTH = 'width',
   HEIGHT = 'height',
   CHART_THEME_COLOR = 'chartThemeColor',
+  CHART_CUSTOM_THEME_COLOR_INFO = 'chartCustomThemeColorInfo',
   CHART_THEME_SETTING = 'chartThemeSetting',
   BACKGROUND = 'background',
   BACKGROUND_IMAGE = 'backgroundImage',
@@ -87,9 +91,12 @@ export interface EditCanvasConfigType {
   [EditCanvasConfigEnum.HEIGHT]: number
   // 背景色
   [EditCanvasConfigEnum.BACKGROUND]?: string
+  // 背景图片
   [EditCanvasConfigEnum.BACKGROUND_IMAGE]?: string | null
   // 图表主题颜色
   [EditCanvasConfigEnum.CHART_THEME_COLOR]: ChartColorsNameType
+  // 自定义图表主题颜色
+  [EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO]?: CustomColorsType[] 
   // 图表全局配置
   [EditCanvasConfigEnum.CHART_THEME_SETTING]: GlobalThemeJsonType
   // 图表主题颜色

@@ -54,7 +54,9 @@ export const useChartEditStore = defineStore({
       // 拖拽中
       isDrag: false,
       // 框选中
-      isSelect: false
+      isSelect: false,
+      // 代码编辑中
+      isCodeEdit: false
     },
     // 右键菜单
     rightMenuShow: false,
@@ -108,6 +110,8 @@ export const useChartEditStore = defineStore({
       selectColor: true,
       // chart 主题色
       chartThemeColor: defaultTheme || 'dark',
+      // 自定义颜色列表
+      chartCustomThemeColorInfo: undefined,
       // 全局配置
       chartThemeSetting: globalThemeJson,
       // 适配方式

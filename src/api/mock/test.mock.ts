@@ -2,6 +2,8 @@ import heatmapJson from './heatMapData.json'
 import scatterJson from './scatter.json'
 import mapJson from './map.json'
 import tTreemapJson from './treemap.json'
+import sankeyJson from './sankey.json'
+import graphDataJson from './graph.json'
 
 export default {
   // 单图表
@@ -10,8 +12,8 @@ export default {
     status: 200,
     msg: '请求成功',
     data: {
-      dimensions: ['product', 'dataOne'],
-      'source|50': [
+    dimensions: ['product', 'dataOne'],
+      'source|20': [
         {
           product: '@name',
           'dataOne|0-900': 3
@@ -37,12 +39,13 @@ export default {
     status: 200,
     msg: '请求成功',
     data: {
-      dimensions: ['product', 'dataOne', 'dataTwo'],
-      'source|50': [
+      dimensions: ['product', 'dataOne', 'dataTwo', 'dataThree'],
+      'source|20': [
         {
           product: '@name',
           'dataOne|100-900': 3,
-          'dataTwo|100-900': 3
+          'dataTwo|100-900': 3,
+          'dataThree|100-900': 3
         }
       ]
     }
@@ -218,5 +221,19 @@ export default {
         'endArray|10': [{ name: '@name', N: '@integer(10, 100)', E: '@integer(10, 100)' }]
       }
     ]
-  }
+  },
+  // 桑基图
+  fetchSankey: {
+    code: 0,
+    status: 200,
+    msg: '请求成功',
+    data: sankeyJson
+  },
+  // 关系图
+  graphData: {
+    code: 0,
+    status: 200,
+    msg: '请求成功',
+    data: graphDataJson
+  },
 }

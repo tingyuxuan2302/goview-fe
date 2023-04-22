@@ -10,6 +10,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { WinKeyboard } from '@/enums/editPageEnum'
 import { RequestHttpIntervalEnum, RequestParamsObjType } from '@/enums/httpEnum'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
+import { excludeParseEventKeyList, excludeParseEventValueList } from '@/enums/eventEnum'
 
 /**
  * * 判断是否是开发环境
@@ -295,7 +296,7 @@ export const setKeyboardDressShow = (keyCode?: number) => {
  * * JSON序列化，支持函数和 undefined
  * @param data
  */
-export const JSONStringify = (data: object) => {
+export const JSONStringify = <T>(data: T) => {
   return JSON.stringify(
     data,
     (key, val) => {
@@ -305,7 +306,7 @@ export const JSONStringify = (data: object) => {
       }
       // 处理 undefined 丢失问题
       if (typeof val === 'undefined') {
-        return 'undefined'
+        return null
       }
       return val
     },
@@ -319,8 +320,22 @@ export const JSONStringify = (data: object) => {
  */
 export const JSONParse = (data: string) => {
   return JSON.parse(data, (k, v) => {
+    // 过滤函数字符串
+    if (excludeParseEventKeyList.includes(k)) return v
+    // 过滤函数值表达式
+    if (typeof v === 'string') {
+      const someValue = excludeParseEventValueList.some(excludeValue => v.indexOf(excludeValue) > -1)
+      if (someValue) return v
+    }
+    // 还原函数值
     if (typeof v === 'string' && v.indexOf && (v.indexOf('function') > -1 || v.indexOf('=>') > -1)) {
       return eval(`(function(){return ${v}})()`)
+    } else if (typeof v === 'string' && v.indexOf && v.indexOf('return ') > -1) {
+      const baseLeftIndex = v.indexOf('(')
+      if (baseLeftIndex > -1) {
+        const newFn = `function ${v.substring(baseLeftIndex)}`
+        return eval(`(function(){return ${newFn}})()`)
+      }
     }
     return v
   })

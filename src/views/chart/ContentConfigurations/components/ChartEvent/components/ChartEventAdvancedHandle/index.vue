@@ -1,5 +1,5 @@
 <template>
-  <n-collapse-item title="高级事件配置" name="2">
+  <n-collapse-item title="高级事件配置" name="3">
     <template #header-extra>
       <n-button type="primary" tertiary size="small" @click.stop="showModal = true">
         <template #icon>
@@ -164,7 +164,8 @@ import { useTargetData } from '../../../hooks/useTargetData.hook'
 import { templateList } from './importTemplate'
 import { npmPkgs } from '@/hooks'
 import { icon } from '@/plugins'
-import { CreateComponentType, EventLife } from '@/packages/index.d'
+import { CreateComponentType } from '@/packages/index.d'
+import { EventLife } from '@/enums/eventEnum'
 
 const { targetData, chartEditStore } = useTargetData()
 const { DocumentTextIcon, ChevronDownIcon, PencilIcon } = icon.ionicons5

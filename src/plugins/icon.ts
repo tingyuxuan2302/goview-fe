@@ -1,4 +1,5 @@
 import {
+  Add as AddIcon,
   Close as CloseIcon,
   Remove as RemoveIcon,
   Resize as ResizeIcon,
@@ -52,6 +53,7 @@ import {
   ColorWand as ColorWandIcon,
   ArrowBack as ArrowBackIcon,
   ArrowForward as ArrowForwardIcon,
+  ArrowDown as ArrowDownIcon,
   Planet as PawIcon,
   Search as SearchIcon,
   ChevronUpOutline as ChevronUpOutlineIcon,
@@ -64,7 +66,8 @@ import {
   List as ListIcon,
   EyeOutline as EyeOutlineIcon,
   EyeOffOutline as EyeOffOutlineIcon,
-  Albums as AlbumsIcon
+  Albums as AlbumsIcon,
+  Analytics as AnalyticsIcon
 } from '@vicons/ionicons5'
 
 import {
@@ -101,6 +104,8 @@ import {
 } from '@vicons/carbon'
 
 const ionicons5 = {
+  // 新增
+  AddIcon,
   // 帮助（问号）
   HelpOutlineIcon,
   // 添加
@@ -206,6 +211,8 @@ const ionicons5 = {
   ArrowBackIcon,
   // 前进
   ArrowForwardIcon,
+  // 向下
+  ArrowDownIcon,
   // 狗爪
   PawIcon,
   // 搜索（放大镜）
@@ -232,7 +239,9 @@ const ionicons5 = {
   EyeOutlineIcon,
   EyeOffOutlineIcon,
   // 图表列表 
-  AlbumsIcon
+  AlbumsIcon,
+  // 分析
+  AnalyticsIcon
 }
 
 const carbon = {

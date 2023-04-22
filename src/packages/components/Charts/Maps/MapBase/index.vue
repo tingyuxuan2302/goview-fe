@@ -1,5 +1,5 @@
 <template>
-  <v-chart ref="vChartRef" :theme="themeColor" :option="option.value" :manual-update="isPreview()" autoresize>
+  <v-chart ref="vChartRef" :init-options="initOptions" :theme="themeColor" :option="option.value" :manual-update="isPreview()" autoresize>
   </v-chart>
 </template>
 
@@ -7,11 +7,12 @@
 import { PropType, reactive, watch, ref, nextTick } from 'vue'
 import config, { includes } from './config'
 import VChart from 'vue-echarts'
+import { useCanvasInitOptions } from '@/hooks/useCanvasInitOptions.hook'
 import { use, registerMap } from 'echarts/core'
 import { EffectScatterChart, MapChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 import { useChartDataFetch } from '@/hooks'
-import { mergeTheme } from '@/packages/public/chart'
+import { mergeTheme, setOption } from '@/packages/public/chart'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { isPreview } from '@/utils'
 import mapJsonWithoutHainanIsLands from './mapWithoutHainanIsLands.json'
@@ -31,6 +32,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const initOptions = useCanvasInitOptions(props.chartConfig.option, props.themeSetting)
 
 use([
   MapChart,
@@ -59,13 +62,14 @@ const getGeojson = (regionId: string) => {
 }
 
 //异步时先注册空的 保证初始化不报错
-registerMap(props.chartConfig.option.mapRegion.adcode, { geoJSON: {} as any, specialAreas: {} })
+registerMap(`${props.chartConfig.option.mapRegion.adcode}`, { geoJSON: {} as any, specialAreas: {} })
 
 // 进行更换初始化地图 如果为china 单独处理
 const registerMapInitAsync = async () => {
   await nextTick()
-  if (props.chartConfig.option.mapRegion.adcode != 'china') {
-    await getGeojson(props.chartConfig.option.mapRegion.adcode)
+  const adCode = `${props.chartConfig.option.mapRegion.adcode}`;
+  if (adCode !== 'china') {
+    await getGeojson(adCode)
   } else {
     await hainanLandsHandle(props.chartConfig.option.mapRegion.showHainanIsLands)
   }
@@ -76,7 +80,7 @@ registerMapInitAsync()
 // 手动触发渲染
 const vEchartsSetOption = () => {
   option.value = props.chartConfig.option
-  vChartRef.value?.setOption(props.chartConfig.option)
+  setOption(vChartRef.value, props.chartConfig.option)
 }
 
 // 更新数据处理
@@ -127,7 +131,7 @@ watch(
 
 //监听地图展示区域发生变化
 watch(
-  () => props.chartConfig.option.mapRegion.adcode,
+  () => `${props.chartConfig.option.mapRegion.adcode}`,
   async newData => {
     try {
       await getGeojson(newData)
