@@ -129,7 +129,7 @@ const fetchTargetData = async () => {
   try {
     const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
     if (res) {
-      sourceData.value = res
+      sourceData.value = res.data
       return
     }
     window['$message'].warning('没有拿到返回值，请检查接口！')

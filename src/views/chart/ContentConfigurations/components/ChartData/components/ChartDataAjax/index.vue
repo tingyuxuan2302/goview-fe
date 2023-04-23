@@ -132,7 +132,7 @@ const sendHandle = async () => {
     if (res) {
       const { data } = res
       if (!data && !targetData.value.filter) window['$message'].warning('您的数据不符合默认格式，请配置过滤器！')
-      targetData.value.option.dataset = newFunctionHandle(data, res, targetData.value.filter)
+      targetData.value.option.dataset = newFunctionHandle(data.data, data, targetData.value.filter)
       showMatching.value = true
       return
     }
