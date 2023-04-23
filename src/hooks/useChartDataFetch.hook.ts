@@ -76,10 +76,11 @@ export const useChartDataFetch = (
           if (res) {
             try {
               const filter = targetComponent.filter
-              echartsUpdateHandle(newFunctionHandle(res?.data, res, filter))
+              const { data } = res
+              echartsUpdateHandle(newFunctionHandle(data, res, filter))
               // 更新回调函数
               if (updateCallback) {
-                updateCallback(newFunctionHandle(res?.data, res, filter))
+                updateCallback(newFunctionHandle(data, res, filter))
               }
             } catch (error) {
               console.error(error)
