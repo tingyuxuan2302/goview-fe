@@ -15,11 +15,11 @@ export enum ChartFrameEnum {
 
 // 组件配置
 export type ConfigType = {
-  key: string
-  chartKey: string
-  conKey: string
+  key: string // 组件唯一key
+  chartKey: string // 组件渲染的key（用于全局注册使用）
+  conKey: string // 组件配置的key（用于右边栏绑定组件配置选项的key，选项本身也是组件，也需要全局注册）
   title: string
-  category: string
+  category: string // 种类
   categoryName: string
   package: string
   chartFrame?: ChartFrameEnum

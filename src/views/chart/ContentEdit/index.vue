@@ -55,6 +55,7 @@
                   :class="animationsClass(item.styles.animations)"
                   :is="item.chartConfig.chartKey"
                   :chartConfig="item"
+                  :svgEl="item.props?.svgEl"
                   :themeSetting="themeSetting"
                   :themeColor="themeColor"
                   :style="{
@@ -111,7 +112,7 @@ const { handleContextMenu } = useContextMenu()
 const { dataSyncFetch, intervalDataSyncUpdate } = useSync()
 
 // 编辑时注入scale变量，消除警告
-provide(SCALE_KEY, null);
+provide(SCALE_KEY, null)
 
 // 布局处理
 useLayout()
@@ -187,6 +188,8 @@ onMounted(() => {
   dataSyncFetch()
   // 定时更新数据
   intervalDataSyncUpdate()
+
+  console.log('---chartEditStore---', chartEditStore.getComponentList)
 })
 </script>
 

@@ -122,6 +122,9 @@
         <component :is="item.render"></component>
       </n-tab-pane>
     </n-tabs>
+    <!-- 图片上传 -->
+
+    <SvgUpload></SvgUpload>
   </div>
 </template>
 
@@ -133,13 +136,13 @@ import { FileTypeEnum } from '@/enums/fileTypeEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { useSystemStore } from '@/store/modules/systemStore/systemStore'
-import { StylesSetting } from '@/components/Pages/ChartItemSetting'
+import { StylesSetting, SvgUpload } from '@/components/Pages/ChartItemSetting'
 import { UploadCustomRequestOptions } from 'naive-ui'
 import { loadAsyncComponent, fetchRouteParamsLocation } from '@/utils'
 import { PreviewScaleEnum } from '@/enums/styleEnum'
 import { ResultEnum } from '@/enums/httpEnum'
 import { icon } from '@/plugins'
-import { uploadFile} from '@/api/path'
+import { uploadFile } from '@/api/path'
 
 const { ColorPaletteIcon } = icon.ionicons5
 const { ScaleIcon, FitToScreenIcon, FitToHeightIcon, FitToWidthIcon } = icon.carbon
@@ -273,24 +276,19 @@ const customRequest = (options: UploadCustomRequestOptions) => {
   nextTick(async () => {
     if (file.file) {
       // 修改名称
-      const newNameFile = new File(
-        [file.file],
-        `${fetchRouteParamsLocation()}_index_background.png`,
-        { type: file.file.type }
-      )
+      const newNameFile = new File([file.file], `${fetchRouteParamsLocation()}_index_background.png`, {
+        type: file.file.type
+      })
       let uploadParams = new FormData()
       uploadParams.append('object', newNameFile)
       const uploadRes = await uploadFile(uploadParams)
 
-      if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
+      if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
         chartEditStore.setEditCanvasConfig(
           EditCanvasConfigEnum.BACKGROUND_IMAGE,
           `${systemStore.getFetchInfo.OSSUrl}${uploadRes.data.fileName}?time=${new Date().getTime()}`
         )
-        chartEditStore.setEditCanvasConfig(
-          EditCanvasConfigEnum.SELECT_COLOR,
-          false
-        )
+        chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.SELECT_COLOR, false)
         return
       }
       window['$message'].error('添加图片失败，请稍后重试！')
