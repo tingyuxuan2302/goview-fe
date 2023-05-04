@@ -43,7 +43,12 @@
               </div>
               <n-form ref="formRef" label-placement="left" size="large" :model="formInline" :rules="rules">
                 <n-form-item path="username">
-                  <n-input v-model:value="formInline.username" :placeholder="$t('global.form_account')">
+                  <n-input
+                    v-model:value="formInline.username"
+                    type="text"
+                    maxlength="16"
+                    :placeholder="$t('global.form_account')"
+                  >
                     <template #prefix>
                       <n-icon size="18">
                         <PersonOutlineIcon></PersonOutlineIcon>
@@ -55,6 +60,7 @@
                   <n-input
                     v-model:value="formInline.password"
                     type="password"
+                    maxlength="16"
                     show-password-on="click"
                     :placeholder="$t('global.form_password')"
                   >
