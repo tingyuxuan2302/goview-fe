@@ -3,11 +3,11 @@
  * @Author: 笙痞77
  * @Date: 2023-04-24 16:22:13
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-04 10:34:24
+ * @LastEditTime: 2023-05-04 14:49:47
 -->
 <template>
-  <collapse-item name="上传：">
-    <setting-item-box name="svg上传:">
+  <collapse-item name="自定义元素：">
+    <setting-item-box name="svg上传:" alone>
       <setting-item>
         <n-upload directory-dnd :customRequest="customRequest" @before-upload="onBeforeUpload">
           <n-upload-dragger>
@@ -16,9 +16,9 @@
                 <archive-icon />
               </n-icon>
             </div>
-            <n-text style="font-size: 16px"> 点击或者拖动文件到该区域来上传 </n-text>
+            <n-text style="font-size: 16px"> 点击或者拖动svg文件到该区域来上传 </n-text>
             <n-p depth="3" style="margin: 8px 0 0 0">
-              请不要上传敏感数据，比如你的银行卡号和密码，信用卡号有效期和安全码
+              仅支持svg格式文件上传！
             </n-p>
           </n-upload-dragger>
         </n-upload>
@@ -50,17 +50,24 @@ import CustomBorder from '@/packages/components/Decorates/Borders/Custom/index.v
 import CustomConfigNode from '@/packages/components/Decorates/Borders/Custom/config.vue'
 import CustomOption from '@/packages/components/Decorates/Borders/Custom/config'
 import { CustomConfig } from '@/packages/components/Decorates/Borders/Custom/index'
+import { FileTypeEnum } from '@/enums/fileTypeEnum'
 
 const systemStore = useSystemStore()
 
 const chartEditStore = useChartEditStore()
 
 const onBeforeUpload = (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }) => {
-  console.log('----', data)
-  // return false
+  const type = data.file!.file!.type
+  if (type !== FileTypeEnum.SVG) {
+    window['$message'].warning('文件格式不是svg，请重新上传！')
+    return false
+  }
+  return true
 }
-
+// 替换掉xml标签
 const reg = /^<\?xml(.*)\?>/
+// 动态配置宽高
+const whReg = /(width=.*)\s(height="\d*px")/
 
 let parentNode: HTMLDivElement
 // 自定义上传操作
@@ -79,6 +86,9 @@ const customRequest = (options: UploadCustomRequestOptions) => {
       if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
         axios.get(uploadRes.data.fileUrl).then(res => {
           let svgEl = res.data.replace(reg, '')
+          svgEl = svgEl.replace(whReg, (match: string) => {
+            return ":width='w' :height='h' "
+          })
           // 动态创建svg的虚拟dom
           const app = createApp({
             render() {
