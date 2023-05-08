@@ -90,7 +90,7 @@ export const uploadFile = async (data: object) => {
        * 文件地址
        */
       fileName: string,
-      httpurl: string,
+      fileurl: string,
     }>(`${ModuleTypeEnum.PROJECT}/upload`, data, ContentTypeEnum.FORM_DATA)
     return res
   } catch {

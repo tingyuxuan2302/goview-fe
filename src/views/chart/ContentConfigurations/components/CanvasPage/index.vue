@@ -281,10 +281,10 @@ const customRequest = (options: UploadCustomRequestOptions) => {
       const uploadRes = await uploadFile(uploadParams)
 
       if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
-        if (uploadRes.data.httpurl) {
+        if (uploadRes.data.fileurl) {
           chartEditStore.setEditCanvasConfig(
             EditCanvasConfigEnum.BACKGROUND_IMAGE,
-            `${uploadRes.data.httpurl}?time=${new Date().getTime()}`
+            `${uploadRes.data.fileurl}?time=${new Date().getTime()}`
           )
         } else {
           chartEditStore.setEditCanvasConfig(

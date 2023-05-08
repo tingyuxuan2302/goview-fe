@@ -294,10 +294,10 @@ export const useSync = () => {
         const uploadRes = await uploadFile(uploadParams)
         // 保存预览图
         if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
-          if (uploadRes.data.httpurl) {
+          if (uploadRes.data.fileurl) {
             await updateProjectApi({
               id: fetchRouteParamsLocation(),
-              indexImage: `${uploadRes.data.httpurl}`
+              indexImage: `${uploadRes.data.fileurl}`
             })
           } else {
             await updateProjectApi({
