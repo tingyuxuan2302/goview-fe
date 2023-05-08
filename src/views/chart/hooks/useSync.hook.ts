@@ -294,10 +294,17 @@ export const useSync = () => {
         const uploadRes = await uploadFile(uploadParams)
         // 保存预览图
         if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
-          await updateProjectApi({
-            id: fetchRouteParamsLocation(),
-            indexImage: `${systemStore.getFetchInfo.OSSUrl}${uploadRes.data.fileName}`
-          })
+          if (uploadRes.data.fileurl) {
+            await updateProjectApi({
+              id: fetchRouteParamsLocation(),
+              indexImage: `${uploadRes.data.fileurl}`
+            })
+          } else {
+            await updateProjectApi({
+              id: fetchRouteParamsLocation(),
+              indexImage: `${systemStore.getFetchInfo.OSSUrl}${uploadRes.data.fileName}`
+            })
+          }
         }
       }
     } catch (e) {
