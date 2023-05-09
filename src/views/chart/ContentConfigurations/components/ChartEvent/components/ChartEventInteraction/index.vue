@@ -58,7 +58,7 @@
                 <help-outline-icon></help-outline-icon>
               </n-icon>
             </template>
-            <n-text>不支持「静态组件」和「分组」</n-text>
+            <n-text>不支持「静态组件」</n-text>
           </n-tooltip>
         </template>
         <n-select
