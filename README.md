@@ -20,7 +20,7 @@ GoView 是一个高效的拖拽式低代码数据可视化开发平台，将图�
 
 ### 🤯 后端项目
 
-后端项目gitee地址：[https://gitee.com/MTrun/go-view-serve](https://gitee.com/MTrun/go-view-serve)
+后端项目 gitee 地址：[https://gitee.com/MTrun/go-view-serve](https://gitee.com/MTrun/go-view-serve)
 
 接口说明地址：[https://docs.apipost.cn/preview/5aa85d10a59d66ce/ddb813732007ad2b?target_id=84dbc5b0-158f-4bcb-8f74-793ac604ada3#3e053622-1e76-43f9-a039-756aee822dbb](https://docs.apipost.cn/preview/5aa85d10a59d66ce/ddb813732007ad2b?target_id=84dbc5b0-158f-4bcb-8f74-793ac604ada3#3e053622-1e76-43f9-a039-756aee822dbb)
 
@@ -53,7 +53,7 @@ GoView 是一个高效的拖拽式低代码数据可视化开发平台，将图�
 | 名称                | 版本  | 名称        | 版本   |
 | ------------------- | ----- | ----------- | ------ |
 | Vue                 | 3.2.x | TypeScript4 | 4.6.x  |
-| Vite                | 2.9.x | NaiveUI     | 2.27.x |
+| Vite                | 4.2.x | NaiveUI     | 2.34.x |
 | ECharts             | 5.3.x | Pinia       | 2.0.x  |
 | 详见 `package.json` | 😁    | 🥰          | 🤗     |
 
@@ -61,7 +61,7 @@ GoView 是一个高效的拖拽式低代码数据可视化开发平台，将图�
 
 | 名称 | 版本    | 名称    | 版本  |
 | ---- | ------- | ------- | ----- |
-| node | 16.14.x | npm     | 8.5.x |
+| node | 16.16.x | npm     | 8.5.x |
 | pnpm | 7.1.x   | windows | 11    |
 
 已完成图表：
