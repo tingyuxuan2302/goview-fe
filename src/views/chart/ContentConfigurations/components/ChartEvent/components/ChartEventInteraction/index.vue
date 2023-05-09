@@ -169,7 +169,27 @@ const fnDimensionsAndSource = (interactOn: InteractEventOn | undefined) => {
 
 // 绑定组件列表
 const fnEventsOptions = (): Array<SelectOption | SelectGroupOption> => {
-  const filterOptionList = chartEditStore.componentList.filter(item => {
+  // 扁平化树形数据
+  const fnFlattern = (
+    data: Array<CreateComponentType | CreateComponentGroupType>
+  ): Array<CreateComponentType | CreateComponentGroupType> => {
+    return data.reduce(
+      (
+        iter: Array<CreateComponentType | CreateComponentGroupType>,
+        val: CreateComponentType | CreateComponentGroupType
+      ) => {
+        if (val.groupList && val.groupList.length > 0) {
+          iter.push(val)
+        } else {
+          iter.push(val)
+        }
+        return val.groupList ? [...iter, ...fnFlattern(val.groupList)] : iter
+      },
+      []
+    )
+  }
+
+  const filterOptionList = fnFlattern(chartEditStore.componentList).filter(item => {
     // 排除自己
     const isNotSelf = item.id !== targetData.value.id
     // 排除静态组件
