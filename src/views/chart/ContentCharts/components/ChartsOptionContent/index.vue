@@ -11,7 +11,7 @@
       @update:value="clickItemHandle"
     ></n-menu>
     <div class="chart-content-list">
-      <n-scrollbar>
+      <n-scrollbar trigger="none">
         <charts-item-box :menuOptions="packages.selectOptions"></charts-item-box>
       </n-scrollbar>
     </div>
@@ -119,6 +119,7 @@ $menuWidth: 65px;
     @include fetch-bg-color('background-color2-shallow');
   }
   .chart-content-list {
+    width: 200px;
     flex: 1;
     display: flex;
     flex-direction: column;

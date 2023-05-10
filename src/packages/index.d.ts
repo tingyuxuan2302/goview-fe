@@ -140,6 +140,7 @@ export interface CreateComponentType extends PublicConfigType, requestConfig {
   key: string
   chartConfig: ConfigType
   option: GlobalThemeJsonType
+  groupList?: Array<CreateComponentType>
 }
 
 // 组件成组实例类

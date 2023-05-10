@@ -185,6 +185,11 @@ export const useSync = () => {
           } else {
             await create(comItem as CreateComponentType)
           }
+          if (percentage === 100) {
+            // 清除历史记录
+            chartHistoryStore.clearBackStack()
+            chartHistoryStore.clearForwardStack()
+          }
         }
       } else {
         // 非组件(顺便排除脏数据)
