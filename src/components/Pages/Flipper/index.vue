@@ -43,6 +43,10 @@ const props = defineProps({
   backColor: {
     type: String,
     default: '#000000'
+  },
+  borderWidth: {
+    type: Number,
+    default: 2
   }
 })
 
@@ -93,6 +97,7 @@ $radius: v-bind('`${props.radius}px`');
 $width: v-bind('`${props.width}px`');
 $height: v-bind('`${props.height}px`');
 $perspective: v-bind('`${props.height * 2}px`');
+$borderWidth: v-bind('`${props.borderWidth * 2}px`');
 $speed: v-bind('`${props.duration / 1000}s`');
 $shadowColor: #000000;
 $lineColor: #4a9ef8;
@@ -138,7 +143,6 @@ $lineColor: #4a9ef8;
   width: $width;
   height: $height;
   line-height: $height;
-  border: solid 1px $backColor;
   border-radius: $radius;
   background: $frontColor;
   font-size: $width;
@@ -146,6 +150,17 @@ $lineColor: #4a9ef8;
   box-shadow: 0 0 6px rgba($color: $shadowColor, $alpha: 0.5); // 阴影部分
   text-align: center;
   // font-family: 'Helvetica Neue';
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 $borderWidth 0 $frontColor; // 内测阴影部分
+    border-radius: $radius;
+  }
 
   .digital:before,
   .digital:after {
