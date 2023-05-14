@@ -209,11 +209,13 @@ $lineColor: #4a9ef8;
   &.down.go .front:before {
     transform-origin: 50% 100%;
     animation: frontFlipDown $speed ease-in-out both;
-    box-shadow: 0 -2px 6px rgba($color: $lineColor, $alpha: 0.3);
+    box-shadow: 0 -2px $borderWidth 0 $frontColor;
     backface-visibility: hidden;
   }
   &.down.go .back:after {
     animation: backFlipDown $speed ease-in-out both;
+    box-shadow: 0 2px $borderWidth 0 $frontColor;
+    backface-visibility: hidden;
   }
   /*向上翻*/
   &.up .front:after {
@@ -231,11 +233,13 @@ $lineColor: #4a9ef8;
   &.up.go .front:after {
     transform-origin: 50% 0;
     animation: frontFlipUp $speed ease-in-out both;
-    box-shadow: 0 2px 6px rgba($color: $lineColor, $alpha: 0.3);
+    box-shadow: 0 2px $borderWidth 0 $frontColor;
     backface-visibility: hidden;
   }
   &.up.go .back:before {
     animation: backFlipUp $speed ease-in-out both;
+    box-shadow: 0 -2px $borderWidth 0 $frontColor;
+    backface-visibility: hidden;
   }
 }
 </style>
