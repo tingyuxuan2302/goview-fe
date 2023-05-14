@@ -1,5 +1,5 @@
 <template>
-  <div class="go-Flipper" :class="[flipType, { go: isFlipping }]">
+  <div class="go-flipper" :class="[flipType, { go: isFlipping }]">
     <div class="digital front" :data-front="frontTextFromData"></div>
     <div class="digital back" :data-back="backTextFromData"></div>
   </div>
@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 import { ref, PropType, watch } from 'vue'
-import { FlipType }  from './index'
+import { FlipType } from './index'
 
 const props = defineProps({
   flipType: {
@@ -50,19 +50,26 @@ const isFlipping = ref(false)
 const frontTextFromData = ref(props.count || 0)
 const backTextFromData = ref(props.count || 0)
 
+let timeoutID: any = 0
+
 // 翻牌
 const flip = (front: string | number, back: string | number) => {
-  // 如果处于翻转中，则不执行
-  if (isFlipping.value) return
   // 设置翻盘前后数据
   backTextFromData.value = back
   frontTextFromData.value = front
 
+  // 如果处于翻转中，则不执行
+  if (isFlipping.value) {
+    isFlipping.value = false // 立即结束此次动画
+    clearTimeout(timeoutID) // 清除上一个计时器任务
+    flip(front, back) // 开始最后一次翻牌任务
+    return
+  }
   // 设置翻转状态为true
   isFlipping.value = true
 
   // 翻牌结束的行为
-  setTimeout(() => {
+  timeoutID = setTimeout(() => {
     isFlipping.value = false // 设置翻转状态为false
     frontTextFromData.value = back
   }, props.duration)
@@ -125,7 +132,7 @@ $lineColor: #4a9ef8;
 }
 // #endregion
 
-.go-Flipper {
+.go-flipper {
   display: inline-block;
   position: relative;
   width: $width;
