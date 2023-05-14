@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, PropType, watch } from 'vue'
+import { ref, PropType, watch, nextTick } from 'vue'
 import { FlipType } from './index'
 
 const props = defineProps({
@@ -57,18 +57,19 @@ const backTextFromData = ref(props.count || 0)
 let timeoutID: any = 0
 
 // 翻牌
-const flip = (front: string | number, back: string | number) => {
-  // 设置翻盘前后数据
-  backTextFromData.value = back
-  frontTextFromData.value = front
-
+const flip = async (front: string | number, back: string | number) => {
   // 如果处于翻转中，则不执行
   if (isFlipping.value) {
     isFlipping.value = false // 立即结束此次动画
     clearTimeout(timeoutID) // 清除上一个计时器任务
-    flip(front, back) // 开始最后一次翻牌任务
+    await nextTick()
+    await flip(front, back) // 开始最后一次翻牌任务
     return
   }
+
+  // 设置翻盘前后数据
+  backTextFromData.value = back
+  frontTextFromData.value = front
   // 设置翻转状态为true
   isFlipping.value = true
 
