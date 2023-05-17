@@ -32,6 +32,10 @@ export const dragHandle = async (e: DragEvent) => {
 
     // 创建新图表组件
     let newComponent: CreateComponentType = await createComponent(dropData)
+    if (dropData.virtualComponent) {
+      dropData.dataset && (newComponent.option.dataset = dropData.dataset)
+      newComponent.chartConfig.title = dropData.title
+    }
 
     setComponentPosition(newComponent, e.offsetX - newComponent.attr.w / 2, e.offsetY - newComponent.attr.h / 2)
     chartEditStore.addComponentList(newComponent, false, true)
