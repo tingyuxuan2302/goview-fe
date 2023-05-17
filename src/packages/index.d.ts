@@ -24,6 +24,8 @@ export type ConfigType = {
   package: string
   chartFrame?: ChartFrameEnum
   image: string
+  virtualComponent?: string // 虚拟组件Path，指定后创建该组件时，从指定路径创建
+  dataset?: any // 组件预设的 dataset 值
 }
 
 // 数据请求
