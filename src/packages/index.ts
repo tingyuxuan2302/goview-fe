@@ -71,6 +71,8 @@ export const fetchConfigComponent = (dropData: ConfigType) => {
  */
 export const fetchImages = async (targetData?: ConfigType) => {
   if (!targetData) return ''
+  // 判断图片是否为 url，是则直接返回该 url
+  if (/^(?:https?):\/\/[^\s/.?#].[^\s]*/.test(targetData.image)) return targetData.image
   // 新数据动态处理
   const { image, package: targetDataPackage } = targetData
   // 兼容旧数据
