@@ -26,6 +26,7 @@ export type ConfigType = {
   image: string
   virtualComponent?: string // 虚拟组件Path，指定后创建该组件时，从指定路径创建
   dataset?: any // 组件预设的 dataset 值
+  disabled?: boolean // 禁用的
 }
 
 // 数据请求
@@ -158,6 +159,7 @@ export enum PackagesCategoryEnum {
   CHARTS = 'Charts',
   TABLES = 'Tables',
   INFORMATIONS = 'Informations',
+  PHOTOS = 'Photos',
   DECORATES = 'Decorates'
 }
 
@@ -166,6 +168,7 @@ export enum PackagesCategoryName {
   CHARTS = '图表',
   TABLES = '列表',
   INFORMATIONS = '信息',
+  PHOTOS = '图片',
   DECORATES = '小组件'
 }
 
@@ -180,5 +183,6 @@ export type PackagesType = {
   [PackagesCategoryEnum.CHARTS]: ConfigType[]
   [PackagesCategoryEnum.INFORMATIONS]: ConfigType[]
   [PackagesCategoryEnum.TABLES]: ConfigType[]
+  [PackagesCategoryEnum.PHOTOS]: ConfigType[]
   [PackagesCategoryEnum.DECORATES]: ConfigType[]
 }

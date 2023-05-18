@@ -129,7 +129,9 @@ const searchHandle = (key: string | null) => {
   }
   loading.value = true
   showPopover.value = true
-  searchRes.value = List.filter((e: ConfigType) => !key || e.title.toLowerCase().includes(key.toLowerCase()))
+  searchRes.value = List.filter(
+    (e: ConfigType) => !e.disabled && (!key || e.title.toLowerCase().includes(key.toLowerCase()))
+  )
   setTimeout(() => {
     loading.value = undefined
   }, 500)
@@ -146,6 +148,7 @@ const listenerCloseHandle = (e: Event) => {
 
 // 选择处理
 const selectChartHandle = async (item: ConfigType) => {
+  if (item.disabled) return
   try {
     loadingStart()
     // 动态注册图表组件

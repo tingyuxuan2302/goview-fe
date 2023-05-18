@@ -11,8 +11,8 @@
         v-for="(item, index) in menuOptions"
         :key="index"
         draggable
-        @dragstart="dragStartHandle($event, item)"
-        @dragend="dragendHandle"
+        @dragstart="!item.disabled && dragStartHandle($event, item)"
+        @dragend="!item.disabled && dragendHandle"
         @dblclick="dblclickHandle(item)"
       >
         <div class="list-header">
@@ -69,6 +69,7 @@ const chartMode: Ref<ChartModeEnum> = computed(() => {
 
 // 拖拽处理
 const dragStartHandle = (e: DragEvent, item: ConfigType) => {
+  if (item.disabled) return
   // 动态注册图表组件
   componentInstall(item.chartKey, fetchChartComponent(item))
   componentInstall(item.conKey, fetchConfigComponent(item))
@@ -85,6 +86,7 @@ const dragendHandle = () => {
 
 // 双击添加
 const dblclickHandle = async (item: ConfigType) => {
+  if (item.disabled) return
   try {
     loadingStart()
     // 动态注册图表组件
