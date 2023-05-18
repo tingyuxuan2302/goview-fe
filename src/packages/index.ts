@@ -30,11 +30,10 @@ export let packagesList: PackagesType = {
  */
 export const createComponent = async (targetData: ConfigType) => {
   const { virtualComponent, category, key } = targetData
-  const chart = await import(
-    virtualComponent
-      ? `${virtualComponent}/config.ts`
-      : `./components/${targetData.package}/${category}/${key}/config.ts`
-  )
+  const componentPath = virtualComponent
+    ? `${virtualComponent}/config.ts`
+    : `./components/${targetData.package}/${category}/${key}/config.ts`
+  const chart = await import(/* @vite-ignore */ componentPath)
   return new chart.default()
 }
 
