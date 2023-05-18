@@ -28,6 +28,7 @@ export type ConfigType = {
   dataset?: any // 组件预设的 dataset 值
   disabled?: boolean // 禁用的
   clickHandle?: Function // 单击事件
+  icon?: string // 图标
 }
 
 // 数据请求

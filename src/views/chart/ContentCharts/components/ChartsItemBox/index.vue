@@ -23,7 +23,8 @@
           </n-text>
         </div>
         <div class="list-center go-flex-center go-transition">
-          <chart-glob-image class="list-img" :chartConfig="item"></chart-glob-image>
+          <Icon v-if="item.icon" class="list-img" :icon="item.icon" color="#999" width="48" />
+          <chart-glob-image v-else class="list-img" :chartConfig="item" />
         </div>
         <div class="list-bottom">
           <n-text class="list-bottom-text" depth="3">
@@ -48,6 +49,7 @@ import { DragKeyEnum } from '@/enums/editPageEnum'
 import { createComponent } from '@/packages'
 import { ConfigType, CreateComponentType } from '@/packages/index.d'
 import { fetchConfigComponent, fetchChartComponent } from '@/packages/index'
+import { Icon } from '@iconify/vue'
 
 import omit from 'lodash/omit'
 
