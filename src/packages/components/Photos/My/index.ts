@@ -53,7 +53,8 @@ const addConfig = {
         package: PackagesCategoryEnum.PHOTOS,
         title: e.fileName,
         image: e.url,
-        dataset: e.url
+        dataset: e.url,
+        virtualComponent: './components/Informations/Mores/Image' // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
       }
       userPhotosList.push(newPhoto)
       setLocalStorage(StoreKey, userPhotosList)
