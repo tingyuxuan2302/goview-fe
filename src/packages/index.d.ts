@@ -24,6 +24,11 @@ export type ConfigType = {
   package: string
   chartFrame?: ChartFrameEnum
   image: string
+  virtualComponent?: string // 虚拟组件Path，指定后创建该组件时，从指定路径创建
+  dataset?: any // 组件预设的 dataset 值
+  disabled?: boolean // 禁用的
+  clickHandle?: Function // 单击事件
+  icon?: string // 图标
 }
 
 // 数据请求
@@ -120,7 +125,7 @@ export interface PublicConfigType {
   }
   filter?: string
   status: StatusType
-  interactActions?: InteractActionsType[],
+  interactActions?: InteractActionsType[]
   events: {
     baseEvent: {
       [K in BaseEvent]?: string
@@ -156,6 +161,8 @@ export enum PackagesCategoryEnum {
   CHARTS = 'Charts',
   TABLES = 'Tables',
   INFORMATIONS = 'Informations',
+  PHOTOS = 'Photos',
+  ICONS = 'Icons',
   DECORATES = 'Decorates'
 }
 
@@ -164,6 +171,8 @@ export enum PackagesCategoryName {
   CHARTS = '图表',
   TABLES = '列表',
   INFORMATIONS = '信息',
+  PHOTOS = '图片',
+  ICONS = '图标',
   DECORATES = '小组件'
 }
 
@@ -178,5 +187,7 @@ export type PackagesType = {
   [PackagesCategoryEnum.CHARTS]: ConfigType[]
   [PackagesCategoryEnum.INFORMATIONS]: ConfigType[]
   [PackagesCategoryEnum.TABLES]: ConfigType[]
+  [PackagesCategoryEnum.PHOTOS]: ConfigType[]
+  [PackagesCategoryEnum.ICONS]: ConfigType[]
   [PackagesCategoryEnum.DECORATES]: ConfigType[]
 }

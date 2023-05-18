@@ -7,14 +7,8 @@ import { PackagesCategoryEnum, PackagesCategoryName, PackagesType } from '@/pack
 import { usePackagesStore } from '@/store/modules/packagesStore/packagesStore'
 import { ChartLayoutStoreEnum } from '@/store/modules/chartLayoutStore/chartLayoutStore.d'
 // 图标
-const { BarChartIcon } = icon.ionicons5
-const {
-  TableSplitIcon,
-  RoadmapIcon,
-  SpellCheckIcon,
-  GraphicalDataFlowIcon,
-} = icon.carbon
-
+const { AirPlaneIcon, ImageIcon, BarChartIcon } = icon.ionicons5
+const { TableSplitIcon, RoadmapIcon, SpellCheckIcon, GraphicalDataFlowIcon } = icon.carbon
 
 // 图表
 export type MenuOptionsType = {
@@ -30,20 +24,28 @@ const menuOptions: MenuOptionsType[] = []
 const packagesListObj = {
   [PackagesCategoryEnum.CHARTS]: {
     icon: renderIcon(RoadmapIcon),
-    label: PackagesCategoryName.CHARTS,
+    label: PackagesCategoryName.CHARTS
   },
   [PackagesCategoryEnum.INFORMATIONS]: {
     icon: renderIcon(SpellCheckIcon),
-    label: PackagesCategoryName.INFORMATIONS,
+    label: PackagesCategoryName.INFORMATIONS
   },
   [PackagesCategoryEnum.TABLES]: {
     icon: renderIcon(TableSplitIcon),
-    label: PackagesCategoryName.TABLES,
+    label: PackagesCategoryName.TABLES
+  },
+  [PackagesCategoryEnum.PHOTOS]: {
+    icon: renderIcon(ImageIcon),
+    label: PackagesCategoryName.PHOTOS
+  },
+  [PackagesCategoryEnum.ICONS]: {
+    icon: renderIcon(AirPlaneIcon),
+    label: PackagesCategoryName.ICONS
   },
   [PackagesCategoryEnum.DECORATES]: {
     icon: renderIcon(GraphicalDataFlowIcon),
-    label: PackagesCategoryName.DECORATES,
-  },
+    label: PackagesCategoryName.DECORATES
+  }
 }
 
 // 处理列表
@@ -56,7 +58,7 @@ const handlePackagesList = () => {
       // @ts-ignore
       label: packagesListObj[val].label,
       // @ts-ignore
-      list: getPackagesList[val],
+      list: getPackagesList[val]
     })
   }
 }
@@ -81,12 +83,4 @@ const clickItemHandle = (key: string, item: any) => {
   beforeSelect = key
 }
 
-export {
-  getCharts,
-  BarChartIcon,
-  themeColor,
-  selectOptions,
-  selectValue,
-  clickItemHandle,
-  menuOptions,
-}
+export { getCharts, BarChartIcon, themeColor, selectOptions, selectValue, clickItemHandle, menuOptions }
