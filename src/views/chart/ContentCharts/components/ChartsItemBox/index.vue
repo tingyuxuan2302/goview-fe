@@ -14,6 +14,7 @@
         @dragstart="!item.disabled && dragStartHandle($event, item)"
         @dragend="!item.disabled && dragendHandle"
         @dblclick="dblclickHandle(item)"
+        @click="clickHandle(item)"
       >
         <div class="list-header">
           <mac-os-control-btn class="list-header-control-btn" :mini="true" :disabled="true"></mac-os-control-btn>
@@ -108,6 +109,9 @@ const dblclickHandle = async (item: ConfigType) => {
     window['$message'].warning(`图表正在研发中, 敬请期待...`)
   }
 }
+
+// 单击事件
+const clickHandle = (item: ConfigType) => item.clickHandle && item.clickHandle(item)
 
 watch(
   () => chartMode.value,
