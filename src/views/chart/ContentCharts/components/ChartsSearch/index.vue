@@ -37,7 +37,8 @@
               :title="item.title"
               @click="selectChartHandle(item)"
             >
-              <chart-glob-image class="list-item-img" :chartConfig="item"></chart-glob-image>
+              <Icon v-if="item.icon" class="list-img" :icon="item.icon" color="#999" width="20" />
+              <chart-glob-image v-else class="list-item-img" :chartConfig="item" />
               <n-text class="list-item-fs" depth="2">{{ item.title }}</n-text>
             </div>
           </n-scrollbar>
@@ -78,6 +79,7 @@ import { isString, addEventListener, removeEventListener } from '@/utils'
 import { fetchConfigComponent, fetchChartComponent } from '@/packages/index'
 import { componentInstall, loadingStart, loadingFinish, loadingError } from '@/utils'
 import { ChartGlobImage } from '@/components/Pages/ChartGlobImage'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps({
   menuOptions: {
@@ -228,9 +230,15 @@ $searchWidth: 176px;
             font-size: 12px;
           }
           &-img {
-            height: 28px;
+            height: 20px;
+            max-width: 30px;
             margin-right: 5px;
             border-radius: 5px;
+          }
+          & > svg {
+            min-width: 20px;
+            min-height: 20px;
+            margin-right: 5px;
           }
           &:hover {
             &::before {
