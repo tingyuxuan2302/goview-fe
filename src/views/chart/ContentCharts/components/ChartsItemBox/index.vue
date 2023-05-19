@@ -22,7 +22,7 @@
             <n-ellipsis>{{ item.title }}</n-ellipsis>
           </n-text>
         </div>
-        <div class="list-center go-flex-center go-transition">
+        <div class="list-center go-flex-center go-transition" draggable="true">
           <Icon v-if="item.icon" class="list-img" :icon="item.icon" color="#999" width="48" />
           <chart-glob-image v-else class="list-img" :chartConfig="item" />
         </div>
