@@ -56,11 +56,29 @@ const onChange = (v: number | number[]) => {
   }
 }
 
-// 手动更新
 watch(
   () => props.chartConfig.option.dataset,
   (newData: number | number[]) => {
     option.dataset = newData
+    // 关联目标组件首次请求带上默认内容
+    onChange(newData)
+  },
+  {
+    immediate: true
+  }
+)
+
+// 手动更新
+watch(
+  () => props.chartConfig.option.differValue,
+  (newData: number) => {
+    if (props.chartConfig.option.differValue === 0) return
+    if (typeof option.dataset === 'object') {
+      option.dataset[0] = dayjs().add(newData, 'day').valueOf()
+      option.dataset[1] = dayjs().add(newData, 'day').valueOf()
+    } else {
+      option.dataset = dayjs().add(newData, 'day').valueOf()
+    }
     // 关联目标组件首次请求带上默认内容
     onChange(newData)
   },
