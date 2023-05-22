@@ -11,9 +11,10 @@
         v-for="(item, index) in menuOptions"
         :key="index"
         draggable
-        @dragstart="dragStartHandle($event, item)"
-        @dragend="dragendHandle"
+        @dragstart="!item.disabled && dragStartHandle($event, item)"
+        @dragend="!item.disabled && dragendHandle"
         @dblclick="dblclickHandle(item)"
+        @click="clickHandle(item)"
       >
         <div class="list-header">
           <mac-os-control-btn class="list-header-control-btn" :mini="true" :disabled="true"></mac-os-control-btn>
@@ -21,8 +22,9 @@
             <n-ellipsis>{{ item.title }}</n-ellipsis>
           </n-text>
         </div>
-        <div class="list-center go-flex-center go-transition">
-          <chart-glob-image class="list-img" :chartConfig="item"></chart-glob-image>
+        <div class="list-center go-flex-center go-transition" draggable="true">
+          <Icon v-if="item.icon" class="list-img" :icon="item.icon" color="#999" width="48" />
+          <chart-glob-image v-else class="list-img" :chartConfig="item" />
         </div>
         <div class="list-bottom">
           <n-text class="list-bottom-text" depth="3">
@@ -47,6 +49,7 @@ import { DragKeyEnum } from '@/enums/editPageEnum'
 import { createComponent } from '@/packages'
 import { ConfigType, CreateComponentType } from '@/packages/index.d'
 import { fetchConfigComponent, fetchChartComponent } from '@/packages/index'
+import { Icon } from '@iconify/vue'
 
 import omit from 'lodash/omit'
 
@@ -69,6 +72,7 @@ const chartMode: Ref<ChartModeEnum> = computed(() => {
 
 // 拖拽处理
 const dragStartHandle = (e: DragEvent, item: ConfigType) => {
+  if (item.disabled) return
   // 动态注册图表组件
   componentInstall(item.chartKey, fetchChartComponent(item))
   componentInstall(item.conKey, fetchConfigComponent(item))
@@ -85,6 +89,7 @@ const dragendHandle = () => {
 
 // 双击添加
 const dblclickHandle = async (item: ConfigType) => {
+  if (item.disabled) return
   try {
     loadingStart()
     // 动态注册图表组件
@@ -92,6 +97,10 @@ const dblclickHandle = async (item: ConfigType) => {
     componentInstall(item.conKey, fetchConfigComponent(item))
     // 创建新图表组件
     let newComponent: CreateComponentType = await createComponent(item)
+    if (item.virtualComponent) {
+      item.dataset && (newComponent.option.dataset = item.dataset)
+      newComponent.chartConfig.title = item.title
+    }
     // 添加
     chartEditStore.addComponentList(newComponent, false, true)
     // 选中
@@ -102,6 +111,9 @@ const dblclickHandle = async (item: ConfigType) => {
     window['$message'].warning(`图表正在研发中, 敬请期待...`)
   }
 }
+
+// 单击事件
+const clickHandle = (item: ConfigType) => item.clickHandle && item.clickHandle(item)
 
 watch(
   () => chartMode.value,

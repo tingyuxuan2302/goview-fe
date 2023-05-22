@@ -2,6 +2,8 @@ import { ChartList } from '@/packages/components/Charts/index'
 import { DecorateList } from '@/packages/components/Decorates/index'
 import { InformationList } from '@/packages/components/Informations/index'
 import { TableList } from '@/packages/components/Tables/index'
+import { PhotoList } from '@/packages/components/Photos/index'
+import { IconList } from '@/packages/components/Icons/index'
 import { PackagesCategoryEnum, PackagesType, ConfigType, FetchComFlagType } from '@/packages/index.d'
 
 const configModules: Record<string, { default: string }> = import.meta.glob('./components/**/config.vue', {
@@ -19,6 +21,8 @@ export let packagesList: PackagesType = {
   [PackagesCategoryEnum.CHARTS]: ChartList,
   [PackagesCategoryEnum.INFORMATIONS]: InformationList,
   [PackagesCategoryEnum.TABLES]: TableList,
+  [PackagesCategoryEnum.PHOTOS]: PhotoList,
+  [PackagesCategoryEnum.ICONS]: IconList,
   [PackagesCategoryEnum.DECORATES]: DecorateList
 }
 
@@ -27,8 +31,11 @@ export let packagesList: PackagesType = {
  * @param targetData
  */
 export const createComponent = async (targetData: ConfigType) => {
-  const { category, key } = targetData
-  const chart = await import(`./components/${targetData.package}/${category}/${key}/config.ts`)
+  const { virtualComponent, category, key } = targetData
+  const componentPath = virtualComponent
+    ? `${virtualComponent}/config.ts`
+    : `./components/${targetData.package}/${category}/${key}/config.ts`
+  const chart = await import(/* @vite-ignore */ componentPath)
   return new chart.default()
 }
 
@@ -71,6 +78,8 @@ export const fetchConfigComponent = (dropData: ConfigType) => {
  */
 export const fetchImages = async (targetData?: ConfigType) => {
   if (!targetData) return ''
+  // 判断图片是否为 url，是则直接返回该 url
+  if (/^(?:https?):\/\/[^\s/.?#].[^\s]*/.test(targetData.image)) return targetData.image
   // 新数据动态处理
   const { image, package: targetDataPackage } = targetData
   // 兼容旧数据

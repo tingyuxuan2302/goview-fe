@@ -12,5 +12,7 @@ export enum StorageEnum {
   // 工作台布局配置
   GO_CHART_LAYOUT_STORE = 'GO_CHART_LAYOUT',
   // 工作台需要保存的数据
-  GO_CHART_STORAGE_LIST = 'GO_CHART_STORAGE_LIST'
+  GO_CHART_STORAGE_LIST = 'GO_CHART_STORAGE_LIST',
+  // 用户存储的图片媒体
+  GO_USER_MEDIA_PHOTOS = 'GO_USER_MEDIA_PHOTOS'
 }
