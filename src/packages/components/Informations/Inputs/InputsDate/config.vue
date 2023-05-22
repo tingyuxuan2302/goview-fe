@@ -1,31 +1,36 @@
 <template>
   <collapse-item name="展示方式" :expanded="true">
     <setting-item-box name="选择方式">
-      <n-select
-        v-model:value="optionData.isPanel"
-        size="small"
-        :options="panelOptions"
-      />
+      <n-select v-model:value="optionData.isPanel" size="small" :options="panelOptions" />
     </setting-item-box>
   </collapse-item>
 
   <collapse-item name="时间配置" :expanded="true">
     <setting-item-box name="基础">
       <setting-item name="类型">
-        <n-select
-          v-model:value="optionData.componentInteractEventKey"
-          size="small"
-          :options="datePickerTypeOptions"
-        />
+        <n-select v-model:value="optionData.componentInteractEventKey" size="small" :options="datePickerTypeOptions" />
       </setting-item>
     </setting-item-box>
 
     <setting-item-box name="默认值" :alone="true">
-      <n-date-picker
-        size="small"
-        v-model:value="optionData.dataset"
-        :type="optionData.componentInteractEventKey"
-      />
+      <n-date-picker size="small" v-model:value="optionData.dataset" :type="optionData.componentInteractEventKey" />
+    </setting-item-box>
+
+    <setting-item-box :alone="true">
+      <template #name>
+        <n-text>动态</n-text>
+        <n-tooltip trigger="hover">
+          <template #trigger>
+            <n-icon size="21" :depth="3">
+              <help-outline-icon></help-outline-icon>
+            </n-icon>
+          </template>
+          <n-text>动态值不为0时，默认值:取当天时间相加当前值</n-text>
+        </n-tooltip>
+      </template>
+      <n-input-number v-model:value="optionData.differValue" class="input-num-width" size="small" :min="-40" :max="40">
+        <template #suffix> 天 </template>
+      </n-input-number>
     </setting-item-box>
   </collapse-item>
 </template>
