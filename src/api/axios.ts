@@ -80,7 +80,7 @@ axiosInstance.interceptors.response.use(
     return Promise.resolve(res.data)
   },
   (err: AxiosError) => {
-    const { status } = err
+    const status = err.response?.status
     switch (status) {
       case 401:
         routerTurnByName(PageEnum.BASE_LOGIN_NAME)
