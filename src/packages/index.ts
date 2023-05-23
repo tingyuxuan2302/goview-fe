@@ -21,9 +21,9 @@ export let packagesList: PackagesType = {
   [PackagesCategoryEnum.CHARTS]: ChartList,
   [PackagesCategoryEnum.INFORMATIONS]: InformationList,
   [PackagesCategoryEnum.TABLES]: TableList,
+  [PackagesCategoryEnum.DECORATES]: DecorateList,
   [PackagesCategoryEnum.PHOTOS]: PhotoList,
-  [PackagesCategoryEnum.ICONS]: IconList,
-  [PackagesCategoryEnum.DECORATES]: DecorateList
+  [PackagesCategoryEnum.ICONS]: IconList
 }
 
 /**
@@ -31,9 +31,10 @@ export let packagesList: PackagesType = {
  * @param targetData
  */
 export const createComponent = async (targetData: ConfigType) => {
-  const { virtualComponent, category, key } = targetData
-  const componentPath = virtualComponent
-    ? `${virtualComponent}/config.ts`
+  const { redirectComponent, category, key } = targetData
+  // redirectComponent 是给图片组件库和图标组件库使用的
+  const componentPath = redirectComponent
+    ? `${redirectComponent}/config.ts`
     : `./components/${targetData.package}/${category}/${key}/config.ts`
   const chart = await import(/* @vite-ignore */ componentPath)
   return new chart.default()
@@ -78,8 +79,8 @@ export const fetchConfigComponent = (dropData: ConfigType) => {
  */
 export const fetchImages = async (targetData?: ConfigType) => {
   if (!targetData) return ''
-  // 判断图片是否为 url，是则直接返回该 url
-  if (/^(?:https?):\/\/[^\s/.?#].[^\s]*/.test(targetData.image)) return targetData.image
+  // 正则判断图片是否为 url，是则直接返回该 url
+  if (/^(http|https):\/\/([\w.]+\/?)\S*/.test(targetData.image)) return targetData.image
   // 新数据动态处理
   const { image, package: targetDataPackage } = targetData
   // 兼容旧数据

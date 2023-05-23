@@ -71,14 +71,14 @@ const iconNames = [
 ]
 const iconList = iconNames.map(name => ({
   ...IconConfig,
-  category: ChatCategoryEnum.UNICONS,
-  categoryName: ChatCategoryEnumName.UNICONS,
+  category: ChatCategoryEnum.COMMON,
+  categoryName: ChatCategoryEnumName.COMMON,
   package: PackagesCategoryEnum.ICONS,
   image: name,
   icon: name,
   dataset: name,
   title: name.replace('uim:', ''),
-  virtualComponent: './components/Icons/Icon' // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
+  redirectComponent: './components/Icons/Icon' // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
 }))
 
 export default iconList

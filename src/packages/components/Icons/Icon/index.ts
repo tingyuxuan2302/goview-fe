@@ -6,8 +6,8 @@ export const IconConfig: ConfigType = {
   chartKey: 'VIcon',
   conKey: 'VCIcon',
   title: '图标',
-  category: ChatCategoryEnum.UNICONS,
-  categoryName: ChatCategoryEnumName.UNICONS,
+  category: ChatCategoryEnum.COMMON,
+  categoryName: ChatCategoryEnumName.COMMON,
   package: PackagesCategoryEnum.ICONS,
   chartFrame: ChartFrameEnum.COMMON,
   image: 'icon.png'

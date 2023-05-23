@@ -71,7 +71,7 @@ import { ref, onUnmounted } from 'vue'
 import { icon } from '@/plugins'
 import { createComponent } from '@/packages'
 import { ConfigType, CreateComponentType } from '@/packages/index.d'
-import { themeColor, MenuOptionsType } from '../../hooks/useAside.hook'
+import { themeColor } from '../../hooks/useLayout.hook'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { ChartModeEnum, ChartLayoutStoreEnum } from '@/store/modules/chartLayoutStore/chartLayoutStore.d'
 import { useChartLayoutStore } from '@/store/modules/chartLayoutStore/chartLayoutStore'
@@ -158,7 +158,7 @@ const selectChartHandle = async (item: ConfigType) => {
     componentInstall(item.conKey, fetchConfigComponent(item))
     // 创建新图表组件
     let newComponent: CreateComponentType = await createComponent(item)
-    if (item.virtualComponent) {
+    if (item.redirectComponent) {
       item.dataset && (newComponent.option.dataset = item.dataset)
       newComponent.chartConfig.title = item.title
     }

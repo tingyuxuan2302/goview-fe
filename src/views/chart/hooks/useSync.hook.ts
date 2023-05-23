@@ -132,7 +132,7 @@ export const useSync = () => {
     ) => {
       // 补充 class 上的方法
       let newComponent: CreateComponentType = await createComponent(_componentInstance.chartConfig)
-      if (_componentInstance.chartConfig.virtualComponent) {
+      if (_componentInstance.chartConfig.redirectComponent) {
         _componentInstance.chartConfig.dataset && (newComponent.option.dataset = _componentInstance.chartConfig.dataset)
         newComponent.chartConfig.title = _componentInstance.chartConfig.title
       }

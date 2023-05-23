@@ -23,8 +23,11 @@ import { ref, watch, computed, reactive } from 'vue'
 import { ConfigType } from '@/packages/index.d'
 import { useSettingStore } from '@/store/modules/settingStore/settingStore'
 import { loadAsyncComponent } from '@/utils'
+import { usePackagesStore } from '@/store/modules/packagesStore/packagesStore'
+import { PackagesCategoryEnum } from '@/packages/index.d'
 
 const ChartsItemBox = loadAsyncComponent(() => import('../ChartsItemBox/index.vue'))
+const packagesStore = usePackagesStore()
 
 const props = defineProps({
   selectOptions: {
@@ -61,7 +64,7 @@ let packages = reactive<{
   saveSelectOptions: {}
 })
 
-const selectValue = ref<string>()
+const selectValue = ref<string>('all')
 
 // 设置初始列表
 const setSelectOptions = (categorys: any) => {
@@ -79,7 +82,6 @@ watch(
     if (!newData) return
     newData.list.forEach((e: ConfigType) => {
       const value: ConfigType[] = (packages.categorys as any)[e.category]
-      // @ts-ignore
       packages.categorys[e.category] = value && value.length ? [...value, e] : [e]
       packages.categoryNames[e.category] = e.categoryName
       packages.categorys['all'].push(e)
@@ -97,6 +99,16 @@ watch(
   },
   {
     immediate: true
+  }
+)
+
+watch(
+  () => packagesStore.newPhoto,
+  newPhoto => {
+    if (!newPhoto) return
+    const newPhotoCategory = newPhoto.category
+    packages.categorys[newPhotoCategory].splice(1, 0, newPhoto)
+    packages.categorys['all'].splice(1, 0, newPhoto)
   }
 )
 

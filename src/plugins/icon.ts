@@ -61,14 +61,14 @@ import {
   Pulse as PulseIcon,
   Folder as FolderIcon,
   FolderOpen as FolderOpenIcon,
-  Image as ImageIcon,
+  ImageOutline as ImageIcon,
   Images as ImagesIcon,
   List as ListIcon,
   EyeOutline as EyeOutlineIcon,
   EyeOffOutline as EyeOffOutlineIcon,
   Albums as AlbumsIcon,
   Analytics as AnalyticsIcon,
-  Airplane as AirPlaneIcon
+  AirplaneOutline as AirPlaneOutlineIcon
 } from '@vicons/ionicons5'
 
 import {
@@ -244,7 +244,7 @@ const ionicons5 = {
   // 分析
   AnalyticsIcon,
   // 飞机
-  AirPlaneIcon
+  AirPlaneOutlineIcon
 }
 
 const carbon = {

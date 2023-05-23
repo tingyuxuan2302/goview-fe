@@ -33,6 +33,7 @@
     "highlight.js": "^11.5.0",
     "html2canvas": "^1.4.1",
     "keymaster": "^1.6.2",
+    "mitt": "^3.0.0",
     "monaco-editor": "^0.33.0",
     "naive-ui": "2.34.3",
     "pinia": "^2.0.13",

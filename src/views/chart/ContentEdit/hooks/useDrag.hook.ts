@@ -33,7 +33,7 @@ export const dragHandle = async (e: DragEvent) => {
 
     // 创建新图表组件
     let newComponent: CreateComponentType = await createComponent(dropData)
-    if (dropData.virtualComponent) {
+    if (dropData.redirectComponent) {
       dropData.dataset && (newComponent.option.dataset = dropData.dataset)
       newComponent.chartConfig.title = dropData.title
     }

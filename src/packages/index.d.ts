@@ -15,20 +15,34 @@ export enum ChartFrameEnum {
 
 // 组件配置
 export type ConfigType = {
+  // 组件 key
   key: string
+  // 画布组件 key
   chartKey: string
+  // 右侧设置面板组件 key
   conKey: string
+  // 标题
   title: string
+  // 分类
   category: string
+  // 分类名称
   categoryName: string
+  // 所属包
   package: string
+  // 归类
   chartFrame?: ChartFrameEnum
+  // 预览图
   image: string
-  virtualComponent?: string // 虚拟组件Path，指定后创建该组件时，从指定路径创建
-  dataset?: any // 组件预设的 dataset 值
-  disabled?: boolean // 禁用的
-  clickHandle?: Function // 单击事件
-  icon?: string // 图标
+  // 从指定路径创建创建该组件
+  redirectComponent?: string
+  // 组件预设的 dataset 值(图片/图标)
+  dataset?: any
+  // 禁用 拖拽或双击生成组件
+  disabled?: boolean
+  // 图标
+  icon?: string
+  // 自定义单击事件
+  clickHandle?: Function
 }
 
 // 数据请求

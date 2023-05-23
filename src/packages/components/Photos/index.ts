@@ -1,4 +1,4 @@
-import My from './My'
+import Private from './Private'
 import Share from './Share'
 
-export const PhotoList = [...Share, ...My]
+export const PhotoList = [...Private, ...Share]

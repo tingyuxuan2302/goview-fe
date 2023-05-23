@@ -8,8 +8,8 @@
       <!-- 每一项组件的渲染 -->
       <div
         class="item-box"
-        v-for="(item, index) in menuOptions"
-        :key="index"
+        v-for="item in menuOptions"
+        :key="item.title"
         draggable
         @dragstart="!item.disabled && dragStartHandle($event, item)"
         @dragend="!item.disabled && dragendHandle"
@@ -55,7 +55,7 @@ import omit from 'lodash/omit'
 
 const chartEditStore = useChartEditStore()
 
-defineProps({
+const props = defineProps({
   menuOptions: {
     type: Array as PropType<ConfigType[]>,
     default: () => []
@@ -97,7 +97,7 @@ const dblclickHandle = async (item: ConfigType) => {
     componentInstall(item.conKey, fetchConfigComponent(item))
     // 创建新图表组件
     let newComponent: CreateComponentType = await createComponent(item)
-    if (item.virtualComponent) {
+    if (item.redirectComponent) {
       item.dataset && (newComponent.option.dataset = item.dataset)
       newComponent.chartConfig.title = item.title
     }
@@ -125,6 +125,10 @@ watch(
     }
   }
 )
+
+watch(() => props.menuOptions, (n) => {
+  console.log(n)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -177,7 +181,7 @@ $halfCenterHeight: 50px;
       overflow: hidden;
       .list-img {
         height: 100px;
-        width: 140px;
+        max-width: 140px;
         border-radius: 6px;
         @extend .go-transition;
       }
@@ -208,6 +212,9 @@ $halfCenterHeight: 50px;
     .item-box {
       width: $halfItemWidth;
       max-width: $maxItemWidth;
+      .list-img {
+        max-width: 76px;
+      }
     }
     .list-center {
       height: $halfCenterHeight;
