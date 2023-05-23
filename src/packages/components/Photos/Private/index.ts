@@ -56,7 +56,7 @@ const addConfig = {
   disabled: true,
   clickHandle: (photoConfig: ConfigType) => {
     goDialog({
-      message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中，请自行对接后端接口！`,
+      message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中，请自行对接后端接口！现只编译成 base64 进行渲染，对接后端请返回地址使用！`,
       transformOrigin: 'center',
       onPositiveCallback: () => {
         uploadFile((e: UploadCompletedEventType) => {
