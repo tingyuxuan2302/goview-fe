@@ -9,6 +9,6 @@ export const IconConfig: ConfigType = {
   category: ChatCategoryEnum.COMMON,
   categoryName: ChatCategoryEnumName.COMMON,
   package: PackagesCategoryEnum.ICONS,
-  chartFrame: ChartFrameEnum.COMMON,
+  chartFrame: ChartFrameEnum.STATIC,
   image: 'icon.png'
 }

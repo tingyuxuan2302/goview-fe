@@ -1,4 +1,4 @@
-import { ConfigType, PackagesCategoryEnum } from '@/packages/index.d'
+import { ChartFrameEnum, ConfigType, PackagesCategoryEnum } from '@/packages/index.d'
 import { ImageConfig } from '@/packages/components/Informations/Mores/Image/index'
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../index.d'
 import { setLocalStorage, getLocalStorage, goDialog } from '@/utils'
@@ -50,6 +50,7 @@ const addConfig = {
   category: ChatCategoryEnum.PRIVATE,
   categoryName: ChatCategoryEnumName.PRIVATE,
   package: PackagesCategoryEnum.PHOTOS,
+  chartFrame: ChartFrameEnum.STATIC,
   title: '点击上传图片',
   image: 'upload.png',
   redirectComponent: './components/Informations/Mores/Image', // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
@@ -67,6 +68,7 @@ const addConfig = {
             category: ChatCategoryEnum.PRIVATE,
             categoryName: ChatCategoryEnumName.PRIVATE,
             package: PackagesCategoryEnum.PHOTOS,
+            chartFrame: ChartFrameEnum.STATIC,
             title: e.fileName,
             image: e.url,
             dataset: e.url,

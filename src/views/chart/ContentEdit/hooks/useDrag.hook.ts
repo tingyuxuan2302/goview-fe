@@ -36,6 +36,7 @@ export const dragHandle = async (e: DragEvent) => {
     if (dropData.redirectComponent) {
       dropData.dataset && (newComponent.option.dataset = dropData.dataset)
       newComponent.chartConfig.title = dropData.title
+      newComponent.chartConfig.chartFrame = dropData.chartFrame
     }
 
     setComponentPosition(newComponent, e.offsetX - newComponent.attr.w / 2, e.offsetY - newComponent.attr.h / 2)
