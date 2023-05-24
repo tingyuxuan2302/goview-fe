@@ -59,7 +59,7 @@ const addConfig = {
     // 点击上传事件
     addHandle: (photoConfig: ConfigType) => {
       goDialog({
-        message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中(暂存上限5M，超过不再缓存新图片)，请自行对接后端接口！现只编译成 base64 进行渲染，对接后端请返回地址使用！`,
+        message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中。当前图片暂存上限5M，超过不再缓存新图片，请自行对接后端接口！现编译成 base64 进行渲染，对接后端后请使用【URL地址】进行交互！`,
         transformOrigin: 'center',
         onPositiveCallback: () => {
           uploadFile((e: UploadCompletedEventType) => {
