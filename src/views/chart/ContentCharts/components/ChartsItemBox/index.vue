@@ -31,6 +31,19 @@
             <n-ellipsis style="max-width: 90%">{{ item.title }}</n-ellipsis>
           </n-text>
         </div>
+        <!-- 遮罩 -->
+        <div v-if="item.disabled" class="list-model"></div>
+        <!-- 工具栏 -->
+        <div v-if="isShowTools(item)" class="list-tools go-transition">
+          <n-button text type="default" color="#ffffff">
+            <template #icon>
+              <n-icon>
+                <TrashIcon />
+              </n-icon>
+            </template>
+            <span>删除</span>
+          </n-button>
+        </div>
       </div>
     </div>
   </div>
@@ -47,13 +60,16 @@ import { useChartLayoutStore } from '@/store/modules/chartLayoutStore/chartLayou
 import { componentInstall, loadingStart, loadingFinish, loadingError, JSONStringify } from '@/utils'
 import { DragKeyEnum } from '@/enums/editPageEnum'
 import { createComponent } from '@/packages'
-import { ConfigType, CreateComponentType } from '@/packages/index.d'
+import { ConfigType, CreateComponentType, PackagesCategoryEnum } from '@/packages/index.d'
+import { ChatCategoryEnum } from '@/packages/components/Photos/index.d'
 import { fetchConfigComponent, fetchChartComponent } from '@/packages/index'
 import { Icon } from '@iconify/vue'
+import { icon } from '@/plugins'
 
 import omit from 'lodash/omit'
 
 const chartEditStore = useChartEditStore()
+const { TrashIcon } = icon.ionicons5
 
 const props = defineProps({
   menuOptions: {
@@ -64,6 +80,11 @@ const props = defineProps({
 
 const chartLayoutStore = useChartLayoutStore()
 const contentChartsItemBoxRef = ref()
+
+// 判断工具栏展示
+const isShowTools = (item: ConfigType) => {
+  return !item.disabled && item.package === PackagesCategoryEnum.PHOTOS && item.category === ChatCategoryEnum.PRIVATE
+}
 
 // 组件展示状态
 const chartMode: Ref<ChartModeEnum> = computed(() => {
@@ -114,7 +135,7 @@ const dblclickHandle = async (item: ConfigType) => {
 }
 
 // 单击事件
-const clickHandle = (item: ConfigType) => item.clickHandle && item.clickHandle(item)
+const clickHandle = (item: ConfigType) => item?.configEvents?.addHandle(item)
 
 watch(
   () => chartMode.value,
@@ -127,9 +148,12 @@ watch(
   }
 )
 
-watch(() => props.menuOptions, (n) => {
-  console.log(n)
-})
+watch(
+  () => props.menuOptions,
+  n => {
+    console.log(n)
+  }
+)
 </script>
 
 <style lang="scss" scoped>
@@ -152,6 +176,7 @@ $halfCenterHeight: 50px;
   gap: 9px;
   transition: all 0.7s linear;
   .item-box {
+    position: relative;
     margin: 0;
     width: $itemWidth;
     overflow: hidden;
@@ -162,7 +187,10 @@ $halfCenterHeight: 50px;
     &:hover {
       @include hover-border-color('background-color4');
       .list-img {
-        transform: scale(1.1);
+        transform: scale(1.08);
+      }
+      .list-tools {
+        opacity: 1;
       }
     }
     .list-header {
@@ -192,6 +220,33 @@ $halfCenterHeight: 50px;
       .list-bottom-text {
         font-size: 12px;
         padding-left: 5px;
+      }
+    }
+    .list-model {
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0);
+    }
+    .list-tools {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      bottom: 0;
+      left: 0;
+      margin: 0 4px 2px;
+      height: 26px;
+      width: calc(100% - 8px);
+      opacity: 0;
+      border-radius: 6px;
+      backdrop-filter: blur(20px);
+      background-color: rgba(255, 255, 255, 0.1);
+      &:hover {
+        background-color: rgba(232, 128, 128, 0.7);
       }
     }
   }

@@ -41,8 +41,8 @@ export type ConfigType = {
   disabled?: boolean
   // 图标
   icon?: string
-  // 自定义单击事件
-  clickHandle?: Function
+  // 事件
+  configEvents?: { [T: string]: Function }
 }
 
 // 数据请求

@@ -55,33 +55,43 @@ const addConfig = {
   image: 'upload.png',
   redirectComponent: './components/Informations/Mores/Image', // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
   disabled: true,
-  clickHandle: (photoConfig: ConfigType) => {
-    goDialog({
-      message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中，请自行对接后端接口！现只编译成 base64 进行渲染，对接后端请返回地址使用！`,
-      transformOrigin: 'center',
-      onPositiveCallback: () => {
-        uploadFile((e: UploadCompletedEventType) => {
-          // 和上传组件一样配置，更换标题，图片，预设数据
-          const packagesStore = usePackagesStore()
-          const newPhoto = {
-            ...ImageConfig,
-            category: ChatCategoryEnum.PRIVATE,
-            categoryName: ChatCategoryEnumName.PRIVATE,
-            package: PackagesCategoryEnum.PHOTOS,
-            chartFrame: ChartFrameEnum.STATIC,
-            title: e.fileName,
-            image: e.url,
-            dataset: e.url,
-            redirectComponent: './components/Informations/Mores/Image' // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
-          }
-          userPhotosList.unshift(newPhoto)
-          // 存储在本地数据中
-          setLocalStorage(StoreKey, userPhotosList)
-          // 插入到上传按钮前的位置
-          packagesStore.addPhotos(newPhoto, 1)
-        })
-      }
-    })
+  configEvents: {
+    // 点击上传事件
+    addHandle: (photoConfig: ConfigType) => {
+      goDialog({
+        message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中，请自行对接后端接口！现只编译成 base64 进行渲染，对接后端请返回地址使用！`,
+        transformOrigin: 'center',
+        onPositiveCallback: () => {
+          uploadFile((e: UploadCompletedEventType) => {
+            // 和上传组件一样配置，更换标题，图片，预设数据
+            const packagesStore = usePackagesStore()
+            const newPhoto = {
+              ...ImageConfig,
+              category: ChatCategoryEnum.PRIVATE,
+              categoryName: ChatCategoryEnumName.PRIVATE,
+              package: PackagesCategoryEnum.PHOTOS,
+              chartFrame: ChartFrameEnum.STATIC,
+              title: e.fileName,
+              image: e.url,
+              dataset: e.url,
+              redirectComponent: './components/Informations/Mores/Image' // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
+            }
+            userPhotosList.unshift(newPhoto)
+            // 存储在本地数据中
+            setLocalStorage(StoreKey, userPhotosList)
+            // 插入到上传按钮前的位置
+            packagesStore.addPhotos(newPhoto, 1)
+          })
+        }
+      })
+    },
+    deleteHandle: (photoConfig: ConfigType, index: number) => {
+      goDialog({
+        message: '是否删除此图片？',
+        transformOrigin: 'center',
+        onPositiveCallback: () => {}
+      })
+    }
   }
 }
 
