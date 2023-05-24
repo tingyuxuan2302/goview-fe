@@ -1,4 +1,4 @@
-import { PackagesCategoryEnum } from '@/packages/index.d'
+import { ChartFrameEnum, PackagesCategoryEnum } from '@/packages/index.d'
 import { ImageConfig } from '@/packages/components/Informations/Mores/Image/index'
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../index.d'
 
@@ -13,6 +13,7 @@ const photoConfigList = imageList.map(i => ({
   category: ChatCategoryEnum.SHARE,
   categoryName: ChatCategoryEnumName.SHARE,
   package: PackagesCategoryEnum.PHOTOS,
+  chartFrame: ChartFrameEnum.STATIC,
   image: i.imageUrl,
   dataset: i.imageUrl,
   title: i.imageName,

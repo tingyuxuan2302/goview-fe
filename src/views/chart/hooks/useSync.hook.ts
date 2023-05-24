@@ -135,6 +135,7 @@ export const useSync = () => {
       if (_componentInstance.chartConfig.redirectComponent) {
         _componentInstance.chartConfig.dataset && (newComponent.option.dataset = _componentInstance.chartConfig.dataset)
         newComponent.chartConfig.title = _componentInstance.chartConfig.title
+        newComponent.chartConfig.chartFrame = _componentInstance.chartConfig.chartFrame
       }
       if (callBack) {
         if (changeId) {

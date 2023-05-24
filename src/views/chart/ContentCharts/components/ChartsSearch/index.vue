@@ -161,6 +161,7 @@ const selectChartHandle = async (item: ConfigType) => {
     if (item.redirectComponent) {
       item.dataset && (newComponent.option.dataset = item.dataset)
       newComponent.chartConfig.title = item.title
+      newComponent.chartConfig.chartFrame = item.chartFrame
     }
     // 添加
     chartEditStore.addComponentList(newComponent, false, true)
