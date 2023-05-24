@@ -8,7 +8,7 @@
       <!-- 每一项组件的渲染 -->
       <div
         class="item-box"
-        v-for="item in menuOptions"
+        v-for="(item, index) in menuOptions"
         :key="item.title"
         draggable
         @dragstart="!item.disabled && dragStartHandle($event, item)"
@@ -34,7 +34,7 @@
         <!-- 遮罩 -->
         <div v-if="item.disabled" class="list-model"></div>
         <!-- 工具栏 -->
-        <div v-if="isShowTools(item)" class="list-tools go-transition">
+        <div v-if="isShowTools(item)" class="list-tools go-transition" @click="deleteHandle(item, index)">
           <n-button text type="default" color="#ffffff">
             <template #icon>
               <n-icon>
@@ -57,7 +57,8 @@ import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore
 import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { ChartModeEnum } from '@/store/modules/chartLayoutStore/chartLayoutStore.d'
 import { useChartLayoutStore } from '@/store/modules/chartLayoutStore/chartLayoutStore'
-import { componentInstall, loadingStart, loadingFinish, loadingError, JSONStringify } from '@/utils'
+import { usePackagesStore } from '@/store/modules/packagesStore/packagesStore'
+import { componentInstall, loadingStart, loadingFinish, loadingError, JSONStringify, goDialog } from '@/utils'
 import { DragKeyEnum } from '@/enums/editPageEnum'
 import { createComponent } from '@/packages'
 import { ConfigType, CreateComponentType, PackagesCategoryEnum } from '@/packages/index.d'
@@ -71,6 +72,7 @@ import omit from 'lodash/omit'
 const chartEditStore = useChartEditStore()
 const { TrashIcon } = icon.ionicons5
 
+const emit = defineEmits(['deletePhoto'])
 const props = defineProps({
   menuOptions: {
     type: Array as PropType<ConfigType[]>,
@@ -135,7 +137,21 @@ const dblclickHandle = async (item: ConfigType) => {
 }
 
 // 单击事件
-const clickHandle = (item: ConfigType) => item?.configEvents?.addHandle(item)
+const clickHandle = (item: ConfigType) => {
+  item?.configEvents?.addHandle(item)
+}
+
+const deleteHandle = (item: ConfigType, index: number) => {
+  goDialog({
+    message: '是否删除此图片？',
+    transformOrigin: 'center',
+    onPositiveCallback: () => {
+      const packagesStore = usePackagesStore()
+      emit('deletePhoto', item, index)
+      packagesStore.deletePhotos(item, index)
+    }
+  })
+}
 
 watch(
   () => chartMode.value,
@@ -145,13 +161,6 @@ watch(
         contentChartsItemBoxRef.value.classList.add('miniAnimation')
       })
     }
-  }
-)
-
-watch(
-  () => props.menuOptions,
-  n => {
-    console.log(n)
   }
 )
 </script>
@@ -202,6 +211,7 @@ $halfCenterHeight: 50px;
       &-text {
         font-size: 12px;
         margin-left: 8px;
+        user-select: none;
       }
     }
     .list-center {
@@ -244,7 +254,7 @@ $halfCenterHeight: 50px;
       opacity: 0;
       border-radius: 6px;
       backdrop-filter: blur(20px);
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.15);
       &:hover {
         background-color: rgba(232, 128, 128, 0.7);
       }

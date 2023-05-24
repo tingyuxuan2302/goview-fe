@@ -12,7 +12,7 @@
     ></n-menu>
     <div class="chart-content-list">
       <n-scrollbar trigger="none">
-        <charts-item-box :menuOptions="packages.selectOptions"></charts-item-box>
+        <charts-item-box :menuOptions="packages.selectOptions" @deletePhoto="deleteHandle"></charts-item-box>
       </n-scrollbar>
     </div>
   </div>
@@ -111,6 +111,12 @@ watch(
     packages.categorys['all'].splice(1, 0, newPhoto)
   }
 )
+
+// 删除图片
+const deleteHandle = (item: ConfigType, index: number) => {
+  packages.categorys[item.category].splice(index, 1)
+  packages.categorys['all'].splice(index, 1)
+}
 
 // 处理点击事件
 const clickItemHandle = (key: string) => {

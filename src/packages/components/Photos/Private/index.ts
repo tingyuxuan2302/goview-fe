@@ -59,7 +59,7 @@ const addConfig = {
     // 点击上传事件
     addHandle: (photoConfig: ConfigType) => {
       goDialog({
-        message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中，请自行对接后端接口！现只编译成 base64 进行渲染，对接后端请返回地址使用！`,
+        message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中(暂存上限5M，超过不再缓存新图片)，请自行对接后端接口！现只编译成 base64 进行渲染，对接后端请返回地址使用！`,
         transformOrigin: 'center',
         onPositiveCallback: () => {
           uploadFile((e: UploadCompletedEventType) => {
@@ -83,13 +83,6 @@ const addConfig = {
             packagesStore.addPhotos(newPhoto, 1)
           })
         }
-      })
-    },
-    deleteHandle: (photoConfig: ConfigType, index: number) => {
-      goDialog({
-        message: '是否删除此图片？',
-        transformOrigin: 'center',
-        onPositiveCallback: () => {}
       })
     }
   }
