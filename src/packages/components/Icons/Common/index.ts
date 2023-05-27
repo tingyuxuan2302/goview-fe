@@ -1,4 +1,4 @@
-import { IconConfig } from '../Icon/index'
+import { IconConfig } from '../Default/Icon/index'
 import { PackagesCategoryEnum } from '@/packages/index.d'
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../index.d'
 
@@ -78,7 +78,7 @@ const iconList = iconNames.map(name => ({
   icon: name,
   dataset: name,
   title: name.replace('uim:', ''),
-  redirectComponent: './components/Icons/Icon' // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
+  redirectComponent: `${IconConfig.package}/${IconConfig.category}/${IconConfig.key}` // 跳转组件路径规则：packageName/categoryName/componentKey
 }))
 
 export default iconList

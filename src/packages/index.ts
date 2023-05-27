@@ -31,28 +31,13 @@ export let packagesList: PackagesType = {
  * @param targetData
  */
 export const createComponent = async (targetData: ConfigType) => {
-  const { package: packageName } = targetData
-  if (packageName === PackagesCategoryEnum.ICONS) {
-    return createIconComponent()
-  } else if (packageName === PackagesCategoryEnum.PHOTOS) {
-    return createPhotoComponent()
-  } else {
-    return createDefaultComponent(targetData)
+  const { redirectComponent, category, key } = targetData
+  // redirectComponent 是给图片组件库和图标组件库使用的
+  if (redirectComponent) {
+    const [packageName, categoryName, keyName] = redirectComponent.split('/')
+    const redirectChart = await import(`./components/${packageName}/${categoryName}/${keyName}/config.ts`)
+    return new redirectChart.default()
   }
-}
-
-export const createIconComponent = async () => {
-  const chart = await import(`./components/Icons/Icon/config`)
-  return new chart.default()
-}
-
-export const createPhotoComponent = async () => {
-  const chart = await import(`./components/Informations/Mores/Image/config`)
-  return new chart.default()
-}
-
-export const createDefaultComponent = async (targetData: ConfigType) => {
-  const { category, key } = targetData
   const chart = await import(`./components/${targetData.package}/${category}/${key}/config.ts`)
   return new chart.default()
 }

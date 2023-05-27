@@ -22,7 +22,7 @@ const userPhotosList: ConfigType[] = getLocalStorage(StoreKey) || []
 const uploadFile = (callback: Function | null = null) => {
   const input = document.createElement('input')
   input.type = 'file'
-  input.accept = 'image/*' // 这里只允许图片类型
+  input.accept = '.png,.jpg,.jpeg,.gif' // 这里只允许部分图片类型
   input.onchange = async () => {
     if (!input.files || !input.files.length) return
     const file = input.files[0]
@@ -53,7 +53,7 @@ const addConfig = {
   chartFrame: ChartFrameEnum.STATIC,
   title: '点击上传图片',
   image: 'upload.png',
-  redirectComponent: './components/Informations/Mores/Image', // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
+  redirectComponent: `${ImageConfig.package}/${ImageConfig.category}/${ImageConfig.key}`, // 跳转组件路径规则：packageName/categoryName/componentKey
   disabled: true,
   configEvents: {
     // 点击上传事件
@@ -74,7 +74,7 @@ const addConfig = {
               title: e.fileName,
               image: e.url,
               dataset: e.url,
-              redirectComponent: './components/Informations/Mores/Image' // 虚拟组件路径，尾部不跟 ‘/’，相对于 /packages/index.ts 文件的位置
+              redirectComponent: `${ImageConfig.package}/${ImageConfig.category}/${ImageConfig.key}` // 跳转组件路径规则：packageName/categoryName/componentKey
             }
             userPhotosList.unshift(newPhoto)
             // 存储在本地数据中
