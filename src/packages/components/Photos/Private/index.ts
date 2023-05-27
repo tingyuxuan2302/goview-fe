@@ -74,7 +74,7 @@ const addConfig = {
               title: e.fileName,
               image: e.url,
               dataset: e.url,
-              redirectComponent: 'Informations/Mores/Image' // 跳转组件路径规则：packageName/categoryName/componentKey
+              redirectComponent: `${ImageConfig.package}/${ImageConfig.category}/${ImageConfig.key}` // 跳转组件路径规则：packageName/categoryName/componentKey
             }
             userPhotosList.unshift(newPhoto)
             // 存储在本地数据中

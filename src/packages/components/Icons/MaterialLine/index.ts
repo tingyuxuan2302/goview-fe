@@ -39,7 +39,7 @@ const iconList = iconNames.map(name => ({
   icon: name,
   dataset: name,
   title: name.replace('line-md:', ''),
-  redirectComponent: 'Icons/Default/Icon' // 跳转组件路径规则：packageName/categoryName/componentKey
+  redirectComponent: `${IconConfig.package}/${IconConfig.category}/${IconConfig.key}` // 跳转组件路径规则：packageName/categoryName/componentKey
 }))
 
 export default iconList

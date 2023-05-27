@@ -36,7 +36,7 @@ const iconNames = [
   'wi:night-alt-cloudy-high',
   'wi:night-alt-hail',
   'wi:night-alt-lightning',
-  'wi:umbrella',
+  'wi:umbrella'
 ]
 const iconList = iconNames.map(name => ({
   ...IconConfig,
@@ -47,7 +47,7 @@ const iconList = iconNames.map(name => ({
   icon: name,
   dataset: name,
   title: name.replace('wi:', ''),
-  redirectComponent: 'Icons/Default/Icon' // 跳转组件路径规则：packageName/categoryName/componentKey
+  redirectComponent: `${IconConfig.package}/${IconConfig.category}/${IconConfig.key}` // 跳转组件路径规则：packageName/categoryName/componentKey
 }))
 
 export default iconList

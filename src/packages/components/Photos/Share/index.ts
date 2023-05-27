@@ -17,7 +17,7 @@ const photoConfigList = imageList.map(i => ({
   image: i.imageUrl,
   dataset: i.imageUrl,
   title: i.imageName,
-  redirectComponent: 'Informations/Mores/Image' // 跳转组件路径规则：packageName/categoryName/componentKey
+  redirectComponent: `${ImageConfig.package}/${ImageConfig.category}/${ImageConfig.key}` // 跳转组件路径规则：packageName/categoryName/componentKey
 }))
 
 export default photoConfigList
