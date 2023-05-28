@@ -222,6 +222,7 @@ $halfCenterHeight: 50px;
         height: 100px;
         max-width: 140px;
         border-radius: 6px;
+        object-fit: contain;
         @extend .go-transition;
       }
     }
@@ -289,6 +290,7 @@ $halfCenterHeight: 50px;
         height: $halfCenterHeight;
         width: auto;
         transition: all 0.2s;
+        object-fit: contain;
       }
     }
     .list-bottom {
