@@ -111,10 +111,10 @@ const { handleContextMenu } = useContextMenu()
 const { dataSyncFetch, intervalDataSyncUpdate } = useSync()
 
 // 编辑时注入scale变量，消除警告
-provide(SCALE_KEY, null);
+provide(SCALE_KEY, null)
 
 // 布局处理
-useLayout()
+useLayout(async () => {})
 
 // 点击事件
 const { mouseenterHandle, mouseleaveHandle, mousedownHandle, mouseClickHandle } = useMouseHandle()

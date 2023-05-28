@@ -39,9 +39,9 @@ const onChange = (v: number | number[]) => {
       props.chartConfig,
       useChartEditStore,
       {
-        [ComponentInteractParamsEnum.DATE_START]: v[0] | dayjs().valueOf(),
-        [ComponentInteractParamsEnum.DATE_END]: v[1] | dayjs().valueOf(),
-        [ComponentInteractParamsEnum.DATE_RANGE]: `${v[0]}-${v[1]}`
+        [ComponentInteractParamsEnum.DATE_START]: v[0] || dayjs().valueOf(),
+        [ComponentInteractParamsEnum.DATE_END]: v[1] || dayjs().valueOf(),
+        [ComponentInteractParamsEnum.DATE_RANGE]: `${v[0] || dayjs().valueOf()}-${v[1] || dayjs().valueOf()}`
       },
       InteractEventOn.CHANGE
     )
@@ -50,17 +50,35 @@ const onChange = (v: number | number[]) => {
     useChartInteract(
       props.chartConfig,
       useChartEditStore,
-      { [ComponentInteractParamsEnum.DATE]: v },
+      { [ComponentInteractParamsEnum.DATE]: v || dayjs().valueOf() },
       InteractEventOn.CHANGE
     )
   }
 }
 
-// 手动更新
 watch(
   () => props.chartConfig.option.dataset,
   (newData: number | number[]) => {
     option.dataset = newData
+    // 关联目标组件首次请求带上默认内容
+    onChange(newData)
+  },
+  {
+    immediate: true
+  }
+)
+
+// 手动更新
+watch(
+  () => props.chartConfig.option.differValue,
+  (newData: number) => {
+    if (props.chartConfig.option.differValue === 0) return
+    if (typeof option.dataset === 'object') {
+      option.dataset[0] = dayjs().add(newData, 'day').valueOf()
+      option.dataset[1] = dayjs().add(newData, 'day').valueOf()
+    } else {
+      option.dataset = dayjs().add(newData, 'day').valueOf()
+    }
     // 关联目标组件首次请求带上默认内容
     onChange(newData)
   },

@@ -132,10 +132,6 @@ const selectOptions = ref([
     icon: renderIcon(SendIcon)
   },
   {
-    type: 'divider',
-    key: 'd1'
-  },
-  {
     label: renderLang('global.r_delete'),
     key: 'delete',
     icon: renderIcon(TrashIcon)
