@@ -2,6 +2,8 @@ import { ChartList } from '@/packages/components/Charts/index'
 import { DecorateList } from '@/packages/components/Decorates/index'
 import { InformationList } from '@/packages/components/Informations/index'
 import { TableList } from '@/packages/components/Tables/index'
+import { PhotoList } from '@/packages/components/Photos/index'
+import { IconList } from '@/packages/components/Icons/index'
 import { PackagesCategoryEnum, PackagesType, ConfigType, FetchComFlagType } from '@/packages/index.d'
 
 const configModules: Record<string, { default: string }> = import.meta.glob('./components/**/config.vue', {
@@ -19,7 +21,9 @@ export let packagesList: PackagesType = {
   [PackagesCategoryEnum.CHARTS]: ChartList,
   [PackagesCategoryEnum.INFORMATIONS]: InformationList,
   [PackagesCategoryEnum.TABLES]: TableList,
-  [PackagesCategoryEnum.DECORATES]: DecorateList
+  [PackagesCategoryEnum.DECORATES]: DecorateList,
+  [PackagesCategoryEnum.PHOTOS]: PhotoList,
+  [PackagesCategoryEnum.ICONS]: IconList
 }
 
 /**
@@ -27,7 +31,13 @@ export let packagesList: PackagesType = {
  * @param targetData
  */
 export const createComponent = async (targetData: ConfigType) => {
-  const { category, key } = targetData
+  const { redirectComponent, category, key } = targetData
+  // redirectComponent 是给图片组件库和图标组件库使用的
+  if (redirectComponent) {
+    const [packageName, categoryName, keyName] = redirectComponent.split('/')
+    const redirectChart = await import(`./components/${packageName}/${categoryName}/${keyName}/config.ts`)
+    return new redirectChart.default()
+  }
   const chart = await import(`./components/${targetData.package}/${category}/${key}/config.ts`)
   return new chart.default()
 }
@@ -71,6 +81,8 @@ export const fetchConfigComponent = (dropData: ConfigType) => {
  */
 export const fetchImages = async (targetData?: ConfigType) => {
   if (!targetData) return ''
+  // 正则判断图片是否为 url，是则直接返回该 url
+  if (/^(http|https):\/\/([\w.]+\/?)\S*/.test(targetData.image)) return targetData.image
   // 新数据动态处理
   const { image, package: targetDataPackage } = targetData
   // 兼容旧数据

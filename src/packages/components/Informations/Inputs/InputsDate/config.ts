@@ -12,7 +12,9 @@ export const option = {
   [COMPONENT_INTERACT_EVENT_KET]: ComponentInteractEventEnum.DATE,
   // 下拉展示
   isPanel: 0,
-  dataset: dayjs().valueOf()
+  dataset: dayjs().valueOf(),
+  differValue: 0
+
 }
 
 export default class Config extends PublicConfigClass implements CreateComponentType {
