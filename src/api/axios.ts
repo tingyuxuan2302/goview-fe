@@ -35,10 +35,7 @@ axiosInstance.interceptors.request.use(
       return config
     }
     const userInfo = info[SystemStoreEnum.USER_INFO]
-    config.headers = {
-      ...config.headers,
-      [userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token']: userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
-    } as InternalAxiosRequestConfig['headers']
+    config.headers[userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token'] =  userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
     return config
   },
   (err: AxiosError) => {
