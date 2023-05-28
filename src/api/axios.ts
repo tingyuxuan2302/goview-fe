@@ -38,7 +38,7 @@ axiosInstance.interceptors.request.use(
     config.headers = {
       ...config.headers,
       [userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token']: userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
-    }
+    } as InternalAxiosRequestConfig['headers']
     return config
   },
   (err: AxiosError) => {
