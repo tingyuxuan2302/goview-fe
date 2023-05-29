@@ -1,5 +1,5 @@
 export default {
-  create_btn: 'Creat',
+  create_btn: 'Create',
   create_tip: 'Please select a content for development',
   project: 'Project',
   my: 'My',
