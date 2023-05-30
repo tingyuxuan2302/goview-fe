@@ -87,7 +87,14 @@ import { onMounted, computed, provide } from 'vue'
 import { chartColors } from '@/settings/chartThemes/index'
 import { MenuEnum } from '@/enums/editPageEnum'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
-import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle, colorCustomMerge } from '@/utils'
+import {
+  animationsClass,
+  getFilterStyle,
+  getTransformStyle,
+  getBlendModeStyle,
+  colorCustomMerge,
+  addWindowUnload
+} from '@/utils'
 import { useContextMenu } from '@/views/chart/hooks/useContextMenu.hook'
 import { MenuOptionsItemType } from '@/views/chart/hooks/useContextMenu.hook.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
@@ -109,6 +116,9 @@ import { EditTools } from './components/EditTools'
 const chartEditStore = useChartEditStore()
 const { handleContextMenu } = useContextMenu()
 const { dataSyncFetch, intervalDataSyncUpdate } = useSync()
+
+// 加入网页关闭提示
+addWindowUnload()
 
 // 编辑时注入scale变量，消除警告
 provide(SCALE_KEY, null)
@@ -186,7 +196,7 @@ onMounted(() => {
   // 获取数据
   dataSyncFetch()
   // 定时更新数据
-  intervalDataSyncUpdate()
+  // intervalDataSyncUpdate()
 })
 </script>
 
