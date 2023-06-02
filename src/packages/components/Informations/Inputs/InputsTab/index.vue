@@ -1,5 +1,5 @@
 <template>
-  <n-tabs :type="option.value.tabType" @update:value="onChange">
+  <n-tabs :type="option.value.tabType" @update:value="onChange" :default-value="option.value.tabLabel">
     <n-tab v-for="(item, index) in option.value.dataset" :name="item.label" :key="index"> {{ item.label }} </n-tab>
   </n-tabs>
 </template>
@@ -12,6 +12,7 @@ import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore
 import { useChartInteract } from '@/hooks'
 import { InteractEventOn } from '@/enums/eventEnum'
 import { ComponentInteractParamsEnum } from './interact'
+import { changeURLStatic } from '@/utils/changeURLParam'
 
 const props = defineProps({
   chartConfig: {
@@ -29,6 +30,9 @@ const option = shallowReactive({
 const onChange = (v: string) => {
   if (v === undefined) return
   const selectItem = option.value.dataset.find((item: { label: string; value: any }) => item.label === v)
+  const { chartConfig } = props
+  const key = chartConfig.chartConfig.title || chartConfig.id;
+  changeURLStatic(key, selectItem.value)
   // 存储到联动数据
   useChartInteract(
     props.chartConfig,
