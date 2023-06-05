@@ -12,7 +12,6 @@ import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore
 import { useChartInteract } from '@/hooks'
 import { InteractEventOn } from '@/enums/eventEnum'
 import { ComponentInteractParamsEnum } from './interact'
-import { changeURLStatic } from '@/utils/changeURLParam'
 
 const props = defineProps({
   chartConfig: {
@@ -30,9 +29,6 @@ const option = shallowReactive({
 const onChange = (v: string) => {
   if (v === undefined) return
   const selectItem = option.value.dataset.find((item: { label: string; value: any }) => item.label === v)
-  const { chartConfig } = props
-  const key = chartConfig.chartConfig.title || chartConfig.id;
-  changeURLStatic(key, selectItem.value)
   // 存储到联动数据
   useChartInteract(
     props.chartConfig,
