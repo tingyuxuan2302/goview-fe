@@ -6,3 +6,4 @@ declare module '*.vue' {
 
 declare module 'lodash/*'
 declare module 'dom-helpers'
+declare module '@iconify/vue'
