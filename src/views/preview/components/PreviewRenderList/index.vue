@@ -74,7 +74,7 @@ const themeColor = computed(() => {
 // 组件渲染结束初始化数据池
 clearMittDataPondMap()
 onMounted(() => {
-  initDataPond(chartEditStore.requestGlobalConfig)
+  initDataPond(useChartEditStore)
 })
 </script>
 
