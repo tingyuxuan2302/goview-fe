@@ -163,7 +163,6 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
   params = translateStr(params)
   // form 类型处理
   let formData: FormData = new FormData()
-  formData.set('default', 'defaultData')
   // 类型处理
 
   switch (requestParamsBodyType) {
