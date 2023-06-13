@@ -72,6 +72,7 @@
       <SettingItem name="轨道宽度">
         <n-select
           v-model:value="item.radius[0]"
+          size="small"
           :options="[
             { label: '窄', value: '75%' },
             { label: '中', value: '60%' },
