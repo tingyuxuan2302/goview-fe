@@ -58,7 +58,7 @@
                 <help-outline-icon></help-outline-icon>
               </n-icon>
             </template>
-            <n-text>不支持「静态组件」</n-text>
+            <n-text>不支持「静态组件」支持「组件」「公共APi」</n-text>
           </n-tooltip>
         </template>
         <n-select
@@ -89,7 +89,7 @@
         </n-table>
       </setting-item-box>
 
-      <n-tag :bordered="false" type="primary"> 关联目标组件请求参数 </n-tag>
+      <n-tag :bordered="false" type="primary"> 关联目标请求参数 </n-tag>
 
       <setting-item-box
         :name="requestParamsItem"
@@ -125,7 +125,7 @@ import { VNodeChild, computed } from 'vue'
 import { SelectOption, SelectGroupOption } from 'naive-ui'
 import { SettingItemBox, SettingItem, CollapseItem } from '@/components/Pages/ChartItemSetting'
 import { CreateComponentType, CreateComponentGroupType, ChartFrameEnum } from '@/packages/index.d'
-import { RequestParamsTypeEnum } from '@/enums/httpEnum'
+import { RequestParamsTypeEnum, RequestDataTypeEnum } from '@/enums/httpEnum'
 import { InteractEventOn, COMPONENT_INTERACT_EVENT_KET } from '@/enums/eventEnum'
 import { icon } from '@/plugins'
 import noData from '@/assets/images/canvas/noData.png'
@@ -154,6 +154,11 @@ const option = computed(() => {
 // 绑定组件数据 request
 const fnGetRequest = (id: string | undefined, key: RequestParamsTypeEnum) => {
   if (!id) return {}
+  const globalConfigPindApr = chartEditStore.requestGlobalConfig.requestDataPond.find(item => {
+    return item.dataPondId === id
+  })?.dataPondRequestConfig.requestParams
+
+  if (globalConfigPindApr) return globalConfigPindApr[key]
   return chartEditStore.componentList[chartEditStore.fetchTargetIndex(id)]?.request.requestParams[key]
 }
 
@@ -178,12 +183,10 @@ const fnEventsOptions = (): Array<SelectOption | SelectGroupOption> => {
         iter: Array<CreateComponentType | CreateComponentGroupType>,
         val: CreateComponentType | CreateComponentGroupType
       ) => {
-        if (val.groupList && val.groupList.length > 0) {
-          iter.push(val)
-        } else {
+        if (!val.groupList && val.request.requestDataType === RequestDataTypeEnum.AJAX && val.request.requestUrl) {
           iter.push(val)
         }
-        return val.groupList ? [...iter, ...fnFlattern(val.groupList)] : iter
+        return val.groupList && val.groupList.length > 0 ? [...iter, ...fnFlattern(val.groupList)] : iter
       },
       []
     )
@@ -203,18 +206,26 @@ const fnEventsOptions = (): Array<SelectOption | SelectGroupOption> => {
   const mapOptionList = filterOptionList.map(item => ({
     id: item.id,
     title: item.chartConfig.title,
-    disabled: false
+    disabled: false,
+    type: 'componentList'
   }))
 
+  const requestDataPond = chartEditStore.requestGlobalConfig.requestDataPond.map(item => ({
+    id: item.dataPondId,
+    title: item.dataPondName,
+    disabled: false,
+    type: 'requestDataPond'
+  }))
+  const tarArr = requestDataPond.concat(mapOptionList)
   targetData.value.events.interactEvents?.forEach(iaItem => {
-    mapOptionList.forEach(optionItem => {
+    tarArr.forEach(optionItem => {
       if (optionItem.id === iaItem.interactComponentId) {
         optionItem.disabled = true
       }
     })
   })
 
-  return mapOptionList
+  return tarArr
 }
 
 // 新增模块
