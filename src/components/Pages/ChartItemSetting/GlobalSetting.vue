@@ -391,8 +391,12 @@ const visualMap = computed(() => {
 // 监听legend color颜色改变type = scroll的颜色
 watch(() => legend.value && legend.value.textStyle.color, (newVal) => {
   if (legend.value && newVal) {
-    legend.value.pageTextStyle.color = newVal
-  } 
+     if (!legend.value.pageTextStyle) {
+      legend.value.pageTextStyle = { color: newVal }
+    } else {
+      legend.value.pageTextStyle.color = newVal
+    }
+  }
 }, {
   immediate: true,
   deep: true,
