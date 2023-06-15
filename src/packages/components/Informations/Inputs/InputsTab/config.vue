@@ -1,7 +1,10 @@
 <template>
   <collapse-item name="标签页配置" :expanded="true">
-    <setting-item-box name="默认值" :alone="true">
+    <setting-item-box name="标签类型" :alone="true">
       <n-select size="small" v-model:value="optionData.tabType" :options="tabTypeOptions" />
+    </setting-item-box>
+    <setting-item-box name="默认值" :alone="true">
+       <n-select size="small" v-model:value="optionData.tabLabel" value-field="label" :options="optionData.dataset" />
     </setting-item-box>
   </collapse-item>
 </template>
