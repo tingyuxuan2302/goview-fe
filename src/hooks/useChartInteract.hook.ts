@@ -30,10 +30,10 @@ export const useChartInteract = (
       const { Params, Header } = toRefs(chartEditStore.requestGlobalConfig.requestDataPond[globalConfigPindAprndex].dataPondRequestConfig.requestParams)
 
       Object.keys(item.interactFn).forEach(key => {
-        if (Params.value[key]) {
+        if (key in Params.value) {
           Params.value[key] = param[item.interactFn[key]]
         }
-        if (Header.value[key]) {
+        if (key in Header.value) {
           Header.value[key] = param[item.interactFn[key]]
         }
       })
@@ -43,10 +43,10 @@ export const useChartInteract = (
       const { Params, Header } = toRefs(chartEditStore.componentList[index].request.requestParams)
 
       Object.keys(item.interactFn).forEach(key => {
-        if (Params.value[key]) {
+        if (key in Params.value) {
           Params.value[key] = param[item.interactFn[key]]
         }
-        if (Header.value[key]) {
+        if (key in Header.value) {
           Header.value[key] = param[item.interactFn[key]]
         }
       })
