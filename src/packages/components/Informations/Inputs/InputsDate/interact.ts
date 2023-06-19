@@ -22,6 +22,37 @@ export enum ComponentInteractParamsEnum {
   DATE_RANGE = 'daterange'
 }
 
+export enum DefaultTypeEnum {
+  NONE = "none",
+  STATIC = "static",
+  DYNAMIC = "dynamic"
+}
+
+export enum DifferUnitEnum {
+  DAY = 'd',
+  WEEK = 'w',
+  MONTH = 'M',
+  QUARTER = 'Q',
+  YEAR = 'y',
+  HOUR = 'h',
+  MINUTE = 'm',
+  SECOND = 's',
+  MILLISECOND = 'ms',
+}
+
+export const DifferUnitObject = {
+  // https://day.js.org/docs/en/manipulate/add
+  [DifferUnitEnum.DAY]: '天',
+  [DifferUnitEnum.WEEK]: '周',
+  [DifferUnitEnum.MONTH]: '月',
+  [DifferUnitEnum.QUARTER]: '季度',
+  [DifferUnitEnum.YEAR]: '年',
+  [DifferUnitEnum.HOUR]: '小时',
+  [DifferUnitEnum.MINUTE]: '分钟',
+  [DifferUnitEnum.SECOND]: '秒',
+  [DifferUnitEnum.MILLISECOND]: '毫秒',
+}
+
 const time = [
   {
     value: ComponentInteractParamsEnum.DATE,
