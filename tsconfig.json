@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "lib": ["es6", "ESNext", "dom"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "naive-ui/volar"],
     "paths": {
       "@/*": ["src/*"],
       "/#/*": ["types/*"]
