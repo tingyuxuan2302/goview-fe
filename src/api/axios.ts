@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios'
 import { ResultEnum } from "@/enums/httpEnum"
 import { ErrorPageNameMap } from "@/enums/pageEnum"
 import { redirectErrorPage } from '@/utils'
@@ -9,10 +9,10 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     return config
   },
-  (error: AxiosRequestConfig) => {
+  (error: AxiosError) => {
     Promise.reject(error)
   }
 )
