@@ -20,7 +20,7 @@
       </setting-item>
 
     </setting-item-box>
-    <setting-item-box v-if="optionData.defaultType == DefaultTypeEnum.STATIC" :alone="true">
+    <setting-item-box v-if="optionData.defaultType === DefaultTypeEnum.STATIC" :alone="true">
       <setting-item name="静态默认值">
         <n-date-picker size="small" clearable v-model:value="optionData.dataset" :type="optionData.componentInteractEventKey" />
       </setting-item>
@@ -34,7 +34,7 @@
               <help-outline-icon></help-outline-icon>
             </n-icon>
           </template>
-          <n-text>打开页面时浏览器操作系统的系统时间+偏移量(单位)</n-text>
+          <span>打开页面时浏览器操作系统的系统时间+偏移量(单位)</span>
         </n-tooltip>
       </template>
       <setting-item :name="differValueName">
