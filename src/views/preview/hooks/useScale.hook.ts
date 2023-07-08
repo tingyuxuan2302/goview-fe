@@ -12,7 +12,31 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
   const height = ref(localStorageInfo.editCanvasConfig.height)
   const scaleRef = ref({ width: 1, height: 1 })
 
-  provide(SCALE_KEY, scaleRef);
+  provide(SCALE_KEY, scaleRef)
+
+  // 监听鼠标滚轮 +ctrl 键
+  const useAddWheelHandle = (removeEvent: Function) => {
+    addEventListener(
+      'wheel',
+      (e: any) => {
+        if (window?.$KeyboardActive?.ctrl) {
+          e.preventDefault()
+          e.stopPropagation()
+          removeEvent()
+          const transform = previewRef.value.style.transform
+          // 使用正则解析 scale(1, 1) 中的两个数值
+          const regRes = transform.match(/scale\((\d+\.?\d*)*/) as RegExpMatchArray
+          const width = regRes[1]
+          if (e.wheelDelta > 0) {
+            previewRef.value.style.transform = `scale(${parseFloat(Number(width).toFixed(2)) + 0.1})`
+          } else {
+            previewRef.value.style.transform = `scale(${parseFloat(Number(width).toFixed(2)) - 0.1})`
+          }
+        }
+      },
+      { passive: false }
+    )
+  }
 
   const updateScaleRef = (scale: { width: number; height: number }) => {
     // 这里需要解构，保证赋值给scaleRef的为一个新对象
@@ -23,74 +47,82 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
   // 屏幕适配
   onMounted(() => {
     switch (localStorageInfo.editCanvasConfig.previewScaleType) {
-      case PreviewScaleEnum.FIT: (() => {
-        const { calcRate, windowResize, unWindowResize } = usePreviewFitScale(
-          width.value as number,
-          height.value as number,
-          previewRef.value,
-          updateScaleRef
-        )
-        calcRate()
-        windowResize()
-        onUnmounted(() => {
-          unWindowResize()
-        })
-      })()
-        break;
-      case PreviewScaleEnum.SCROLL_Y: (() => {
-        const { calcRate, windowResize, unWindowResize } = usePreviewScrollYScale(
-          width.value as number,
-          height.value as number,
-          previewRef.value,
-          (scale) => {
-            const dom = entityRef.value
-            dom.style.width = `${width.value * scale.width}px`
-            dom.style.height = `${height.value * scale.height}px`
-            updateScaleRef(scale)
-          }
-        )
-        calcRate()
-        windowResize()
-        onUnmounted(() => {
-          unWindowResize()
-        })
-      })()
+      case PreviewScaleEnum.FIT:
+        ;(() => {
+          const { calcRate, windowResize, unWindowResize } = usePreviewFitScale(
+            width.value as number,
+            height.value as number,
+            previewRef.value,
+            updateScaleRef
+          )
+          calcRate()
+          windowResize()
+          useAddWheelHandle(unWindowResize)
+          onUnmounted(() => {
+            unWindowResize()
+          })
+        })()
+        break
+      case PreviewScaleEnum.SCROLL_Y:
+        ;(() => {
+          const { calcRate, windowResize, unWindowResize } = usePreviewScrollYScale(
+            width.value as number,
+            height.value as number,
+            previewRef.value,
+            scale => {
+              const dom = entityRef.value
+              dom.style.width = `${width.value * scale.width}px`
+              dom.style.height = `${height.value * scale.height}px`
+              updateScaleRef(scale)
+            }
+          )
+          calcRate()
+          windowResize()
+          useAddWheelHandle(unWindowResize)
+          onUnmounted(() => {
+            unWindowResize()
+          })
+        })()
 
-        break;
-      case PreviewScaleEnum.SCROLL_X: (() => {
-        const { calcRate, windowResize, unWindowResize } = usePreviewScrollXScale(
-          width.value as number,
-          height.value as number,
-          previewRef.value,
-          (scale) => {
-            const dom = entityRef.value
-            dom.style.width = `${width.value * scale.width}px`
-            dom.style.height = `${height.value * scale.height}px`
-            updateScaleRef(scale)
-          }
-        )
-        calcRate()
-        windowResize()
-        onUnmounted(() => {
-          unWindowResize()
-        })
-      })()
+        break
+      case PreviewScaleEnum.SCROLL_X:
+        ;(() => {
+          const { calcRate, windowResize, unWindowResize } = usePreviewScrollXScale(
+            width.value as number,
+            height.value as number,
+            previewRef.value,
+            scale => {
+              const dom = entityRef.value
+              dom.style.width = `${width.value * scale.width}px`
+              dom.style.height = `${height.value * scale.height}px`
+              updateScaleRef(scale)
+            }
+          )
+          calcRate()
+          windowResize()
+          useAddWheelHandle(unWindowResize)
+          onUnmounted(() => {
+            unWindowResize()
+          })
+        })()
 
-        break;
-      case PreviewScaleEnum.FULL: (() => {
-        const { calcRate, windowResize, unWindowResize } = usePreviewFullScale(
-          width.value as number,
-          height.value as number,
-          previewRef.value,
-          updateScaleRef
-        )
-        calcRate()
-        windowResize()
-        onUnmounted(() => {
-          unWindowResize()
-        })
-      })()
-        break;
+        break
+      case PreviewScaleEnum.FULL:
+        ;(() => {
+          const { calcRate, windowResize, unWindowResize } = usePreviewFullScale(
+            width.value as number,
+            height.value as number,
+            previewRef.value,
+            updateScaleRef
+          )
+          calcRate()
+          windowResize()
+          useAddWheelHandle(unWindowResize)
+          onUnmounted(() => {
+            unWindowResize()
+          })
+        })()
+        break
     }
   })
 

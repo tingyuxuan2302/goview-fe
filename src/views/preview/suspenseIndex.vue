@@ -30,7 +30,7 @@
 import { computed } from 'vue'
 import { PreviewRenderList } from './components/PreviewRenderList'
 import { getFilterStyle, setTitle } from '@/utils'
-import { getEditCanvasConfigStyle, getSessionStorageInfo } from './utils'
+import { getEditCanvasConfigStyle, getSessionStorageInfo, keyRecordHandle } from './utils'
 import { useComInstall } from './hooks/useComInstall.hook'
 import { useScale } from './hooks/useScale.hook'
 import { useStore } from './hooks/useStore.hook'
@@ -60,6 +60,9 @@ const showEntity = computed(() => {
 useStore(chartEditStore)
 const { entityRef, previewRef } = useScale(chartEditStore)
 const { show } = useComInstall(chartEditStore)
+
+// 开启键盘监听
+keyRecordHandle()
 </script>
 
 <style lang="scss" scoped>
