@@ -4,7 +4,7 @@ import { PublicConfigClass } from '@/packages/public'
 import { CreateComponentType } from '@/packages/index.d'
 import { chartInitConfig } from '@/settings/designSetting'
 import { COMPONENT_INTERACT_EVENT_KET } from '@/enums/eventEnum'
-import { interactActions, ComponentInteractEventEnum } from './interact'
+import { interactActions, ComponentInteractEventEnum, DefaultTypeEnum, DifferUnitEnum } from './interact'
 import { InputsDateConfig } from './index'
 
 export const option = {
@@ -12,9 +12,14 @@ export const option = {
   [COMPONENT_INTERACT_EVENT_KET]: ComponentInteractEventEnum.DATE,
   // 下拉展示
   isPanel: 0,
-  dataset: dayjs().valueOf(),
-  differValue: 0
-
+  // 默认值
+  dataset: dayjs().valueOf() as number | number[] | null,
+  // 默认值类型
+  defaultType: DefaultTypeEnum.STATIC,
+  // 动态默认值偏移单位
+  differUnit: [DifferUnitEnum.DAY, DifferUnitEnum.DAY],
+  // 动态默认值偏移值
+  differValue: [0, 0]
 }
 
 export default class Config extends PublicConfigClass implements CreateComponentType {

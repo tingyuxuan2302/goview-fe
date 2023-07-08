@@ -159,9 +159,11 @@ const dragCanvas = (e: any) => {
 const canvasBox = () => {
   const layoutDom = document.getElementById('go-chart-edit-layout')
   if (layoutDom) {
+    // 此处减去滚动条的宽度和高度 
+    const scrollW = 20
     return {
-      height: layoutDom.clientHeight - 25,
-      width: layoutDom.clientWidth
+      height: layoutDom.clientHeight - scrollW,
+      width: layoutDom.clientWidth - scrollW
     }
   }
   return {
