@@ -23,6 +23,8 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
           e.preventDefault()
           e.stopPropagation()
           removeEvent()
+          const fitDom = document.querySelector(".go-preview.fit") as HTMLElement
+          if (fitDom) fitDom.style.overflow = 'auto'
           const transform = previewRef.value.style.transform
           // 使用正则解析 scale(1, 1) 中的两个数值
           const regRes = transform.match(/scale\((\d+\.?\d*)*/) as RegExpMatchArray
