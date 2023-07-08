@@ -8,39 +8,67 @@
   <collapse-item name="时间配置" :expanded="true">
     <setting-item-box name="基础">
       <setting-item name="类型">
-        <n-select v-model:value="optionData.componentInteractEventKey" size="small" :options="datePickerTypeOptions" />
+        <n-select v-model:value="optionData.componentInteractEventKey" size="small" :options="datePickerTypeOptions"
+                  @update:value="datePickerTypeUpdate"/>
       </setting-item>
     </setting-item-box>
 
-    <setting-item-box name="默认值" :alone="true">
-      <n-date-picker size="small" v-model:value="optionData.dataset" :type="optionData.componentInteractEventKey" />
-    </setting-item-box>
+    <setting-item-box name="默认值">
+      <setting-item name="类型">
+        <n-select v-model:value="optionData.defaultType" size="small" :options="defaultTypeOptions"
+                  @update:value="defaultTypeUpdate" />
+      </setting-item>
 
-    <setting-item-box :alone="true">
+    </setting-item-box>
+    <setting-item-box v-if="optionData.defaultType === DefaultTypeEnum.STATIC" :alone="true">
+      <setting-item name="静态默认值">
+        <n-date-picker size="small" clearable v-model:value="optionData.dataset" :type="optionData.componentInteractEventKey" />
+      </setting-item>
+    </setting-item-box>
+    <setting-item-box v-if="optionData.defaultType === DefaultTypeEnum.DYNAMIC" >
       <template #name>
-        <n-text>动态</n-text>
+        <n-text></n-text>
         <n-tooltip trigger="hover">
           <template #trigger>
             <n-icon size="21" :depth="3">
               <help-outline-icon></help-outline-icon>
             </n-icon>
           </template>
-          <n-text>动态值不为0时，默认值:取当天时间相加当前值</n-text>
+          <span>打开页面时浏览器操作系统的系统时间+偏移量(单位)</span>
         </n-tooltip>
       </template>
-      <n-input-number v-model:value="optionData.differValue" class="input-num-width" size="small" :min="-40" :max="40">
-        <template #suffix> 天 </template>
-      </n-input-number>
+      <setting-item :name="differValueName">
+        <n-input-number v-model:value="optionData.differValue[0]" class="input-num-width" size="small">
+          <template #suffix>
+            {{DifferUnitObject[optionData.differUnit[0]]}}
+          </template>
+        </n-input-number>
+      </setting-item>
+      <setting-item :name="differUnitName">
+        <n-select v-model:value="optionData.differUnit[0]" size="small" :options="differUnitOptions" />
+      </setting-item>
+      <setting-item v-if="isRange" name="结束值动态偏移量">
+        <n-input-number v-model:value="optionData.differValue[1]" class="input-num-width" size="small">
+          <template #suffix>
+            {{DifferUnitObject[optionData.differUnit[1]]}}
+          </template>
+        </n-input-number>
+      </setting-item>
+      <setting-item v-if="isRange" name="结束值偏移单位">
+        <n-select v-model:value="optionData.differUnit[1]" size="small" :options="differUnitOptions" />
+      </setting-item>
     </setting-item-box>
+
   </collapse-item>
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
+import { PropType, computed } from 'vue'
 import { icon } from '@/plugins'
 import { CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
 import { option } from './config'
-import { ComponentInteractEventEnum } from './interact'
+import { ComponentInteractEventEnum, DefaultTypeEnum, DifferUnitEnum, DifferUnitObject } from './interact'
+import dayjs from "dayjs";
 
 const { HelpOutlineIcon } = icon.ionicons5
 
@@ -100,4 +128,87 @@ const datePickerTypeOptions = [
     value: ComponentInteractEventEnum.QUARTER_RANGE
   }
 ]
+
+const defaultTypeOptions = [
+  {
+    label: '静态',
+    value: DefaultTypeEnum.STATIC
+  },
+  {
+    label: '动态',
+    value: DefaultTypeEnum.DYNAMIC
+  },
+  {
+    label: '无',
+    value: DefaultTypeEnum.NONE
+  }
+]
+
+
+const differUnitOptions = [
+  // ManipulateType
+  {
+    value: DifferUnitEnum.DAY,
+    label: DifferUnitObject[DifferUnitEnum.DAY]
+  },
+  {
+    value: DifferUnitEnum.WEEK,
+    label: DifferUnitObject[DifferUnitEnum.WEEK]
+  },
+  {
+    value: DifferUnitEnum.MONTH,
+    label: DifferUnitObject[DifferUnitEnum.MONTH]
+  },
+  {
+    value: DifferUnitEnum.QUARTER,
+    label: DifferUnitObject[DifferUnitEnum.QUARTER]
+  },
+  {
+    value: DifferUnitEnum.YEAR,
+    label: DifferUnitObject[DifferUnitEnum.YEAR]
+  },
+  {
+    value: DifferUnitEnum.HOUR,
+    label: DifferUnitObject[DifferUnitEnum.HOUR]
+  },
+  {
+    value: DifferUnitEnum.MINUTE,
+    label: DifferUnitObject[DifferUnitEnum.MINUTE]
+  },
+  {
+    value: DifferUnitEnum.SECOND,
+    label: DifferUnitObject[DifferUnitEnum.SECOND]
+  },
+  {
+    value: DifferUnitEnum.MILLISECOND,
+    label: DifferUnitObject[DifferUnitEnum.MILLISECOND]
+  }
+]
+
+
+const isRange = computed(() => {
+  return props.optionData.componentInteractEventKey.endsWith('range')
+})
+
+const differValueName = computed(() => {
+  return isRange.value ? '开始值动态偏移量' : '动态偏移量'
+})
+
+const differUnitName = computed(() => {
+  return isRange.value ? '开始值偏移单位' : '偏移单位'
+})
+
+const datePickerTypeUpdate = () => {
+  props.optionData.dataset = isRange.value ? [dayjs().valueOf(), dayjs().valueOf()] : dayjs().valueOf()
+}
+
+const defaultTypeUpdate = (v: string) => {
+  if (v === DefaultTypeEnum.STATIC) {
+    datePickerTypeUpdate()
+  } else {
+    // DefaultTypeEnum.
+    props.optionData.dataset = null
+  }
+}
+
 </script>

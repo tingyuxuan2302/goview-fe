@@ -330,3 +330,23 @@ export const JSONParse = (data: string) => {
 export const setTitle = (title?: string) => {
   title && (document.title = title)
 }
+
+/**
+ * 处理网页关闭事件
+ */
+export const addWindowUnload = () => {
+  // 关闭网页出现离开提示
+  window.onbeforeunload = function (e) {
+    e = e || window.event
+    // 兼容IE8和Firefox 4之前的版本
+    if (e) {
+      e.returnValue = '您确定要离开当前页面吗？请确认是否保存数据！'
+    }
+    // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+    return '您确定要离开当前页面吗？请确认是否保存数据！'
+  }
+  // 返回销毁事件函数
+  return () => {
+    window.onbeforeunload = null
+  }
+}

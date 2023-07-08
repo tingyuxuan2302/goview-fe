@@ -1,6 +1,7 @@
 <template>
   <n-date-picker
     v-model:value="option.dataset"
+    clearable
     :panel="!!chartConfig.option.isPanel"
     :type="chartConfig.option.componentInteractEventKey"
     :style="`width:${w}px;`"
@@ -9,13 +10,15 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, toRefs, ref, shallowReactive, watch } from 'vue'
-import dayjs from 'dayjs'
+import { computed, PropType, ref, shallowReactive, toRefs, watch } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartInteract } from '@/hooks'
 import { InteractEventOn } from '@/enums/eventEnum'
-import { ComponentInteractParamsEnum } from './interact'
+import {ComponentInteractEventEnum, ComponentInteractParamsEnum, DefaultTypeEnum} from './interact'
+import dayjs, {ManipulateType} from 'dayjs'
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+
 
 const props = defineProps({
   chartConfig: {
@@ -31,61 +34,107 @@ const option = shallowReactive({
   dataset: props.chartConfig.option.dataset
 })
 
+const isRange = computed(() => {
+  return props.chartConfig.option.componentInteractEventKey.endsWith('range')
+})
+
 // 监听事件改变
-const onChange = (v: number | number[]) => {
-  if (v instanceof Array) {
+const onChange = (v: number | number[] | null) => {
+  if (isRange.value) {
+    let dateStart = null
+    let dateEnd = null
+    let daterange = null
+    if(v instanceof Array){
+      dateStart = v[0]
+      dateEnd = v[1]
+      daterange = `${v[0]}-${v[1]}`
+    }
     // 存储到联动数据
     useChartInteract(
-      props.chartConfig,
-      useChartEditStore,
-      {
-        [ComponentInteractParamsEnum.DATE_START]: v[0] || dayjs().valueOf(),
-        [ComponentInteractParamsEnum.DATE_END]: v[1] || dayjs().valueOf(),
-        [ComponentInteractParamsEnum.DATE_RANGE]: `${v[0] || dayjs().valueOf()}-${v[1] || dayjs().valueOf()}`
-      },
-      InteractEventOn.CHANGE
+        props.chartConfig,
+        useChartEditStore,
+        {
+          [ComponentInteractParamsEnum.DATE_START]: dateStart,
+          [ComponentInteractParamsEnum.DATE_END]: dateEnd,
+          [ComponentInteractParamsEnum.DATE_RANGE]: daterange
+        },
+        InteractEventOn.CHANGE
     )
   } else {
     // 存储到联动数据
     useChartInteract(
-      props.chartConfig,
-      useChartEditStore,
-      { [ComponentInteractParamsEnum.DATE]: v || dayjs().valueOf() },
-      InteractEventOn.CHANGE
+        props.chartConfig,
+        useChartEditStore,
+        { [ComponentInteractParamsEnum.DATE]: v },
+        InteractEventOn.CHANGE
     )
   }
 }
 
-watch(
-  () => props.chartConfig.option.dataset,
-  (newData: number | number[]) => {
-    option.dataset = newData
-    // 关联目标组件首次请求带上默认内容
-    onChange(newData)
-  },
-  {
-    immediate: true
+const getDiffDate = (type: ComponentInteractEventEnum, date: dayjs.Dayjs) => {
+  // 注册 quarterOfYear 插件
+  dayjs.extend(quarterOfYear)
+  switch (type) {
+    case ComponentInteractEventEnum.DATE:
+    case ComponentInteractEventEnum.DATE_RANGE:
+      date = date.startOf('day')
+      break
+    case ComponentInteractEventEnum.MONTH:
+    case ComponentInteractEventEnum.MONTH_RANGE:
+      date = date.startOf('month')
+      break
+    case ComponentInteractEventEnum.YEAR:
+    case ComponentInteractEventEnum.YEAR_RANGE:
+      date = date.startOf('year')
+        break
+    case ComponentInteractEventEnum.QUARTER:
+    case ComponentInteractEventEnum.QUARTER_RANGE:
+      date = date.startOf('quarter')
+      break
+    default:
+      break
   }
-)
+  return date
+}
 
-// 手动更新
 watch(
-  () => props.chartConfig.option.differValue,
-  (newData: number) => {
-    if (props.chartConfig.option.differValue === 0) return
-    if (typeof option.dataset === 'object') {
-      option.dataset[0] = dayjs().add(newData, 'day').valueOf()
-      option.dataset[1] = dayjs().add(newData, 'day').valueOf()
-    } else {
-      option.dataset = dayjs().add(newData, 'day').valueOf()
+    () => {
+      return {
+        type: props.chartConfig.option.componentInteractEventKey as ComponentInteractEventEnum,
+        defaultType: props.chartConfig.option.defaultType as string,
+        differValue: props.chartConfig.option.differValue as number[],
+        differUnit: props.chartConfig.option.differUnit as ManipulateType[],
+        dataset: props.chartConfig.option.dataset as number | number[] | null,
+      };
+    },
+    (newData, oldData) => {
+      const hasTypeChanged = newData.type !== oldData?.type;
+      const hasDefaultTypeChanged = newData.defaultType !== oldData?.defaultType;
+      const hasDifferValueChanged = newData.differValue !== oldData?.differValue;
+      const hasDifferUnitChanged = newData.differUnit !== oldData?.differUnit;
+
+      if (hasTypeChanged || hasDefaultTypeChanged || hasDifferValueChanged || hasDifferUnitChanged) {
+        if (newData.defaultType === DefaultTypeEnum.NONE) {
+          props.chartConfig.option.dataset = null;
+        } else if (newData.defaultType === DefaultTypeEnum.DYNAMIC) {
+          let date = dayjs();
+          if (isRange.value) {
+            props.chartConfig.option.dataset = [
+             getDiffDate(newData.type,date.add(newData.differValue[0], newData.differUnit[0])).valueOf(),
+             getDiffDate(newData.type,date.add(newData.differValue[1], newData.differUnit[1])).valueOf(),
+            ];
+          } else {
+            props.chartConfig.option.dataset = getDiffDate(newData.type,date.add(newData.differValue[0], newData.differUnit[0])).valueOf()
+          }
+        }
+      }
+      option.dataset = props.chartConfig.option.dataset;
+      onChange(option.dataset);
+    },
+    {
+      immediate: true,
     }
-    // 关联目标组件首次请求带上默认内容
-    onChange(newData)
-  },
-  {
-    immediate: true
-  }
-)
+);
 </script>
 
 <style lang="scss" scoped>
