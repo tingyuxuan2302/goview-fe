@@ -46,14 +46,11 @@ const props = defineProps({
     required: true
   },
   groupIndex: {
-    type: Number,
+    type: [String, Number],
     required: true
   }
 })
 </script>
 
 <style lang="scss" scoped>
-.chart-item {
-  position: absolute;
-}
 </style>
