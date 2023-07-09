@@ -12,8 +12,16 @@ export const keyRecordHandle = () => {
 
     if ([17, 32].includes(keyCode) && window.$KeyboardActive) {
       switch (keyCode) {
-        case 17: window.$KeyboardActive.ctrl = true; break
-        case 32: window.$KeyboardActive.space = true; break
+        case 17:
+          window.$KeyboardActive.ctrl = true
+          break
+        case 32:
+          window.$KeyboardActive.space = true
+          const previewBoxDom = document.querySelector('.go-preview') as HTMLElement
+          if (previewBoxDom && previewBoxDom.style.position === 'absolute') {
+            previewBoxDom.style.cursor = 'move'
+          }
+          break
       }
     }
   }
@@ -24,9 +32,18 @@ export const keyRecordHandle = () => {
 
     if ([17, 32].includes(keyCode) && window.$KeyboardActive) {
       switch (keyCode) {
-        case 17: window.$KeyboardActive.ctrl = false; break
-        case 32: window.$KeyboardActive.space = false; break
+        case 17:
+          window.$KeyboardActive.ctrl = false
+          break
+        case 32:
+          window.$KeyboardActive.space = false
+          break
       }
+    }
+
+    const previewBoxDom = document.querySelector('.go-preview') as HTMLElement
+    if (previewBoxDom) {
+      previewBoxDom.style.cursor = 'default'
     }
   }
 }

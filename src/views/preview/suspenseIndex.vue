@@ -1,5 +1,5 @@
 <template>
-  <div :class="`go-preview ${chartEditStore.editCanvasConfig.previewScaleType}`">
+  <div :class="`go-preview ${chartEditStore.editCanvasConfig.previewScaleType}`" @mousedown="dragCanvas">
     <template v-if="showEntity">
       <!-- 实体区域 -->
       <div ref="entityRef" class="go-preview-entity">
@@ -30,7 +30,7 @@
 import { computed } from 'vue'
 import { PreviewRenderList } from './components/PreviewRenderList'
 import { getFilterStyle, setTitle } from '@/utils'
-import { getEditCanvasConfigStyle, getSessionStorageInfo, keyRecordHandle } from './utils'
+import { getEditCanvasConfigStyle, getSessionStorageInfo, keyRecordHandle, dragCanvas } from './utils'
 import { useComInstall } from './hooks/useComInstall.hook'
 import { useScale } from './hooks/useScale.hook'
 import { useStore } from './hooks/useStore.hook'
