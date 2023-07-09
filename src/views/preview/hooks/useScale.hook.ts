@@ -31,8 +31,6 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
           if (previewBoxDom) {
             previewBoxDom.style.overflow = 'unset'
             previewBoxDom.style.position = 'absolute'
-            previewBoxDom.style.top = '10px'
-            previewBoxDom.style.left = '20px'
           }
           if (entityDom) {
             entityDom.style.overflow = 'unset'
