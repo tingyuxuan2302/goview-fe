@@ -23,16 +23,27 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
           e.preventDefault()
           e.stopPropagation()
           removeEvent()
-          const fitDom = document.querySelector(".go-preview.fit") as HTMLElement
-          if (fitDom) fitDom.style.overflow = 'auto'
-          const transform = previewRef.value.style.transform
-          // 使用正则解析 scale(1, 1) 中的两个数值
+          const transform = previewRef.value?.style.transform
           const regRes = transform.match(/scale\((\d+\.?\d*)*/) as RegExpMatchArray
           const width = regRes[1]
+          const previewBoxDom = document.querySelector('.go-preview') as HTMLElement
+          const entityDom = document.querySelector('.go-preview-entity') as HTMLElement
+          if (previewBoxDom) {
+            previewBoxDom.style.overflow = 'unset'
+            previewBoxDom.style.position = 'absolute'
+            previewBoxDom.style.top = '10px'
+            previewBoxDom.style.left = '20px'
+          }
+          if (entityDom) {
+            entityDom.style.overflow = 'unset'
+          }
+
           if (e.wheelDelta > 0) {
-            previewRef.value.style.transform = `scale(${parseFloat(Number(width).toFixed(2)) + 0.1})`
+            const resNum = parseFloat(Number(width).toFixed(2))
+            previewRef.value.style.transform = `scale(${resNum > 5 ? 5 : resNum + 0.1})`
           } else {
-            previewRef.value.style.transform = `scale(${parseFloat(Number(width).toFixed(2)) - 0.1})`
+            const resNum = parseFloat(Number(width).toFixed(2))
+            previewRef.value.style.transform = `scale(${resNum < 0.2 ? 0.2 : resNum - 0.1})`
           }
         }
       },
