@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-04-10 14:13:12
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-04-27 10:19:17
+-->
 <template>
   <div
     class="chart-item"
@@ -28,6 +35,7 @@
       :is="item.chartConfig.chartKey"
       :id="item.id"
       :chartConfig="item"
+      :svgEl="item.props?.svgEl"
       :themeSetting="themeSetting"
       :themeColor="themeColor"
       :style="{ ...getSizeStyle(item.attr) }"
@@ -74,6 +82,7 @@ const themeColor = computed(() => {
 // 组件渲染结束初始化数据池
 clearMittDataPondMap()
 onMounted(() => {
+  console.log('预览=======', chartEditStore.componentList)
   initDataPond(chartEditStore.requestGlobalConfig)
 })
 </script>

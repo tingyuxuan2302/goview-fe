@@ -74,9 +74,9 @@ const clickItemHandle = (key: string, item: any) => {
   selectOptions.value = item
   // 处理折叠
   if (beforeSelect === key) {
-    setItem(ChartLayoutStoreEnum.CHARTS, !getCharts.value)
+    setItem(ChartLayoutStoreEnum.CHARTS, !getCharts.value, false)
   } else {
-    setItem(ChartLayoutStoreEnum.CHARTS, true)
+    setItem(ChartLayoutStoreEnum.CHARTS, true, false)
   }
   beforeSelect = key
 }
