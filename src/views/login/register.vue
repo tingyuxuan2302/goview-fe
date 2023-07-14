@@ -1,27 +1,12 @@
 <!--
  * @Description: 
  * @Author: 笙痞77
- * @Date: 2023-07-13 14:09:52
+ * @Date: 2023-07-13 17:35:55
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-07-14 13:45:52
+ * @LastEditTime: 2023-07-14 14:52:48
 -->
 <template>
-  <!-- 登录 -->
   <div class="go-login-box">
-    <div class="go-login-box-bg">
-      <aside class="bg-slot"></aside>
-      <aside class="bg-img-box">
-        <transition-group name="list-complete">
-          <template v-for="item in bgList" :key="item">
-            <div class="bg-img-box-li list-complete-item">
-              <n-collapse-transition :appear="true" :show="showBg">
-                <img :src="getImageUrl(item, 'chart/charts')" alt="chart" />
-              </n-collapse-transition>
-            </div>
-          </template>
-        </transition-group>
-      </aside>
-    </div>
     <layout-header>
       <template #left></template>
       <template #right>
@@ -39,10 +24,7 @@
       <div class="login-account">
         <div class="login-account-container">
           <n-collapse-transition :appear="true" :show="show">
-            <n-card class="login-account-card" :title="$t('login.desc')">
-              <div class="login-account-top">
-                <img class="login-account-top-logo" src="~@/assets/images/login/input.png" alt="展示图片" />
-              </div>
+            <n-card class="login-account-card" :title="$t('register.register_desc')">
               <n-form ref="formRef" label-placement="left" size="large" :model="formInline" :rules="rules">
                 <n-form-item path="username">
                   <n-input v-model:value="formInline.username" type="text" maxlength="16"
@@ -65,15 +47,8 @@
                   </n-input>
                 </n-form-item>
                 <n-form-item>
-                  <div class="flex justify-between">
-                    <div class="flex-initial">
-                      <n-checkbox v-model:checked="autoLogin">{{ $t('login.form_auto') }}</n-checkbox>
-                    </div>
-                  </div>
-                </n-form-item>
-                <n-form-item>
                   <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>{{
-                    $t('login.form_button')
+                    $t('register.register_form_button')
                   }}</n-button>
                 </n-form-item>
               </n-form>
@@ -82,51 +57,46 @@
         </div>
       </div>
     </div>
-
     <div class="go-login-box-footer">
       <layout-footer></layout-footer>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
-import shuffle from 'lodash/shuffle'
-import { carouselInterval } from '@/settings/designSetting'
-import { useSystemStore } from '@/store/modules/systemStore/systemStore'
-import { SystemStoreUserInfoEnum, SystemStoreEnum } from '@/store/modules/systemStore/systemStore.d'
+<script setup lang="ts">
 import { GoThemeSelect } from '@/components/GoThemeSelect'
 import { GoLangSelect } from '@/components/GoLangSelect'
 import { LayoutHeader } from '@/layout/components/LayoutHeader'
 import { LayoutFooter } from '@/layout/components/LayoutFooter'
-import { PageEnum } from '@/enums/pageEnum'
-import { StorageEnum } from '@/enums/storageEnum'
-import { icon } from '@/plugins'
+import { carouselInterval } from '@/settings/designSetting'
+import { reactive, ref, onMounted, onUnmounted } from 'vue'
+import shuffle from 'lodash/shuffle'
+import { registerApi } from '@/api/path'
 import { routerTurnByName } from '@/utils'
-import { loginApi } from '@/api/path'
+import { PageEnum } from '@/enums/pageEnum'
 
+
+import { icon } from '@/plugins'
+
+
+const { PersonOutlineIcon, LockClosedOutlineIcon } = icon.ionicons5
 interface FormState {
   username: string
   password: string
 }
+const t = window['$t']
+const formInline = reactive({
+  username: '',
+  password: ''
+})
 
-const { GO_SYSTEM_STORE } = StorageEnum
-const { PersonOutlineIcon, LockClosedOutlineIcon } = icon.ionicons5
+// 轮播图
+const carouselImgList = ['one', 'two', 'three']
 
-const formRef = ref()
+const showBg = ref(false)
 const loading = ref(false)
 const autoLogin = ref(true)
 const show = ref(false)
-const showBg = ref(false)
-const systemStore = useSystemStore()
-
-const t = window['$t']
-
-const formInline = reactive({
-  username: 'admin',
-  password: 'admin'
-})
-
+const formRef = ref()
 const rules = {
   username: {
     required: true,
@@ -139,66 +109,16 @@ const rules = {
     trigger: 'blur'
   }
 }
-
-// 定时器
-const shuffleTimiing = ref()
-
-// 轮播图
-const carouselImgList = ['one', 'two', 'three']
-
 // 背景图
 const bgList = ref(['bar_y', 'bar_x', 'line_gradient', 'line', 'funnel', 'heatmap', 'map', 'pie', 'radar'])
-
-// 处理url获取
-const getImageUrl = (name: string, folder: string) => {
-  return new URL(`../../assets/images/${folder}/${name}.png`, import.meta.url).href
-}
-
+// 定时器
+const shuffleTimiing = ref()
 // 打乱图片顺序
 const shuffleHandle = () => {
   shuffleTimiing.value = setInterval(() => {
     bgList.value = shuffle(bgList.value)
   }, carouselInterval)
 }
-
-// 登录
-const handleSubmit = async (e: Event) => {
-  e.preventDefault()
-  formRef.value.validate(async (errors: any) => {
-    if (!errors) {
-      const { username, password } = formInline
-      loading.value = true
-      // 提交请求
-      const res = await loginApi({
-        username,
-        password
-      })
-      if (res && res.data) {
-        const { tokenValue, tokenName } = res.data.token
-        const { nickname, username, id } = res.data.userinfo
-
-        // 存储到 pinia
-        systemStore.setItem(SystemStoreEnum.USER_INFO, {
-          [SystemStoreUserInfoEnum.USER_TOKEN]: tokenValue,
-          [SystemStoreUserInfoEnum.TOKEN_NAME]: tokenName,
-          [SystemStoreUserInfoEnum.USER_ID]: id,
-          [SystemStoreUserInfoEnum.USER_NAME]: username,
-          [SystemStoreUserInfoEnum.NICK_NAME]: nickname,
-          t
-        })
-
-        window['$message'].success(t('login.login_success'))
-        routerTurnByName(PageEnum.BASE_HOME_NAME, true)
-      } else {
-        window['$message'].error(t(res?.message))
-      }
-      loading.value = false
-    } else {
-      window['$message'].error(t('login.login_message'))
-    }
-  })
-}
-
 onMounted(() => {
   setTimeout(() => {
     show.value = true
@@ -210,8 +130,38 @@ onMounted(() => {
 
   shuffleHandle()
 })
-</script>
+onUnmounted(() => {
+  clearInterval(shuffleTimiing.value)
+})
+const handleSubmit = (e: Event) => {
+  e.preventDefault()
+  formRef.value.validate(async (errors: any) => {
+    if (!errors) {
+      const { username, password } = formInline
+      loading.value = true
+      // 提交请求
+      const res = await registerApi({
+        username,
+        password
+      })
 
+      if (res && res.data) {
+        window['$message'].success(t('register.register_success'))
+        routerTurnByName(PageEnum.BASE_LOGIN_NAME)
+      } else {
+        window['$message'].error(t(res?.message))
+      }
+      loading.value = false
+    } else {
+      window['$message'].error(t('register.register_message'))
+    }
+  })
+}
+// 处理url获取
+const getImageUrl = (name: string, folder: string) => {
+  return new URL(`../../assets/images/${folder}/${name}.png`, import.meta.url).href
+}
+</script>
 <style lang="scss" scoped>
 $width: 450px;
 $go-login-height: 100vh;
