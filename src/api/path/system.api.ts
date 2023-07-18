@@ -23,6 +23,16 @@ export const logoutApi = async () => {
   }
 }
 
+// * 注册
+export const registerApi = async (data: object) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.SYSTEM}/register`, data)
+    return res
+  } catch (err) {
+    httpErrorHandle()
+  }
+}
+
 // * 获取 oss 上传接口
 export const ossUrlApi = async (data: object) => {
   try {

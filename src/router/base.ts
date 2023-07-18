@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-07-13 09:45:37
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-07-13 18:06:01
+ */
 import { RouteRecordRaw } from 'vue-router'
 import type { AppRouteRecordRaw } from '@/router/types';
 import { ErrorPage404, ErrorPage403, ErrorPage500, Layout, RedirectHome, RedirectUnPublish } from '@/router/constant';
@@ -11,6 +18,15 @@ export const LoginRoute: RouteRecordRaw = {
   component: () => import('@/views/login/index.vue'),
   meta: {
     title: '登录',
+  },
+};
+
+export const RegisterRoute: RouteRecordRaw = {
+  path: PageEnum.BASE_REGISTER,
+  name: PageEnum.BASE_REGISTER_NAME,
+  component: () => import('@/views/login/register.vue'),
+  meta: {
+    title: '注册',
   },
 };
 

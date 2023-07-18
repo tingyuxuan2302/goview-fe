@@ -1,4 +1,5 @@
 import login from './login'
+import register from './register'
 import project from './project'
 
 const global = {
@@ -42,5 +43,6 @@ export default {
   global,
   http,
   login,
-  project
+  project,
+  register
 }
