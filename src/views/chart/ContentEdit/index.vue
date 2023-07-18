@@ -1,69 +1,38 @@
 <template>
   <!-- <edit-rule></edit-rule> -->
-  <content-box
-    id="go-chart-edit-layout"
-    :flex="true"
-    :showTop="false"
-    :showBottom="true"
-    :depth="1"
-    :xScroll="true"
-    :disabledScroll="true"
-    @mousedown="mousedownHandleUnStop"
-    @drop="dragHandle"
-    @dragover="dragoverHandle"
-    @dragenter="dragoverHandle"
-  >
+  <content-box id="go-chart-edit-layout" :flex="true" :showTop="false" :showBottom="true" :depth="1" :xScroll="true"
+    :disabledScroll="true" @mousedown="mousedownHandleUnStop" @drop="dragHandle" @dragover="dragoverHandle"
+    @dragenter="dragoverHandle">
     <edit-rule>
       <!-- 画布主体 -->
       <div id="go-chart-edit-content" @contextmenu="handleContextMenu">
         <!-- 展示 -->
         <edit-range>
           <!-- 滤镜预览 -->
-          <div
-            :style="{
-              ...getFilterStyle(chartEditStore.getEditCanvasConfig),
-              ...rangeStyle
-            }"
-          >
+          <div :style="{
+            ...getFilterStyle(chartEditStore.getEditCanvasConfig),
+            ...rangeStyle
+          }">
             <!-- 图表 -->
             <div v-for="(item, index) in chartEditStore.getComponentList" :key="item.id">
               <!-- 分组 -->
-              <edit-group
-                v-if="item.isGroup"
-                :groupData="(item as CreateComponentGroupType)"
-                :groupIndex="index"
-              ></edit-group>
+              <edit-group v-if="item.isGroup" :groupData="(item as CreateComponentGroupType)"
+                :groupIndex="index"></edit-group>
 
               <!-- 单组件 -->
-              <edit-shape-box
-                v-else
-                :data-id="item.id"
-                :index="index"
-                :style="{
+              <edit-shape-box v-else :data-id="item.id" :index="index" :style="{
                 ...useComponentStyle(item.attr, index),
                 ...getBlendModeStyle(item.styles) as any
-              }"
-                :item="item"
-                @click="mouseClickHandle($event, item)"
-                @mousedown="mousedownHandle($event, item)"
-                @mouseenter="mouseenterHandle($event, item)"
-                @mouseleave="mouseleaveHandle($event, item)"
-                @contextmenu="handleContextMenu($event, item, optionsHandle)"
-              >
-                <component
-                  class="edit-content-chart"
-                  :class="animationsClass(item.styles.animations)"
-                  :is="item.chartConfig.chartKey"
-                  :chartConfig="item"
-                  :svgEl="item.props?.svgEl"
-                  :themeSetting="themeSetting"
-                  :themeColor="themeColor"
-                  :style="{
+              }" :item="item" @click="mouseClickHandle($event, item)" @mousedown="mousedownHandle($event, item)"
+                @mouseenter="mouseenterHandle($event, item)" @mouseleave="mouseleaveHandle($event, item)"
+                @contextmenu="handleContextMenu($event, item, optionsHandle)">
+                <component class="edit-content-chart" :class="animationsClass(item.styles.animations)"
+                  :is="item.chartConfig.chartKey" :chartConfig="item" :svgEl="item.props?.svgEl"
+                  :themeSetting="themeSetting" :themeColor="themeColor" :style="{
                     ...useSizeStyle(item.attr),
                     ...getFilterStyle(item.styles),
                     ...getTransformStyle(item.styles)
-                  }"
-                ></component>
+                  }"></component>
               </edit-shape-box>
             </div>
           </div>
@@ -88,7 +57,14 @@ import { onMounted, computed, provide } from 'vue'
 import { chartColors } from '@/settings/chartThemes/index'
 import { MenuEnum } from '@/enums/editPageEnum'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
-import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle, colorCustomMerge } from '@/utils'
+import {
+  animationsClass,
+  getFilterStyle,
+  getTransformStyle,
+  getBlendModeStyle,
+  colorCustomMerge,
+  addWindowUnload
+} from '@/utils'
 import { useContextMenu } from '@/views/chart/hooks/useContextMenu.hook'
 import { MenuOptionsItemType } from '@/views/chart/hooks/useContextMenu.hook.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
@@ -111,11 +87,14 @@ const chartEditStore = useChartEditStore()
 const { handleContextMenu } = useContextMenu()
 const { dataSyncFetch, intervalDataSyncUpdate } = useSync()
 
+// 加入网页关闭提示
+addWindowUnload()
+
 // 编辑时注入scale变量，消除警告
 provide(SCALE_KEY, null)
 
 // 布局处理
-useLayout()
+useLayout(async () => { })
 
 // 点击事件
 const { mouseenterHandle, mouseleaveHandle, mousedownHandle, mouseClickHandle } = useMouseHandle()
@@ -187,9 +166,7 @@ onMounted(() => {
   // 获取数据
   dataSyncFetch()
   // 定时更新数据
-  intervalDataSyncUpdate()
-
-  console.log('---chartEditStore---', chartEditStore.getComponentList)
+  // intervalDataSyncUpdate()
 })
 </script>
 

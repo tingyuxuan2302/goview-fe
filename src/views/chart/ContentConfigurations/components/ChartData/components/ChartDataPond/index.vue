@@ -117,7 +117,11 @@ const sendHandle = async () => {
     const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
     loading.value = false
     if (res) {
-      if (!res?.data && !targetData.value.filter) window['$message'].warning('您的数据不符合默认格式，请配置过滤器！')
+      if (!res?.data && !targetData.value.filter) {
+        window['$message'].warning('您的数据不符合默认格式，请配置过滤器！')
+        showMatching.value = true
+        return
+      }
       targetData.value.option.dataset = newFunctionHandle(res?.data, res, targetData.value.filter)
       showMatching.value = true
       return

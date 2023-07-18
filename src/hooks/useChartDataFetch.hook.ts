@@ -90,12 +90,12 @@ export const useChartDataFetch = (
 
         // 普通初始化与组件交互处理监听
         watch(
-          () => targetComponent.request,
+          () => targetComponent.request.requestParams,
           () => {
             fetchFn()
           },
           {
-            immediate: true,
+            immediate: false,
             deep: true
           }
         )
@@ -105,7 +105,11 @@ export const useChartDataFetch = (
         // 单位
         const unit = targetInterval && targetInterval.value ? targetUnit.value : globalUnit.value
         // 开启轮询
-        if (time) fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit))
+        if (time) {
+          fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit))
+        } else {
+          fetchFn()
+        }
       }
       // eslint-disable-next-line no-empty
     } catch (error) {
@@ -114,10 +118,11 @@ export const useChartDataFetch = (
   }
 
   if (isPreview()) {
-    // 判断是否是数据池类型
     targetComponent.request.requestDataType === RequestDataTypeEnum.Pond
       ? addGlobalDataInterface(targetComponent, useChartEditStore, updateCallback || echartsUpdateHandle)
       : requestIntervalFn()
+  } else {
+    requestIntervalFn()
   }
   return { vChartRef }
 }

@@ -125,37 +125,11 @@ const selectOptions = ref([
     icon: renderIcon(BrowsersOutlineIcon)
   },
   {
-    label: renderLang('global.r_copy'),
-    key: 'copy',
-    icon: renderIcon(CopyIcon),
-    disabled: true
-  },
-  {
-    label: renderLang('global.r_rename'),
-    key: 'rename',
-    icon: renderIcon(PencilIcon),
-    disabled: true
-  },
-  {
-    type: 'divider',
-    key: 'd1'
-  },
-  {
     label: props.cardData?.release
       ? renderLang('global.r_unpublish')
       : renderLang('global.r_publish'),
     key: 'release',
     icon: renderIcon(SendIcon)
-  },
-  {
-    label: renderLang('global.r_download'),
-    key: 'download',
-    icon: renderIcon(DownloadIcon),
-    disabled: true
-  },
-  {
-    type: 'divider',
-    key: 'd2'
   },
   {
     label: renderLang('global.r_delete'),

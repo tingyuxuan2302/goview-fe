@@ -1,5 +1,5 @@
 <template>
-  <n-tabs :type="option.value.tabType" @update:value="onChange">
+  <n-tabs :type="option.value.tabType" @update:value="onChange" :default-value="option.value.tabLabel">
     <n-tab v-for="(item, index) in option.value.dataset" :name="item.label" :key="index"> {{ item.label }} </n-tab>
   </n-tabs>
 </template>

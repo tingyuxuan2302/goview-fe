@@ -1,6 +1,6 @@
-import axios, { AxiosResponse, AxiosRequestConfig, Axios } from 'axios'
-import { ResultEnum, ModuleTypeEnum } from "@/enums/httpEnum"
-import { PageEnum, ErrorPageNameMap } from "@/enums/pageEnum"
+import axios, { AxiosResponse, AxiosRequestConfig, Axios, AxiosError, InternalAxiosRequestConfig } from 'axios'
+import { RequestHttpHeaderEnum, ResultEnum, ModuleTypeEnum } from '@/enums/httpEnum'
+import { PageEnum, ErrorPageNameMap } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { axiosPre } from '@/settings/httpSetting'
 import { SystemStoreEnum, SystemStoreUserInfoEnum } from '@/store/modules/systemStore/systemStore.d'
@@ -20,11 +20,11 @@ export interface MyRequestInstance extends Axios {
 
 const axiosInstance = axios.create({
   baseURL: `${import.meta.env.PROD ? import.meta.env.VITE_PRO_PATH : ''}${axiosPre}`,
-  timeout: ResultEnum.TIMEOUT,
+  timeout: ResultEnum.TIMEOUT
 }) as unknown as MyRequestInstance
 
 axiosInstance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     // 白名单校验
     if (includes(fetchAllowList, config.url)) return config
     // 获取 token
@@ -35,13 +35,10 @@ axiosInstance.interceptors.request.use(
       return config
     }
     const userInfo = info[SystemStoreEnum.USER_INFO]
-    config.headers = {
-      ...config.headers,
-      [userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token']: userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
-    }
+    config.headers[userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token'] =  userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
     return config
   },
-  (err: AxiosRequestConfig) => {
+  (err: AxiosError) => {
     Promise.reject(err)
   }
 )
@@ -74,13 +71,23 @@ axiosInstance.interceptors.response.use(
       redirectErrorPage(code)
       return Promise.resolve(res.data)
     }
-    
+
     // 提示错误
     window['$message'].error(window['$t']((res.data as any).msg))
     return Promise.resolve(res.data)
   },
-  (err: AxiosResponse) => {
-    Promise.reject(err)
+  (err: AxiosError) => {
+    const status = err.response?.status
+    switch (status) {
+      case 401:
+        routerTurnByName(PageEnum.BASE_LOGIN_NAME)
+        Promise.reject(err)
+        break
+
+      default:
+        Promise.reject(err)
+        break
+    }
   }
 )
 
