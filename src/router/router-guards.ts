@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-07-13 09:45:37
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-07-17 18:10:50
+ */
 import { Router } from 'vue-router';
 import { PageEnum, PreviewEnum } from '@/enums/pageEnum'
 import { loginCheck } from '@/utils'
@@ -6,8 +13,10 @@ import { loginCheck } from '@/utils'
 const routerAllowList = [
   // 登录
   PageEnum.BASE_LOGIN_NAME,
+  // 注册
+  PageEnum.BASE_REGISTER_NAME,
   // 预览
-  PreviewEnum.CHART_PREVIEW_NAME
+  PreviewEnum.CHART_PREVIEW_NAME,
 ]
 
 export function createRouterGuards(router: Router) {
@@ -25,13 +34,16 @@ export function createRouterGuards(router: Router) {
     const isErrorPage = router.getRoutes().findIndex((item) => item.name === to.name);
     if (isErrorPage === -1) {
       next({ name: PageEnum.ERROR_PAGE_NAME_404 })
+      return
     }
 
     // @ts-ignore
     if (!routerAllowList.includes(to.name) && !loginCheck()) {
       next({ name: PageEnum.BASE_LOGIN_NAME })
+      return
     }
     next()
+    return
   })
 
   router.afterEach((to, _, failure) => {
