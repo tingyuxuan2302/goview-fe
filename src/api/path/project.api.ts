@@ -87,10 +87,10 @@ export const uploadFile = async (data: object) => {
   try {
     const res = await http(RequestHttpEnum.POST)<{
       /**
-       * 文件地址
+       * 文件名称
        */
       fileName: string,
-      fileurl: string,
+      fileUrl: string, // 文件url
     }>(`${ModuleTypeEnum.PROJECT}/upload`, data, ContentTypeEnum.FORM_DATA)
     return res
   } catch {

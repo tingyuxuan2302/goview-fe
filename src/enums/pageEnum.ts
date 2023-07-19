@@ -19,6 +19,10 @@ export enum EditEnum {
 }
 
 export enum PageEnum {
+  // 注册
+  BASE_REGISTER = '/register',
+  BASE_REGISTER_NAME = 'Register',
+
   // 登录
   BASE_LOGIN = '/login',
   BASE_LOGIN_NAME = 'Login',

@@ -3,32 +3,18 @@
     <n-form inline :label-width="45" size="small" label-placement="left">
       <n-form-item label="宽度">
         <!-- 尺寸选择 -->
-        <n-input-number
-          size="small"
-          v-model:value="canvasConfig.width"
-          :disabled="editCanvas.lockScale"
-          :validator="validator"
-          @update:value="changeSizeHandle"
-        ></n-input-number>
+        <n-input-number size="small" v-model:value="canvasConfig.width" :disabled="editCanvas.lockScale"
+          :validator="validator" @update:value="changeSizeHandle"></n-input-number>
       </n-form-item>
       <n-form-item label="高度">
-        <n-input-number
-          size="small"
-          v-model:value="canvasConfig.height"
-          :disabled="editCanvas.lockScale"
-          :validator="validator"
-          @update:value="changeSizeHandle"
-        ></n-input-number>
+        <n-input-number size="small" v-model:value="canvasConfig.height" :disabled="editCanvas.lockScale"
+          :validator="validator" @update:value="changeSizeHandle"></n-input-number>
       </n-form-item>
     </n-form>
 
     <div class="upload-box">
-      <n-upload
-        v-model:file-list="uploadFileListRef"
-        :show-file-list="false"
-        :customRequest="customRequest"
-        :onBeforeUpload="beforeUploadHandle"
-      >
+      <n-upload v-model:file-list="uploadFileListRef" :show-file-list="false" :customRequest="customRequest"
+        :onBeforeUpload="beforeUploadHandle">
         <n-upload-dragger>
           <img v-if="canvasConfig.backgroundImage" class="upload-show" :src="canvasConfig.backgroundImage" alt="背景" />
           <div class="upload-img" v-show="!canvasConfig.backgroundImage">
@@ -44,26 +30,15 @@
       <n-space>
         <n-text>背景颜色</n-text>
         <div class="picker-height">
-          <n-color-picker
-            v-if="!switchSelectColorLoading"
-            size="small"
-            style="width: 250px"
-            v-model:value="canvasConfig.background"
-            :showPreview="true"
-            :swatches="swatchesColors"
-          ></n-color-picker>
+          <n-color-picker v-if="!switchSelectColorLoading" size="small" style="width: 250px"
+            v-model:value="canvasConfig.background" :showPreview="true" :swatches="swatchesColors"></n-color-picker>
         </div>
       </n-space>
       <n-space>
         <n-text>应用类型</n-text>
-        <n-select
-          size="small"
-          style="width: 250px"
-          v-model:value="selectColorValue"
-          :disabled="!canvasConfig.backgroundImage"
-          :options="selectColorOptions"
-          @update:value="selectColorValueHandle"
-        />
+        <n-select size="small" style="width: 250px" v-model:value="selectColorValue"
+          :disabled="!canvasConfig.backgroundImage" :options="selectColorOptions"
+          @update:value="selectColorValueHandle" />
       </n-space>
       <n-space>
         <n-text>背景控制</n-text>
@@ -77,14 +52,9 @@
       <n-space>
         <n-text>适配方式</n-text>
         <n-button-group>
-          <n-button
-            v-for="item in previewTypeList"
-            :key="item.key"
-            :type="canvasConfig.previewScaleType === item.key ? 'primary' : 'tertiary'"
-            ghost
-            size="small"
-            @click="selectPreviewType(item.key)"
-          >
+          <n-button v-for="item in previewTypeList" :key="item.key"
+            :type="canvasConfig.previewScaleType === item.key ? 'primary' : 'tertiary'" ghost size="small"
+            @click="selectPreviewType(item.key)">
             <n-tooltip :show-arrow="false" trigger="hover">
               <template #trigger>
                 <n-icon class="select-preview-icon" size="18">
@@ -104,13 +74,8 @@
 
     <!-- 主题选择和全局配置 -->
     <n-tabs class="tabs-box" size="small" type="segment">
-      <n-tab-pane
-        v-for="item in globalTabList"
-        :key="item.key"
-        :name="item.key"
-        size="small"
-        display-directive="show:lazy"
-      >
+      <n-tab-pane v-for="item in globalTabList" :key="item.key" :name="item.key" size="small"
+        display-directive="show:lazy">
         <template #tab>
           <n-space>
             <span>{{ item.title }}</span>
@@ -122,6 +87,9 @@
         <component :is="item.render"></component>
       </n-tab-pane>
     </n-tabs>
+    <!-- 图片上传 -->
+
+    <SvgUpload></SvgUpload>
   </div>
 </template>
 
@@ -133,7 +101,7 @@ import { FileTypeEnum } from '@/enums/fileTypeEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { useSystemStore } from '@/store/modules/systemStore/systemStore'
-import { StylesSetting } from '@/components/Pages/ChartItemSetting'
+import { StylesSetting, SvgUpload } from '@/components/Pages/ChartItemSetting'
 import { UploadCustomRequestOptions } from 'naive-ui'
 import { loadAsyncComponent, fetchRouteParamsLocation } from '@/utils'
 import { PreviewScaleEnum } from '@/enums/styleEnum'
@@ -311,11 +279,14 @@ const selectPreviewType = (key: PreviewScaleEnum) => {
 <style lang="scss" scoped>
 $uploadWidth: 326px;
 $uploadHeight: 193px;
+
 @include go(canvas-setting) {
   padding-top: 20px;
+
   .upload-box {
     cursor: pointer;
     margin-bottom: 20px;
+
     @include deep() {
       .n-upload-dragger {
         padding: 5px;
@@ -323,37 +294,46 @@ $uploadHeight: 193px;
         background-color: rgba(0, 0, 0, 0);
       }
     }
+
     .upload-show {
       width: -webkit-fill-available;
       height: $uploadHeight;
       border-radius: 5px;
     }
+
     .upload-img {
       display: flex;
       flex-direction: column;
       align-items: center;
+
       img {
         height: 150px;
       }
+
       .upload-desc {
         padding: 10px 0;
       }
     }
   }
+
   .icon-position {
     padding-top: 2px;
   }
+
   .picker-height {
     min-height: 35px;
   }
+
   .clear-btn {
     padding-left: 2.25em;
     padding-right: 2.25em;
   }
+
   .select-preview-icon {
     padding-right: 0.68em;
     padding-left: 0.68em;
   }
+
   .tabs-box {
     margin-top: 20px;
   }

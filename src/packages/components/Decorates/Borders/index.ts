@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-04-10 14:13:11
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-04-27 10:22:27
+ */
 import { Border01Config } from './Border01/index'
 import { Border02Config } from './Border02/index'
 import { Border03Config } from './Border03/index'
@@ -11,6 +18,7 @@ import { Border10Config } from './Border10/index'
 import { Border11Config } from './Border11/index'
 import { Border12Config } from './Border12/index'
 import { Border13Config } from './Border13/index'
+import { Border14Config } from './Border14/index'
 
 export default [
   Border01Config,
@@ -25,5 +33,6 @@ export default [
   Border10Config,
   Border11Config,
   Border12Config,
-  Border13Config
+  Border13Config,
+  Border14Config
 ]
