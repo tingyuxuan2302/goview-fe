@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-07-19 14:05:19
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-07-24 16:00:11
+ */
 import { ref, watch, computed } from 'vue'
 import { icon } from '@/plugins'
 import { renderLang, renderIcon } from '@/utils'
@@ -41,6 +48,10 @@ const packagesListObj = {
   [PackagesCategoryEnum.ICONS]: {
     icon: renderIcon(AirPlaneOutlineIcon),
     label: PackagesCategoryName.ICONS
+  },
+  [PackagesCategoryEnum.CESIUM]: {
+    icon: renderIcon(SpellCheckIcon),
+    label: PackagesCategoryName.CESIUM
   }
 }
 

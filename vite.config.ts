@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-04-10 14:13:12
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-04-20 16:23:55
+ * @LastEditTime: 2023-07-24 15:05:25
  */
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -13,6 +13,7 @@ import viteCompression from 'vite-plugin-compression'
 import { axiosPre } from './src/settings/httpSetting'
 import { viteMockServe } from 'vite-plugin-mock'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
+import cesium from 'vite-plugin-cesium';
 
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir)
@@ -50,7 +51,7 @@ export default ({ mode }) => defineConfig({
   // 开发服务器配置
   server: {
     host: true,
-    open: true,
+    // open: true,
     port: 3000,
     proxy: {
       [axiosPre]: {
@@ -71,6 +72,7 @@ export default ({ mode }) => defineConfig({
     monacoEditorPlugin({
       languageWorkers: ['editorWorkerService', 'typescript', 'json', 'html']
     }),
+    cesium(),
     viteMockServe({
       mockPath: '/src/api/mock',
       // 开发打包开关

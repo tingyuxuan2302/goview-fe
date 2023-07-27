@@ -5,7 +5,7 @@ export enum ChatCategoryEnum {
   LINE = 'Lines',
   SCATTER = 'Scatters',
   MAP = 'Maps',
-  MORE = 'Mores'
+  MORE = 'Mores',
 }
 
 export enum ChatCategoryEnumName {

@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-04-10 14:13:12
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-07-19 10:42:46
+ * @LastEditTime: 2023-07-27 09:58:22
 -->
 <template>
   <div class="chart-item" v-for="(item, index) in chartEditStore.componentList"
@@ -20,9 +20,11 @@
       :themeSetting="themeSetting" :themeColor="themeColor"></preview-render-group>
 
     <!-- 单组件 -->
-    <component v-else :is="item.chartConfig.chartKey" :id="item.id" :chartConfig="item" :svgEl="item.props?.svgEl"
-      :themeSetting="themeSetting" :themeColor="themeColor" :style="{ ...getSizeStyle(item.attr) }"
-      v-on="useLifeHandler(item)"></component>
+    <component v-else :is="item.chartConfig.chartKey"
+      :id="item.chartConfig.chartKey === 'VCesiumBase' ? 'cesiumContainer' : item.id" :chartConfig="item"
+      :svgEl="item.props?.svgEl" :themeSetting="themeSetting" :themeColor="themeColor"
+      :style="{ ...getSizeStyle(item.attr) }" v-on="useLifeHandler(item)"></component>
+
   </div>
 </template>
 
