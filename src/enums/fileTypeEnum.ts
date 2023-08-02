@@ -3,6 +3,7 @@ export enum FileTypeEnum {
   // 文档
   TXT = 'text/plain',
   JSON = 'application/json',
+  GEOJSON = 'application/geo+json',
   // 图片
   PNG = 'image/png',
   JPEG = 'image/jpeg',

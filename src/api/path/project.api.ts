@@ -1,7 +1,11 @@
 import { http } from '@/api/http'
 import { httpErrorHandle } from '@/utils'
 import { ContentTypeEnum, RequestHttpEnum, ModuleTypeEnum } from '@/enums/httpEnum'
-import { ProjectItem, ProjectDetail } from './project'
+import { ProjectItem, ProjectDetail, HttpResult } from './project'
+import { axiosPre } from '@/settings/httpSetting'
+
+const baseURL = `${import.meta.env.PROD ? import.meta.env.VITE_PRO_PATH : ''}${axiosPre}`
+
 
 // * 项目列表
 export const projectListApi = async (data: object) => {
@@ -92,6 +96,26 @@ export const uploadFile = async (data: object) => {
       fileName: string,
       fileUrl: string, // 文件url
     }>(`${ModuleTypeEnum.PROJECT}/upload`, data, ContentTypeEnum.FORM_DATA)
+    return res
+  } catch {
+    httpErrorHandle()
+  }
+}
+
+// * 解析geojson文件
+export const resolveGeojson = async (data: object) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)<HttpResult>(`${ModuleTypeEnum.PROJECT}/resolveGeojson`, data)
+    return res
+  } catch {
+    httpErrorHandle()
+  }
+}
+
+// * 获取图片
+export const getImg = async (data: object) => {
+  try {
+    const res = await http(RequestHttpEnum.GET)<HttpResult>(`${ModuleTypeEnum.PROJECT}/getImage`, data)
     return res
   } catch {
     httpErrorHandle()

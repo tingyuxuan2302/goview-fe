@@ -1,0 +1,6 @@
+{
+  "initConfig": {
+    "dom": "cesiumContainer",
+    "timeline": false
+  }
+}

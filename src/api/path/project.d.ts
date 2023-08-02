@@ -35,5 +35,11 @@ export interface ProjectDetail extends ProjectItem {
   /**
    * 项目参数
    */
-   content: string
+  content: string
+}
+
+export interface HttpResult {
+  code: number
+  message: string
+  data?: any
 }
