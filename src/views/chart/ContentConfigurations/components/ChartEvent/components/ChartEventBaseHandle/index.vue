@@ -16,7 +16,7 @@
         <p>
           <span class="func-annotate">// {{ EventTypeName[eventName] }}</span>
           <br />
-          <span class="func-keyword">async {{ eventName }}</span> (mouseEvent) {
+          <span class="func-keyword">async {{ eventName }}</span> (mouseEvent, components) {
         </p>
         <p class="go-ml-4">
           <n-code :code="(targetData.events.baseEvent || {})[eventName] || ''" language="typescript"></n-code>
@@ -43,16 +43,12 @@
             <template #suffix>
               <n-text class="tab-tip" type="warning">提示: ECharts 组件会拦截鼠标事件</n-text>
             </template>
-            <n-tab-pane
-              v-for="(eventName, index) in BaseEvent"
-              :key="index"
-              :tab="`${EventTypeName[eventName]}-${eventName}`"
-              :name="eventName"
-            >
+            <n-tab-pane v-for="(eventName, index) in BaseEvent" :key="index"
+              :tab="`${EventTypeName[eventName]}-${eventName}`" :name="eventName">
               <!-- 函数名称 -->
               <p class="go-pl-3">
                 <span class="func-keyword">async function &nbsp;&nbsp;</span>
-                <span class="func-keyNameWord">{{ eventName }}(mouseEvent)&nbsp;&nbsp;{</span>
+                <span class="func-keyNameWord">{{ eventName }}(mouseEvent, components)&nbsp;&nbsp;{</span>
               </p>
               <!-- 编辑主体 -->
               <monaco-editor v-model:modelValue="baseEvent[eventName]" height="480px" language="javascript" />
@@ -61,13 +57,8 @@
             </n-tab-pane>
           </n-tabs>
         </n-layout>
-        <n-layout-sider
-          :collapsed-width="14"
-          :width="340"
-          show-trigger="bar"
-          collapse-mode="transform"
-          content-style="padding: 12px 12px 0px 12px;margin-left: 3px;"
-        >
+        <n-layout-sider :collapsed-width="14" :width="340" show-trigger="bar" collapse-mode="transform"
+          content-style="padding: 12px 12px 0px 12px;margin-left: 3px;">
           <n-tabs default-value="1" justify-content="space-evenly" type="segment">
             <!-- 验证结果 -->
             <n-tab-pane tab="验证结果" name="1" size="small">
@@ -158,7 +149,7 @@ const validEvents = () => {
   errorFlag.value = Object.entries(baseEvent.value).every(([eventName, str]) => {
     try {
       // 支持await，验证语法
-      const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
+      const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor
       new AsyncFunction(str)
       return true
     } catch (error: any) {

@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-07-24 14:48:43
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-07-31 17:19:01
+ * @LastEditTime: 2023-08-02 15:53:05
 -->
 <!--
  * @Description: 
@@ -53,7 +53,7 @@
 import { PropType, reactive, nextTick, ref } from 'vue'
 import { option, LocationEnum } from './config'
 import { CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
-import _ from "lodash"
+import cloneDeep from 'lodash/cloneDeep'
 import type { UploadFileInfo, UploadCustomRequestOptions } from 'naive-ui'
 import { uploadFile, resolveGeojson } from '@/api/path'
 import { ResultEnum } from '@/enums/httpEnum'
@@ -77,7 +77,7 @@ const locationOpts = [
 ]
 
 // 此处深拷贝是为了当viewOptions是一个深层次的对象时，深层次的引用改变能够不直接影响props.optionData.viewOptions
-const cloneViewOpts = _.cloneDeep(props.optionData.viewOptions)
+const cloneViewOpts = cloneDeep(props.optionData.viewOptions)
 const optionState = reactive(cloneViewOpts)
 const geojsonFileName = ref("")
 

@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-07-24 14:46:46
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-08-01 11:21:32
+ * @LastEditTime: 2023-08-04 16:33:29
 -->
 <template>
   <div id="cesiumContainer"></div>
@@ -86,34 +86,9 @@ const init = async (opts) => {
       cameraLocation(locationMode.value, arr)
     }
 
-
-    // // 外天空盒 
-    // viewer.scene.skyBox = new Cesium.SkyBox({
-    //   sources: {
-    //     positiveX: '/images/Standard-Cube-Map/px1.png',
-    //     negativeX: '/images/Standard-Cube-Map/nx1.png',
-    //     positiveY: '/images/Standard-Cube-Map/pz.png',
-    //     negativeY: '/images/Standard-Cube-Map/nz1.png',
-    //     positiveZ: '/images/Standard-Cube-Map/py.png',
-    //     negativeZ: '/images/Standard-Cube-Map/ny1.png'
-    //   }
-    // })
-
     // 调试使用
     window.viewer = viewer
 
-    // 监听点击事件，拾取坐标
-    // const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-    // handler.setInputAction((e) => {
-    //   const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
-    //   const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
-    //   console.log(
-    //     "经度：" +
-    //     Cesium.Math.toDegrees(randiansPos.longitude) +
-    //     ", 纬度：" +
-    //     Cesium.Math.toDegrees(randiansPos.latitude)
-    //   );
-    // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
 };
 
@@ -183,6 +158,10 @@ const formatJsonData = (features, img) => {
       position,
     });
   }
+}
+
+const consolef = () => {
+  console.log("-----测试点击----", "吊桶啦")
 }
 
 // 预览
