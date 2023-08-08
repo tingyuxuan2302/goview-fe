@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-07-18 15:15:27
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-07-18 15:15:40
+ */
 import { http } from '@/api/http'
 import { httpErrorHandle } from '@/utils'
 import { ContentTypeEnum, RequestHttpEnum, ModuleTypeEnum } from '@/enums/httpEnum'

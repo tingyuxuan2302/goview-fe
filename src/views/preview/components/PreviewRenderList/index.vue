@@ -20,11 +20,9 @@
       :themeSetting="themeSetting" :themeColor="themeColor"></preview-render-group>
 
     <!-- 单组件 -->
-    <component v-else :is="item.chartConfig.chartKey"
-      :id="item.chartConfig.chartKey === 'VCesiumBase' ? 'cesiumContainer' : item.id" :chartConfig="item"
-      :svgEl="item.props?.svgEl" :themeSetting="themeSetting" :themeColor="themeColor"
-      :style="{ ...getSizeStyle(item.attr) }" v-on="useLifeHandler(item)"></component>
-
+    <component v-else :is="item.chartConfig.chartKey" :id="item.id" :chartConfig="item" :svgEl="item.props?.svgEl"
+      :themeSetting="themeSetting" :themeColor="themeColor" :style="{ ...getSizeStyle(item.attr) }"
+      v-on="useLifeHandler(item)"></component>
   </div>
 </template>
 
