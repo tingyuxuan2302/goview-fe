@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-07-24 14:46:46
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-08-04 16:33:29
+ * @LastEditTime: 2023-08-07 16:43:40
 -->
 <template>
   <div id="cesiumContainer"></div>
@@ -14,7 +14,7 @@ import { useChartDataFetch } from '@/hooks'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { ref, onMounted, toRefs, watch } from 'vue';
 import { LocationEnum } from "./config"
-import { getImg } from '@/api/path'
+import { getImg, resolveGeojson } from '@/api/path'
 
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxYWE5M2QzNy1hNGFjLTQ3YzItYmU0ZS05MDkyODc1MzVhNzAiLCJpZCI6MTE1MDQwLCJpYXQiOjE2Njg1OTA2NDh9.oW-_utGumUSPqYzlWGjhG8hbda-b4UxZdL0_2t4ASig";
@@ -54,7 +54,7 @@ const init = async (opts) => {
       center: watch_center,
       locationMode: watch_locationMode,
       markImgUrl: watch_markImgUrl,
-      markGeojsonData: watch_markGeojsonData,
+      geojsonFileName: watch_geojsonFileName,
     } = opts
     // 中心坐标
     const centerArr = watch_center?.split(",")
@@ -62,8 +62,19 @@ const init = async (opts) => {
       const arr = centerArr.map(Number)
       cameraLocation(watch_locationMode, arr)
     }
-    if (watch_markGeojsonData) {
-      renderMarks(watch_markGeojsonData.features, watch_markImgUrl)
+    // 若geojson文件存在
+    if (watch_geojsonFileName) {
+      try {
+        const res = await resolveGeojson({
+          fileName: watch_geojsonFileName
+        })
+        if (res?.data?.features?.length) {
+          renderMarks(res.data.features, watch_markImgUrl)
+        }
+      } catch (err) {
+        console.error(JSON.stringify(err))
+      }
+
     }
   } else {
     // 初始化
@@ -81,14 +92,25 @@ const init = async (opts) => {
     viewer.scene.globe.depthTestAgainstTerrain = true;
 
     const centerArr = center.value?.split(",")
-    if (centerArr?.length) {
+    if (centerArr?.length && locationMode.value) {
       const arr = centerArr.map(Number)
       cameraLocation(locationMode.value, arr)
     }
 
     // 调试使用
     window.viewer = viewer
-
+    // 监听点击事件，拾取坐标
+    const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+    handler.setInputAction((e) => {
+      const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
+      const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
+      console.log(
+        "经度：" +
+        Cesium.Math.toDegrees(randiansPos.longitude) +
+        ", 纬度：" +
+        Cesium.Math.toDegrees(randiansPos.latitude)
+      );
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
 };
 
@@ -115,7 +137,7 @@ const setView = (option) => {
   })
 }
 
-const cameraLocation = (locationMode, lntlon) => {
+const cameraLocation = (locationMode = LocationEnum.FLY, lntlon) => {
   if (locationMode === LocationEnum.FLY) {
     fly({
       lntlon
@@ -147,7 +169,8 @@ const formatJsonData = (features, img) => {
     const coordinates = feature.geometry.coordinates;
     const position = Cesium.Cartesian3.fromDegrees(
       coordinates[0],
-      coordinates[1]
+      coordinates[1],
+      100
     );
     const name = feature.properties.name;
     // 带图片的点

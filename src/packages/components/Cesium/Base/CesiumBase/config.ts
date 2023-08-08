@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-07-24 14:02:24
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-08-02 11:10:11
+ * @LastEditTime: 2023-08-08 10:56:19
  */
 import { PublicConfigClass } from '@/packages/public'
 import { CreateComponentType } from '@/packages/index.d'
@@ -11,6 +11,7 @@ import { CesiumBaseConfig } from './index'
 import { chartInitConfig } from '@/settings/designSetting'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from "./data.json"
+import type { UploadFileInfo } from 'naive-ui'
 
 // 定位模式
 export enum LocationEnum {
@@ -24,7 +25,10 @@ export const option = {
     center: "", // 中心点坐标
     locationMode: LocationEnum.FLY, // 定位模式
     markImgUrl: "",
-    markGeojsonData: {}, // mark geojson
+    markImgList: [] as UploadFileInfo[],
+    geojsonFileName: "", // geojson文件名
+    geojsonFileList: [] as UploadFileInfo[], // json列表
+    // markGeojsonData: {}, // mark geojson
   },
 }
 
