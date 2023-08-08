@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-07-24 14:48:43
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-08-08 11:23:19
+ * @LastEditTime: 2023-08-08 14:23:57
 -->
 <template>
   <collapse-item name="基础配置" :expanded="true" key="baseSetting">
@@ -25,7 +25,7 @@
     <setting-item-box name="点位数据" :alone="true">
       <setting-item>
         <n-upload :customRequest="customRequest" @before-upload="onBeforeUpload" accept=".geojson"
-          :default-file-list="optionState.geojsonFileList">
+          :default-file-list="optionState.geojsonFileList" :max="1" :multiple="false">
           <n-button>上传geojson文件</n-button>
         </n-upload>
       </setting-item>
@@ -33,7 +33,7 @@
     <setting-item-box name="打点图片" :alone="true">
       <setting-item>
         <n-upload :customRequest="customRequestImg" @before-upload="onBeforeUploadImg"
-          :default-file-list="optionState.markImgList">
+          :default-file-list="optionState.markImgList.slice(-1)" :max="1" :multiple="false">
           <n-button>上传图片</n-button>
         </n-upload>
       </setting-item>
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, reactive, nextTick, ref } from 'vue'
+import { PropType, reactive, nextTick, ref, computed } from 'vue'
 import { option, LocationEnum } from './config'
 import { CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
 import cloneDeep from 'lodash/cloneDeep'
@@ -75,7 +75,6 @@ const locationOpts = [
 const cloneViewOpts = cloneDeep(props.optionData.viewOptions)
 const optionState = reactive(cloneViewOpts)
 console.log("-----optionState---", optionState)
-const geojsonFileName = ref("")
 
 const handleSave = () => {
   props.optionData.viewOptions = Object.assign(props.optionData.viewOptions, optionState)
@@ -124,6 +123,7 @@ const customRequestImg = (options: UploadCustomRequestOptions) => {
     if (file.file) {
       let uploadParams = new FormData()
       uploadParams.append('object', file.file)
+
       const uploadRes = await uploadFile(uploadParams)
       if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
         optionState.markImgUrl = uploadRes.data.fileName
