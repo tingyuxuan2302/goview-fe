@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-07-13 09:45:37
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-08-04 10:23:14
+ */
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
 import { EventLife } from '@/enums/eventEnum'
 import * as echarts from 'echarts'
@@ -44,14 +51,14 @@ export const useLifeHandler = (chartConfig: CreateComponentType | CreateComponen
  * @param fnStr 用户方法体代码
  * @param event 鼠标事件
  */
- export function generateBaseFunc(fnStr: string) {
+export function generateBaseFunc(fnStr: string) {
   try {
     return new Function(`
       return (
-        async function(mouseEvent){
+        async function(components, mouseEvent){
           ${fnStr}
         }
-      )`)()
+      )`)().bind(undefined, components)
   } catch (error) {
     console.error(error)
   }

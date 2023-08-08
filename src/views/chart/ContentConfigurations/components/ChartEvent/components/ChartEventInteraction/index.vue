@@ -17,12 +17,8 @@
       <n-text :depth="3">暂无内容</n-text>
     </div>
 
-    <n-card
-      v-for="(item, cardIndex) in targetData.events.interactEvents"
-      :key="cardIndex"
-      class="n-card-shallow"
-      size="small"
-    >
+    <n-card v-for="(item, cardIndex) in targetData.events.interactEvents" :key="cardIndex" class="n-card-shallow"
+      size="small">
       <n-space justify="space-between">
         <n-text>关联组件 - {{ cardIndex + 1 }}</n-text>
         <n-button type="error" text size="small" @click="evDeleteEventsFn(cardIndex)">
@@ -40,12 +36,7 @@
 
       <setting-item-box name="触发事件" :alone="true">
         <n-input-group v-if="interactActions">
-          <n-select
-            class="select-type-options"
-            v-model:value="item.interactOn"
-            size="tiny"
-            :options="interactActions"
-          />
+          <n-select class="select-type-options" v-model:value="item.interactOn" size="tiny" :options="interactActions" />
         </n-input-group>
       </setting-item-box>
 
@@ -61,16 +52,8 @@
             <n-text>不支持「静态组件」支持「组件」「公共APi」</n-text>
           </n-tooltip>
         </template>
-        <n-select
-          class="select-type-options"
-          value-field="id"
-          label-field="title"
-          size="tiny"
-          filterable
-          placeholder="仅展示符合条件的组件"
-          v-model:value="item.interactComponentId"
-          :options="fnEventsOptions()"
-        />
+        <n-select class="select-type-options" value-field="id" label-field="title" size="tiny" filterable
+          placeholder="仅展示符合条件的组件" v-model:value="item.interactComponentId" :options="fnEventsOptions()" />
       </setting-item-box>
 
       <setting-item-box v-if="fnDimensionsAndSource(item.interactOn).length" name="查询结果" :alone="true">
@@ -91,28 +74,15 @@
 
       <n-tag :bordered="false" type="primary"> 关联目标请求参数 </n-tag>
 
-      <setting-item-box
-        :name="requestParamsItem"
-        v-for="requestParamsItem in requestParamsTypeList"
-        :key="requestParamsItem"
-      >
-        <setting-item
-          v-for="(ovlValue, ovlKey, index) in fnGetRequest(item.interactComponentId, requestParamsItem)"
-          :key="index"
-          :name="`${ovlKey}`"
-        >
-          <n-select
-            size="tiny"
-            v-model:value="item.interactFn[ovlKey]"
-            :options="fnDimensionsAndSource(item.interactOn)"
-            clearable
-          ></n-select>
+      <setting-item-box :name="requestParamsItem" v-for="requestParamsItem in requestParamsTypeList"
+        :key="requestParamsItem">
+        <setting-item v-for="(ovlValue, ovlKey, index) in fnGetRequest(item.interactComponentId, requestParamsItem)"
+          :key="index" :name="`${ovlKey}`">
+          <n-select size="tiny" v-model:value="item.interactFn[ovlKey]" :options="fnDimensionsAndSource(item.interactOn)"
+            clearable></n-select>
         </setting-item>
-        <n-text
-          v-show="JSON.stringify(fnGetRequest(item.interactComponentId, requestParamsItem)) === '{}'"
-          class="go-pt-1"
-          depth="3"
-        >
+        <n-text v-show="JSON.stringify(fnGetRequest(item.interactComponentId, requestParamsItem)) === '{}'"
+          class="go-pt-1" depth="3">
           暂无数据
         </n-text>
       </setting-item-box>
@@ -164,6 +134,7 @@ const fnGetRequest = (id: string | undefined, key: RequestParamsTypeEnum) => {
 
 // 查询结果
 const fnDimensionsAndSource = (interactOn: InteractEventOn | undefined) => {
+  console.log("----", interactOn)
   if (!interactOn || !targetData.value.interactActions) return []
   const tableData = targetData.value.interactActions.find(item => {
     return item.interactType === interactOn
@@ -199,7 +170,6 @@ const fnEventsOptions = (): Array<SelectOption | SelectGroupOption> => {
     const isNotStatic = item.chartConfig.chartFrame !== ChartFrameEnum.STATIC
     // 排除分组
     const isNotGroup = !item.isGroup
-
     return isNotSelf && isNotStatic && isNotGroup
   })
 
@@ -263,6 +233,7 @@ const evDeleteEventsFn = (index: number) => {
 .no-data {
   flex-direction: column;
   width: 100%;
+
   img {
     width: 120px;
   }

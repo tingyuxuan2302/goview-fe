@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-04-10 14:13:12
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-07-18 15:18:35
+ * @LastEditTime: 2023-08-04 16:27:20
 -->
 <template>
   <div class="chart-item" v-for="(item, index) in chartEditStore.componentList"
